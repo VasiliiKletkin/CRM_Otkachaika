@@ -20,7 +20,7 @@ class Address(models.Model):
 class Client(models.Model):
     first_name = models.CharField("First Name", max_length=200,  blank=True)
     last_name = models.CharField("Last Name", max_length=200,  blank=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    #address = models.ForeignKey(Address, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Client"
         verbose_name_plural = "Clients"
