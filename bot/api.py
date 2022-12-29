@@ -1,6 +1,11 @@
 import requests
+import json
 
-BASE_URL='http://localhost:8000/api/v1/'
+import os
 
-def create_user(telegram_id, username):
-    url = f"{BASE_URL/bot}"    
+BASE_URL= os.getenv('BASE_URL')
+
+def check_user(telegram_id):
+    url = f"{BASE_URL}/driver"
+    response = requests.get(url).text
+    return response
