@@ -19,13 +19,7 @@
 				"docker-build"
 			],
 			"python": {
-				"args": [
-					"runserver",
-					"0.0.0.0:8000",
-					"--nothreading",
-					"--noreload"
-				],
-				"file": "osenezator/manage.py"
+				"file": "venv/lib/python3.9/site-packages/aiogram/bot/base.py"
 			}
 		}
 	]
