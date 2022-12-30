@@ -1,6 +1,6 @@
 import logging
 from aiogram import Bot, Dispatcher, executor
-import handlers
+import handler
 import os
 from dotenv import load_dotenv
 
