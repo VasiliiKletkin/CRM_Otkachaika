@@ -19,7 +19,8 @@ class Order(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     price = models.DecimalField("Price", max_digits=8, decimal_places=2)
-    created = models.DateTimeField("Date created", auto_now_add=True)
+    date_created = models.DateTimeField("Date created", auto_now_add=True)
+    date_complited = models.DateTimeField("Date complited", auto_now_add=True)
     updated = models.DateTimeField("Date updated", auto_now=True)
     status = models.CharField("Status", max_length=20,
                               choices=STATUSES, default=CONFIRMATION)
