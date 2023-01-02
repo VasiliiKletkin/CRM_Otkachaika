@@ -1,7 +1,7 @@
 from django.db import models
 
 from companies.models import Company
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Car(models.Model):
     name = models.CharField("Name", max_length=255)
@@ -18,6 +18,7 @@ class Car(models.Model):
 class Driver(models.Model):
     first_name = models.CharField("First Name", max_length=200)
     last_name = models.CharField("Last Name", max_length=200)
+    phone_number = PhoneNumberField(blank=True)
     car = models.OneToOneField(Car, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     telegram_id = models.PositiveIntegerField("Telegram ID")
