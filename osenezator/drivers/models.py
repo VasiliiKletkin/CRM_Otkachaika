@@ -20,7 +20,7 @@ class Driver(models.Model):
     last_name = models.CharField("Last Name", max_length=200)
     car = models.OneToOneField(Car, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    user_telegram_id = models.PositiveIntegerField("Telegram ID")
+    telegram_id = models.PositiveIntegerField("Telegram ID")
     is_active = models.BooleanField(default=True)
 
     class Meta:

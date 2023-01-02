@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from drivers import views
+from drivers.views import DriverViewSet 
+from orders.views import OrderViewSet
 
 router = routers.DefaultRouter()
-router.register(r'driver', views.DriverViewSet, basename='driver')
+router.register(r'driver', DriverViewSet, basename='driver')
+router.register(r'order', OrderViewSet, basename='order')
 
 
 urlpatterns = [
