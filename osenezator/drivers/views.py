@@ -8,5 +8,5 @@ class DriverViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user_telegram_id',]
+    filterset_fields = ['telegram_id',]
     pagination_class = LimitOffsetPagination

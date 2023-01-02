@@ -15,13 +15,14 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
-    """˝
-    This handler will be called when user sends `/start` or `/help` command
-    """
-    await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
+    text = "Привет это бот Откачайка для водителей" \
+        "Вы можете смотреть все заказы, выполнять их и тд" \
+        "Все функции указаны на клавиатуре"
+    await message.reply(text)
 
 @dp.message_handler()
-async def echo(message: types.Message):
+async def menu(message: types.Message):
+
     await message.answer(message.text)
     
 if __name__ == '__main__':
