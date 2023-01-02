@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'drivers',
     'orders',
     'companies',
+    'phonenumber_field',
+
 ]
 
 MIDDLEWARE = [
