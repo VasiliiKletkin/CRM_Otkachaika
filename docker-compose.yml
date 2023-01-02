@@ -1,10 +1,32 @@
 version: '3.4'
 
 services:
-  osenezator:
+  postgres:
+    image: postgres:12.12-alpine
+    restart: always
+    volumes:
+      - ./.docker/floship/portal/postgresql/data:/var/lib/postgresql/data:z
+      - .:/code:z
+    env_file:
+      - .env.local
+  web:
     image: osenezator
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./osenezator/Dockerfile
+    restart: always
+    command: python osenezator/manage.py runserver 0.0.0.0:8000
     ports:
-      - 8000:8000
+      - "8000:8000"
+    env_file:
+      - .env.local
+  bot:
+    image: bot
+    build:
+      context: .
+      dockerfile: ./bot/Dockerfile
+    restart: always
+    command: python bot/main.py
+    env_file:
+      - .env.local
+
