@@ -12,7 +12,6 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Действие отменено", reply_markup=types.ReplyKeyboardRemove())
 
-
 @dp.message_handler(commands=["start"], state="*")
 @dp.message_handler(Text(equals="старт", ignore_case=True), state="*")
 async def cmd_start(message: types.Message, state: FSMContext):
