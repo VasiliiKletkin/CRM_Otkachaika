@@ -18,4 +18,3 @@ def show_orders(driver_id, status = "INPROGRESS"):
     response = requests.get(url).text
     return response
 
-check_user("1")
