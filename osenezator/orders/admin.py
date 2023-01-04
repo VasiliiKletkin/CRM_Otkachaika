@@ -7,5 +7,11 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('address', 'status')
     date_hierarchy = 'date_created'
     ordering = ['date_created', 'date_complited']
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(company=request.user.profile.company)
 
 admin.site.register(Order, OrderAdmin)

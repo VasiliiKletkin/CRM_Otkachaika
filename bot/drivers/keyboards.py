@@ -7,7 +7,6 @@ MAIN_MENU = (
 
 def main_menu_keyboard() -> ReplyKeyboardMarkup:
     keyboard = ReplyKeyboardMarkup(row_width=1)
-    keyboard.add(
-        KeyboardButton(ORDERS),
-    )
+    for button in MAIN_MENU:
+        keyboard.add(KeyboardButton(ORDERS))
     return keyboard
