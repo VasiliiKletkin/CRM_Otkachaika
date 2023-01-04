@@ -1,6 +1,7 @@
 from django.db import models
 from drivers.models import Driver
 from clients.models import Address
+from companies.models import Company
 
 
 class Order(models.Model):
@@ -24,6 +25,7 @@ class Order(models.Model):
     updated = models.DateTimeField("Date updated", auto_now=True)
     status = models.CharField("Status", max_length=20,
                               choices=STATUSES, default=CONFIRMATION)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Order'

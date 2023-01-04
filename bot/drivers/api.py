@@ -13,11 +13,10 @@ def check_user(telegram_id):
     response = requests.get(url).text
     return response
 
-def show_orders(driver_id, status = "INPROGRESS"):
+def get_orders(driver_id, status = "INPROGRESS"):
     url = f"{BASE_URL}api/v1/order/?driver={driver_id}&status={status}"
     response = requests.get(url).text
     return response
-
 
 
 @dp.message_handler(Text(equals="Назад", ignore_case=True), state=OrderMessDriver.wait_show_command)
