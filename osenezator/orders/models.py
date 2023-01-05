@@ -1,6 +1,8 @@
 from django.db import models
 from drivers.models import Driver
 from clients.models import Address
+from companies.models import Company
+from model_utils import Choices
 
 
 class Order(models.Model):
