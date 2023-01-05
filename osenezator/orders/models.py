@@ -18,15 +18,15 @@ class Order(models.Model):
         (CANCELED, 'Canceled'),
     )
 
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='orders')
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
     price = models.DecimalField("Price", max_digits=8, decimal_places=2)
     date_created = models.DateTimeField("Date created", auto_now_add=True)
     date_complited = models.DateTimeField("Date complited", auto_now_add=True)
     updated = models.DateTimeField("Date updated", auto_now=True)
     status = models.CharField("Status", max_length=20,
                               choices=ORDER_STATUSES, default=CONFIRMATION)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='orders')
 
 
     class Meta:

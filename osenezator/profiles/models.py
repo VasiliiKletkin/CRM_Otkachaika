@@ -21,7 +21,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type =  models.CharField(choices=USER_TYPES, max_length=20)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True) 
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True) 
 
     class Meta:
         verbose_name = "Profile"
