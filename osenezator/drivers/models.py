@@ -4,8 +4,9 @@ from companies.models import Company
 from phonenumber_field.modelfields import PhoneNumberField
 
 class Car(models.Model):
-    name = models.CharField("Name", max_length=255)
-    number = models.CharField("Number", max_length=255)
+    name = models.CharField("Car Name", max_length=255)
+    number = models.CharField("Car Number", max_length=255)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Car"

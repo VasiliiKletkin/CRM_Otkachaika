@@ -11,7 +11,7 @@ class Order(models.Model):
     COMPLETED = 'COMPLETED'
     CANCELED = 'CANCELED'
 
-    STATUSES = Choices(
+    ORDER_STATUSES = Choices(
         (CONFIRMATION, 'Confirmation'),
         (INPROGRESS, 'Inprogress'),
         (COMPLETED, 'Completed'),
@@ -25,7 +25,9 @@ class Order(models.Model):
     date_complited = models.DateTimeField("Date complited", auto_now_add=True)
     updated = models.DateTimeField("Date updated", auto_now=True)
     status = models.CharField("Status", max_length=20,
-                              choices=STATUSES, default=CONFIRMATION)
+                              choices=ORDER_STATUSES, default=CONFIRMATION)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
 
     class Meta:
         verbose_name = 'Order'
