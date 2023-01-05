@@ -8,4 +8,8 @@ class AddressAdmin(admin.ModelAdmin):
     ordering = ('address1',)
 
 admin.site.register(Address, AddressAdmin)
-admin.site.register(Client)
+
+class ClientAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Client, ClientAdmin)

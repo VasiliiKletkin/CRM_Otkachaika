@@ -9,12 +9,12 @@ class Order(models.Model):
     COMPLETED = 'COMPLETED'
     CANCELED = 'CANCELED'
 
-    STATUSES = [
+    STATUSES = Choices(
         (CONFIRMATION, 'Confirmation'),
         (INPROGRESS, 'Inprogress'),
         (COMPLETED, 'Completed'),
         (CANCELED, 'Canceled'),
-    ]
+    )
 
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)

@@ -9,8 +9,9 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('drivers', '0001_initial'),
         ('clients', '0001_initial'),
+        ('drivers', '0001_initial'),
+        ('companies', '0001_initial'),
     ]
 
     operations = [

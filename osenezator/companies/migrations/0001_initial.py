@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('phone', models.CharField(max_length=255)),
+                ('phone_number', phonenumber_field.modelfields.PhoneNumberField(max_length=128, region=None)),
+                ('date_created', models.DateTimeField(auto_now_add=True, verbose_name='Date created')),
             ],
             options={
                 'verbose_name': 'Company',
