@@ -14,6 +14,18 @@ class ClientAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     search_fields = ('first_name','last_name','address','is_active')
     ordering = ('is_active','company')
-    
+    exclude = ['company',]
+
+    def save_model(self, request, obj, form, change):
+        if request.user.is_superuser:
+            return super().save_model(request, obj, form, change)
+        obj.company = request.user.profile.company
+        super().save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(company=request.user.profile.company)
 
 admin.site.register(Client, ClientAdmin)
