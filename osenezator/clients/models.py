@@ -10,7 +10,7 @@ class Address(models.Model):
     country = models.CharField("Country", max_length=50)
     volume = models.DecimalField("Volume", max_digits=2, decimal_places=1)
     description = models.TextField("Description", max_length=255, null=True, blank=True)
-
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='addresses')
 
     class Meta:
         verbose_name = "Address"
