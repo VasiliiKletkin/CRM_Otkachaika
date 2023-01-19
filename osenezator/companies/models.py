@@ -7,7 +7,6 @@ class Company(models.Model):
     phone_number = PhoneNumberField()
     city = models.CharField('City', max_length=255)
     date_created = models.DateTimeField("Date created", auto_now_add=True)
-
     class Meta:
         verbose_name = "Company"
         verbose_name_plural = "Companies"

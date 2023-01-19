@@ -22,6 +22,7 @@ class OrderAdmin(admin.ModelAdmin):
         context['adminform'].form.fields['driver'].queryset = Driver.objects.filter(company=request.user.profile.company)
         context['adminform'].form.fields['client'].queryset = Client.objects.filter(company=request.user.profile.company)
         return super().render_change_form(request, context, *args, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -39,8 +40,8 @@ class OrderAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if request.user.is_superuser:
-            super().save_model(request, obj, form, change)
+            return super().save_model(request, obj, form, change)
         obj.company = request.user.profile.company
-        super().save_model(request, obj, form, change)
+        return super().save_model(request, obj, form, change)
 
 admin.site.register(Order, OrderAdmin)

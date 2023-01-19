@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'orders',
     'companies',
     'profiles',
+    'djmoney',
 ]
 
 MIDDLEWARE = [
