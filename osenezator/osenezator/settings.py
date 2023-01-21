@@ -25,22 +25,26 @@ SECRET_KEY = 's@h+t)f45k&q$v@dt^&2ae^s0efnd7lf^_zzh0_87ukhu7h6oc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ '*',]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'rest_framework',
     'django_filters',
     'phonenumber_field',
     'clients',
+    'addresses',
     'drivers',
     'orders',
     'companies',
@@ -56,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
 ]
 
 ROOT_URLCONF = 'osenezator.urls'
@@ -132,3 +138,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.LimitOffsetPagination'],
     'PAGE_SIZE': 100
 }
+
+LANGUAGE_CODE = 'Ru-ru'

@@ -1,6 +1,6 @@
 from django.db import models
 from drivers.models import Driver
-from clients.models import Client
+from clients.models import Address
 from companies.models import Company
 from model_utils import Choices
 
@@ -19,7 +19,8 @@ class Order(models.Model):
     )
 
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='orders')
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='orders')
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
+    description = models.TextField(blank=True, null=True)
     price = models.DecimalField("Price", max_digits=8, decimal_places=2)
     date_created = models.DateTimeField("Date created", auto_now_add=True)
     date_complited = models.DateTimeField("Date complited", auto_now_add=True)
@@ -33,4 +34,4 @@ class Order(models.Model):
         verbose_name_plural = 'Orders'
 
     def __str__(self):
-        return f'Order {self.driver}, {self.client}, {self.price}, {self.status}'
+        return f'Order id:{self.id} {self.address} {self.price} - {self.status}'

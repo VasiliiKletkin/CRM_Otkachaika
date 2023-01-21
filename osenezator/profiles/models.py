@@ -19,7 +19,7 @@ class Profile(models.Model):
         (DISPETCHER, 'Dispetcher'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     user_type =  models.CharField(choices=USER_TYPES, max_length=20)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True) 
 
@@ -28,4 +28,4 @@ class Profile(models.Model):
         verbose_name_plural = "Profiles"
 
     def __str__(self):
-        return f"{self.company} - {self.user} - {self.user_type}"
+        return f"{self.id} - {self.user_type}"

@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 from rest_framework import routers
 from drivers.views import DriverViewSet 
 from orders.views import OrderViewSet
+from addresses.views import AddressAutocomplete 
+from drivers.views import DriverAutocomplete
 
 router = routers.DefaultRouter()
 router.register(r'driver', DriverViewSet, basename='driver')
@@ -28,4 +31,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
+    path('address-autocomplete/', AddressAutocomplete.as_view(),name='address-autocomplete'),
+    path('driver-autocomplete/', DriverAutocomplete.as_view(),name='driver-autocomplete'),
+
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls)),] 

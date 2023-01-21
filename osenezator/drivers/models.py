@@ -14,7 +14,7 @@ class Car(models.Model):
         verbose_name_plural = "Cars"
 
     def __str__(self):
-        return f"{self.name} Num car {self.number}"
+        return f"{self.name}, {self.number}"
 
 
 class Driver(models.Model):
