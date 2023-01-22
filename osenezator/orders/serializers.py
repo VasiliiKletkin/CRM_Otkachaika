@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from clients.serializers import AddressSerializer
+from addresses.serializers import AddressSerializer
 from drivers.serializers import DriverSerializer
 from .models import Order
 

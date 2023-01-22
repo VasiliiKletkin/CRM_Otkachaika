@@ -1,27 +1,28 @@
-from django.db import models
-from django.contrib.auth.models import User
 from companies.models import Company
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from django.db import models
 from model_utils import Choices
+from phonenumber_field.modelfields import PhoneNumberField
 
+user_model = get_user_model()
 
 
 class Profile(models.Model):
 
-    ADMIN='OWNER'
-    DRIVER='DRIVER'
-    DISPETCHER='DISPETCHER'
+    OWNER = 'OWNER'
+    DRIVER = 'DRIVER'
+    DISPATCHER = 'DISPATCHER'
 
     USER_TYPES = Choices(
-        (ADMIN, 'Owner'),
+        (OWNER, 'Owner'),
         (DRIVER, 'Driver'),
-        (DISPETCHER, 'Dispetcher'),
+        (DISPATCHER, 'Dispatcher'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    user_type =  models.CharField(choices=USER_TYPES, max_length=20)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True) 
+    user = models.OneToOneField(user_model, on_delete=models.CASCADE, related_name='profile')
+    user_type = models.CharField(choices=USER_TYPES, max_length=20)
+    phone_number = PhoneNumberField()
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = "Profile"

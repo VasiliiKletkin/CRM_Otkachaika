@@ -13,4 +13,4 @@ class Company(models.Model):
         verbose_name_plural = "Companies"
 
     def __str__(self):
-        return f"id:{self.id}, {self.name}"
+        return f"{self.name}"

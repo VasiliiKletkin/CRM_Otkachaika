@@ -1,6 +1,6 @@
 from dal import autocomplete
 from django import forms
-from clients.models import Address
+from addresses.models import Address
 from drivers.models import Driver
 from .models import Order
 

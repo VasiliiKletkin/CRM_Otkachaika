@@ -1,9 +1,10 @@
-from django.db import models
-from drivers.models import Driver
-from clients.models import Address
+from addresses.models import Address
 from companies.models import Company
+from django.contrib.auth import get_user_model
+from django.db import models
 from model_utils import Choices
 
+user_model = get_user_model()
 
 class Order(models.Model):
     CONFIRMATION = 'CONFIRMATION'
@@ -18,8 +19,9 @@ class Order(models.Model):
         (CANCELED, 'Canceled'),
     )
 
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='orders')
+    driver = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name='orders')
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
+    dispatcher = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name='orders_dispatcher')
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField("Price", max_digits=8, decimal_places=2)
     date_created = models.DateTimeField("Date created", auto_now_add=True)

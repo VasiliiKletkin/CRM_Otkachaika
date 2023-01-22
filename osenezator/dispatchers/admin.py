@@ -1,13 +1,13 @@
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from mixins import AdminSuperUserInlineMixin, AdminSuperUserMixin
 from profiles.admin import ProfileInline
 from profiles.models import Profile
 
-from .models import Car, Driver
+from .models import Dispatcher
 
 
-class ProfileDriverInline(ProfileInline):
+class ProfileDispatcherInline(ProfileInline):
     model = Profile
 
     def get_fields(self, request, obj=None):
@@ -18,19 +18,16 @@ class ProfileDriverInline(ProfileInline):
         return fields
 
 
-class CarInline(AdminSuperUserInlineMixin, admin.StackedInline):
-    model = Car
-
-
-class DriverAdmin(UserAdmin):
+class DispatcherAdmin(UserAdmin):
     list_display = ('username', 'first_name', 'last_name', 'is_active', )
     list_filter = ('first_name', 'is_active',)
     search_fields = ('first_name', 'last_name', 'phone_number',)
     ordering = ('first_name', 'last_name', 'is_active',)
-    inlines = [ProfileDriverInline, CarInline,]
+    inlines = [ProfileDispatcherInline,]
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request).filter(profile__user_type=Profile.DRIVER)
+        qs = super().get_queryset(request).filter(
+            profile__user_type=Profile.DISPATCHER)
         return qs
 
     def save_formset(self, request, form, formset, change):
@@ -47,19 +44,4 @@ class DriverAdmin(UserAdmin):
 
 
 
-class CarAdmin(AdminSuperUserMixin, admin.ModelAdmin):
-    list_display = ('name', 'number', 'company')
-    list_filter = ('name',)
-    search_fields = ('name', 'number',)
-    ordering = ('name', 'number',)
-
-    def render_change_form(self, request, context, *args, **kwargs):
-        qs = Driver.objects.filter(profile__user_type=Profile.DRIVER)
-        if not request.user.is_superuser:
-            qs.filter(profile__company=request.user.profile.company)
-        context['adminform'].form.fields['driver'].queryset = qs
-        return super().render_change_form(request, context, *args, **kwargs)
-
-
-admin.site.register(Driver, DriverAdmin)
-admin.site.register(Car, CarAdmin)
+admin.site.register(Dispatcher, DispatcherAdmin)
