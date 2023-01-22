@@ -61,5 +61,4 @@ class CarAdmin(AdminSuperUserMixin, admin.ModelAdmin):
         return super().render_change_form(request, context, *args, **kwargs)
 
 
-admin.site.register(Driver, DriverAdmin)
 admin.site.register(Car, CarAdmin)
