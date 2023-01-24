@@ -46,7 +46,6 @@ class DriverAdmin(UserAdmin):
         return formset.save_m2m()
 
 
-
 class CarAdmin(AdminSuperUserMixin, admin.ModelAdmin):
     list_display = ('name', 'number', 'company')
     list_filter = ('name',)
@@ -61,4 +60,5 @@ class CarAdmin(AdminSuperUserMixin, admin.ModelAdmin):
         return super().render_change_form(request, context, *args, **kwargs)
 
 
+admin.site.register(Driver, DriverAdmin)
 admin.site.register(Car, CarAdmin)
