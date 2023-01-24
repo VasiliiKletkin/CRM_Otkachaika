@@ -1,18 +1,29 @@
 version: '3.4'
 
 services:
-  web:
-    image: web
+  bot:
+    image: bot
     build:
-      context: .
-      dockerfile: ./Dockerfile
-    restart: always
-    command: python osenezator/manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
+      context: ./bot
+      dockerfile: Dockerfile
+    #restart: always
+    command: python main.py
+    # volumes:
+    #   - ./bot:/app/bot
     env_file:
       - .env
   
-
+  django:
+    image: django
+    build:
+      context: ./osenezator
+      dockerfile: Dockerfile
+    restart: always
+    command: "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - ./osenezator:/app/django
+    env_file:
+      - .env
+  

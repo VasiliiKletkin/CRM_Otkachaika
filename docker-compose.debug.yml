@@ -1,11 +1,30 @@
 version: '3.4'
 
 services:
-  osenezator:
-    image: osenezator
+  bot:
+    image: bot
     build:
-      context: .
-      dockerfile: ./Dockerfile
-    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 venv/lib/python3.9/site-packages/aiogram/bot/base.py "]
+      context: ./bot
+      dockerfile: Dockerfile
+    #restart: always
+    command: python main.py
+    # volumes:
+    #   - ./bot:/app/bot
+    env_file:
+      - .env
+  
+  django:
+    image: django
+    build:
+      context: ./osenezator
+      dockerfile: Dockerfile
+    restart: always
+    command: ["sh", "-c", "pip install debugpy && python -m debugpy --wait-for-client --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000"]
     ports:
+      - 8000:8000
       - 5678:5678
+    # volumes:
+    #   - ./osenezator:/app/django
+    env_file:
+      - .env
+  
