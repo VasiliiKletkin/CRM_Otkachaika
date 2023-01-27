@@ -25,7 +25,7 @@ SECRET_KEY = 's@h+t)f45k&q$v@dt^&2ae^s0efnd7lf^_zzh0_87ukhu7h6oc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '*',]
+ALLOWED_HOSTS = [ 'vasiliikl.beget.tech',]
 
 
 # Application definition
@@ -67,10 +67,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'osenezator.urls'
 
+TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIRS],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,10 +90,21 @@ WSGI_APPLICATION = 'osenezator.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vasiliikl_osenez',
+        'USER': 'vasiliikl_osenez',
+        'PASSWORD': 'n9rqn%zT',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -119,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'Ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -134,10 +146,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT= os.path.join(BASE_DIR,'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT= os.path.join(BASE_DIR,'media')
+
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.LimitOffsetPagination'],
     'PAGE_SIZE': 100
 }
-
-LANGUAGE_CODE = 'Ru-ru'
