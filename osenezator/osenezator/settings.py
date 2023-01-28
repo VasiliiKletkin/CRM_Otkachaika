@@ -67,11 +67,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'osenezator.urls'
 
-TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates')
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIRS],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,23 +93,23 @@ WSGI_APPLICATION = 'osenezator.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vasiliikl_osenez',
-        'USER': 'vasiliikl_osenez',
-        'PASSWORD': 'n9rqn%zT',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'vasiliikl_osenez',
+#         'USER': 'vasiliikl_osenez',
+#         'PASSWORD': 'n9rqn%zT',
+#         'HOST':'localhost',
+#         'PORT':'3306',
+#     }
+# }
 
 
 # Password validation
