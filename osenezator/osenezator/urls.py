@@ -30,12 +30,14 @@ router.register(r'order', OrderViewSet, basename='order')
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('about/', include('about.urls')),
+    path('auth/', include('users.urls')),
+        
     path('api/v1/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
+
     path('address-autocomplete/', AddressAutocomplete.as_view(),name='address-autocomplete'),
     path('driver-autocomplete/', DriverAutocomplete.as_view(),name='driver-autocomplete'),
-
 ]
 
 if settings.DEBUG:

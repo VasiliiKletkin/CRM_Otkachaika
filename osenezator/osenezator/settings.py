@@ -25,7 +25,7 @@ SECRET_KEY = 's@h+t)f45k&q$v@dt^&2ae^s0efnd7lf^_zzh0_87ukhu7h6oc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'vasiliikl.beget.tech',]
+ALLOWED_HOSTS = [ '*']
 
 
 # Application definition
@@ -33,24 +33,29 @@ ALLOWED_HOSTS = [ 'vasiliikl.beget.tech',]
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'debug_toolbar',
     'rest_framework',
     'django_filters',
     'phonenumber_field',
+    'djmoney',
+
     'addresses',
     'drivers',
     'dispatchers',
     'owners',
     'orders',
     'companies',
-    'profiles',
-    'djmoney',
+    'users',
+    'about',
+
 ]
 
 MIDDLEWARE = [
@@ -67,14 +72,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'osenezator.urls'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
+TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,3 +162,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.LimitOffsetPagination'],
     'PAGE_SIZE': 100
 }
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

@@ -1,4 +1,4 @@
-from profiles.models import Profile
+from users.models import Profile
 from dal import autocomplete
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend

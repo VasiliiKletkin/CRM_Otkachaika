@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from mixins import AdminSuperUserInlineMixin, AdminSuperUserMixin
-from profiles.admin import ProfileInline
-from profiles.models import Profile
+from users.admin import ProfileInline
+from users.models import Profile
 
 from .models import Car, Driver
 
