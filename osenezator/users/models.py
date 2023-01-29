@@ -1,22 +1,21 @@
-from django.db import models
-from django.contrib.auth.models import User
 from companies.models import Company
+from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from model_utils import Choices
 
 
-
 class Profile(models.Model):
 
-    ADMIN='ADMIN'
+    OWNER='OWNER'
     DRIVER='DRIVER'
-    DISPETCHER='DISPETCHER'
+    DISPATCHER='DISPATCHER'
 
-    USER_TYPES = (
-        (ADMIN, 'Admin'),
+    USER_TYPES = Choices(
+        (OWNER, 'Owner'),
         (DRIVER, 'Driver'),
-        (DISPETCHER, 'Dispetcher'),
+        (DISPATCHER, 'Dispatcher'),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
