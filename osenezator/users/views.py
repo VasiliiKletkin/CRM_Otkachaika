@@ -7,8 +7,8 @@ from .forms import CreationForm
 
 class SignUp(CreateView):
     form_class = CreationForm
-    success_url = reverse_lazy('home')
-    template_name = "users/registration.html"
+    success_url = reverse_lazy('admin')
+    template_name = "users/signup.html"
 
     def form_valid(self, form):
         user = form.save()

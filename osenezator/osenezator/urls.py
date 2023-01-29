@@ -34,6 +34,8 @@ urlpatterns = [
     path('about/', include('about.urls')),
     path('auth/', include('users.urls')),
     
+    path('admin/', admin.site.urls),
+
     path('api/v1/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
 

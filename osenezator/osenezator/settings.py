@@ -165,7 +165,12 @@ REST_FRAMEWORK = {
 }
 
 INTERNAL_IPS = [
-    # ...
     "127.0.0.1",
-    # ...
 ]
+
+# Login
+
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/../admin/'
+
+LOGOUT_REDIRECT_URL = 'home'
