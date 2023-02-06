@@ -21,8 +21,8 @@ class Car(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cars')
 
     class Meta:
-        verbose_name = "Car"
-        verbose_name_plural = "Cars"
+        verbose_name = "Машина"
+        verbose_name_plural = "Машины"
 
     def __str__(self):
         return f"{self.name}, {self.number}"
