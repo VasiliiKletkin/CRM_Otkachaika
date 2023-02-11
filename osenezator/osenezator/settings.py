@@ -31,10 +31,6 @@ ALLOWED_HOSTS = [ '*']
 # Application definition
 
 INSTALLED_APPS = [
-    'adminlte3',
-    'adminlte3_theme',
-
-
     'dal',
     'dal_select2',
 
@@ -60,7 +56,8 @@ INSTALLED_APPS = [
     'users',
     'home',
     'about',
-    
+
+    'admin_black.apps.AdminBlackConfig',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +69,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-
 ]
 
 ROOT_URLCONF = 'osenezator.urls'
@@ -157,9 +153,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT= os.path.join(BASE_DIR,'static')
+STATIC_ROOT= os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS = [
-   os.path.join (BASE_DIR, 'static'),
+    #os.path.join (BASE_DIR, 'static'),
 ]
 
 MEDIA_URL = '/media/'
