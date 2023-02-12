@@ -1,4 +1,4 @@
-from addresses.models import Address
+from clients.models import Address
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models

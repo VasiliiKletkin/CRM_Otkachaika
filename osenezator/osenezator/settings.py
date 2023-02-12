@@ -47,10 +47,8 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'djmoney',
 
-    'addresses',
-    'drivers',
-    'dispatchers',
-    'owners',
+    'clients',
+    'employees',
     'orders',
     'companies',
     'users',

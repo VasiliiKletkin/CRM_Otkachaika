@@ -14,14 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include, re_path as url
+from django.urls import path, include
 from django.conf import settings
 from rest_framework import routers
-from drivers.views import DriverViewSet 
+from employees.views import DriverViewSet 
 from orders.views import OrderViewSet
-from addresses.views import AddressAutocomplete 
-from drivers.views import DriverAutocomplete
-from django.views.static import serve as mediaserve
 from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
@@ -30,17 +27,17 @@ router.register(r'order', OrderViewSet, basename='order')
 
 
 urlpatterns = [
+    path('', include('employees.urls')),
+
     path('', include('home.urls')),
     path('about/', include('about.urls')),
-    path('auth/', include('users.urls')),
     
-    path('admin/', admin.site.urls),
+    path('clients/', include('clients.urls')),
 
-    path('api/v1/', include(router.urls)),
+    path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
 
-    path('address-autocomplete/', AddressAutocomplete.as_view(),name='address-autocomplete'),
-    path('driver-autocomplete/', DriverAutocomplete.as_view(),name='driver-autocomplete'),
+    path('api/v1/', include(router.urls)),
 ]
 
 if settings.DEBUG:
@@ -51,10 +48,3 @@ if settings.DEBUG:
     ] + urlpatterns
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    urlpatterns += [
-        url(f'^{settings.MEDIA_URL.lstrip("/")}(?P<path>.*)$',
-            mediaserve, {'document_root': settings.MEDIA_ROOT}),
-        url(f'^{settings.STATIC_URL.lstrip("/")}(?P<path>.*)$',
-            mediaserve, {'document_root': settings.STATIC_ROOT}),
-    ]

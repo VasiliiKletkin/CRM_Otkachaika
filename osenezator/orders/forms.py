@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django import forms
-from addresses.models import Address
-from drivers.models import Driver
+from clients.models import Address
+from employees.models import Driver
 from .models import Order
 
 class OrderForm(forms.ModelForm):

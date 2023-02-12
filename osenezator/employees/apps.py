@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 
 
-class OwnersConfig(AppConfig):
+class EmployeesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'owners'
-    verbose_name = 'Владельцы'
+    name = 'employees'

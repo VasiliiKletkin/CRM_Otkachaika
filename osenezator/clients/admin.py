@@ -25,4 +25,4 @@ class AddressAdmin(AdminSuperUserMixin, admin.ModelAdmin):
 
 
 admin.site.register(Address, AddressAdmin)
-# admin.site.register(Client, ClientAdmin)
+admin.site.register(Client, ClientAdmin)

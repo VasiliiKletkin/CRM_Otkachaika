@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from addresses.serializers import AddressSerializer
-from drivers.serializers import DriverSerializer
+from clients.serializers import AddressSerializer
+from employees.serializers import DriverSerializer
 from .models import Order
 
 
