@@ -28,6 +28,7 @@ urlpatterns = [
     path('clients/', include('clients.urls')),
 
     path('admin/', admin.site.urls),
+    path('', include('admin_argon.urls')),
 
     path('api-auth/', include('rest_framework.urls')),
 ]
