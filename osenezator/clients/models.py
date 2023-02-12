@@ -22,9 +22,9 @@ class Address(models.Model):
 class Client(models.Model):
     first_name = models.CharField("Имя", max_length=200,  null=True, blank=True)
     last_name = models.CharField("Фамилия", max_length=200,  null=True, blank=True)
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(verbose_name='Телефонный номер',)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='clients')
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(verbose_name='Активен', default=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='clients')
 
     class Meta:
