@@ -27,11 +27,11 @@ router.register(r'order', OrderViewSet, basename='order')
 
 
 urlpatterns = [
-    path('', include('employees.urls')),
 
     path('', include('home.urls')),
     path('about/', include('about.urls')),
-    
+
+    path('employees/', include('employees.urls')),
     path('clients/', include('clients.urls')),
 
     path('admin/', admin.site.urls),
