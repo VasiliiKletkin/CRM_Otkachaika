@@ -6,8 +6,7 @@ from users.models import Profile
 
 from .models import Car, Dispatcher, Driver, Owner
 
-
-class ProfileInline(ProfileInline):
+class ProfileInline(AdminSuperUserInlineMixin, admin.StackedInline):
     model = Profile
 
     def get_fields(self, request, obj=None):
