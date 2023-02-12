@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
 
-    'django.contrib.admin',
+
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -55,7 +56,8 @@ INSTALLED_APPS = [
     'home',
     'about',
 
-    # 'admin_black.apps.AdminBlackConfig',
+    #'admin_black.apps.AdminBlackConfig',
+    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [
@@ -164,6 +166,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.LimitOffsetPagination'],
     'PAGE_SIZE': 100
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 INTERNAL_IPS = [
     "127.0.0.1",

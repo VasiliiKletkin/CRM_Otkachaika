@@ -16,14 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from rest_framework import routers
-from employees.views import DriverViewSet 
-from orders.views import OrderViewSet
 from django.conf.urls.static import static
-
-router = routers.DefaultRouter()
-router.register(r'driver', DriverViewSet, basename='driver')
-router.register(r'order', OrderViewSet, basename='order')
 
 
 urlpatterns = [
@@ -35,9 +28,8 @@ urlpatterns = [
     path('clients/', include('clients.urls')),
 
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
 
-    path('api/v1/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:
