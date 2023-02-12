@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'home',
     'about',
 
-    'admin_black.apps.AdminBlackConfig',
+    # 'admin_black.apps.AdminBlackConfig',
 ]
 
 MIDDLEWARE = [
