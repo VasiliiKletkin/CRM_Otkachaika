@@ -20,19 +20,21 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    #pages
+    path('', include('home.urls')),
+    path('about/', include('about.urls')),
+
+
+    #api
+    path('api-auth/', include('rest_framework.urls')),
+
+
+    #admin
     path('admin/', admin.site.urls),
     path('', include('admin_argon.urls')),
 
     path('employees/', include('employees.urls')),
     path('clients/', include('clients.urls')),
-
-
-    #pages
-    path('', include('home.urls')),
-    path('about/', include('about.urls')),
-
-    #api
-    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:

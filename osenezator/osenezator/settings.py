@@ -73,7 +73,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'osenezator.urls'
 
-TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
     {
