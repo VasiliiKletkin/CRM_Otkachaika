@@ -25,6 +25,6 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural ='Профили'
-        
+
     def __str__(self):
-        return f'{self.user_type}-{self.company}'
+        return f'{self.get_user_type_display()}-{self.company}'
