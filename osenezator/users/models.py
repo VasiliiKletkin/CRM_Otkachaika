@@ -21,4 +21,3 @@ class Profile(models.Model):
     user_type = models.CharField(choices=USER_TYPES, max_length=20)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     phone_number = PhoneNumberField('Телефонный номер')
-    
