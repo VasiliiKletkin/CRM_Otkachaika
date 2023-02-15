@@ -21,3 +21,10 @@ class Profile(models.Model):
     user_type = models.CharField(choices=USER_TYPES, max_length=20)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     phone_number = PhoneNumberField('Телефонный номер')
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural ='Профили'
+        
+    def __str__(self):
+        return f'{self.user_type}-{self.company}'
