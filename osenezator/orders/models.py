@@ -14,7 +14,7 @@ class Order(models.Model):
 
     ORDER_STATUSES = Choices(
         (CONFIRMATION, 'Подтверждение'),
-        (INPROGRESS, 'Впроцесе'),
+        (INPROGRESS, 'Выполняется'),
         (COMPLETED, 'Выполнен'),
         (CANCELED, 'Отменен'),
     )
