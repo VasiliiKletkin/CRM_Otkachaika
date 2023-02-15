@@ -16,7 +16,7 @@
         <thead>
         <tr>
             {% for header in result_headers %}
-                <th class="border-gray-200" {{ header.class_attrib }}>
+                <th class="border-gray-200 text-center" {{ header.class_attrib }}>
                     {% if header.sortable %}
                         {% if header.sort_priority > 0 %}
                             <a href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}"><span class="fa fa-arrows-alt"></span></a>&nbsp;
@@ -49,7 +49,7 @@
             {% if result.form and result.form.non_field_errors %}
                 <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
             {% endif %}
-            <tr>
+            <tr class="text-center">
                 {% for item in result %}
                     {% if 'checkbox' in item %}
                         <td>
