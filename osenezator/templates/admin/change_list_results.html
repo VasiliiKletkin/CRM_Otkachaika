@@ -31,7 +31,7 @@
                         <a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>
                     {% else %}
                         {% if header.class_attrib == ' class="action-checkbox-column"' %}
-                            <div class="form-check">
+                            <div class="check">
                                 <label class="form-check-label">
                                     {{ header.text|capfirst }}
                                 </label>
@@ -53,7 +53,7 @@
                 {% for item in result %}
                     {% if 'checkbox' in item %}
                         <td>
-                            <div class="form-check">
+                            <div class="check">
                                 <label class="form-check-label">
                                     {{ item|checkbox|safe }}
                                     <span class="form-check-sign"><span class="check"></span></span>
