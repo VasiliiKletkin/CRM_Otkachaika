@@ -6,11 +6,11 @@ from .models import Order
 
 
 class OrderAdmin(AdminSuperUserMixin, admin.ModelAdmin):
-    list_display = ('driver', 'address', 'price', 'date_created', 'date_complited', 'status', 'company',)
+    list_display = ('driver', 'address', 'price', 'date_created', 'date_completed', 'status', 'company',)
     list_filter = ('status', 'driver', 'company__name',)
     search_fields = ('address', 'address',)
     date_hierarchy = 'date_created'
-    ordering = ('date_created', 'date_complited',)
+    ordering = ('date_created', 'date_completed',)
     form = OrderForm
 
     def get_fields(self, request, obj=None):
