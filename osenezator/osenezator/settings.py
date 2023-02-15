@@ -25,7 +25,7 @@ SECRET_KEY = 's@h+t)f45k&q$v@dt^&2ae^s0efnd7lf^_zzh0_87ukhu7h6oc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'vasiliikl.beget.tech',]
+ALLOWED_HOSTS = [ '*']
 
 
 # Application definition
@@ -33,24 +33,33 @@ ALLOWED_HOSTS = [ 'vasiliikl.beget.tech',]
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
-    'django.contrib.admin',
+
+
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'debug_toolbar',
     'rest_framework',
     'django_filters',
     'phonenumber_field',
-    'addresses',
-    'drivers',
-    'dispatchers',
-    'owners',
+    'djmoney',
+
+    'clients',
+    'employees',
     'orders',
     'companies',
-    'profiles',
-    'djmoney',
+    'users',
+    'reports',
+
+    'home',
+    'about',
+
+    'admin_argon.apps.AdminArgonConfig',
+    'django.contrib.admin',
 ]
 
 MIDDLEWARE = [
@@ -62,19 +71,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-
 ]
 
 ROOT_URLCONF = 'osenezator.urls'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,6 +156,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT= os.path.join(BASE_DIR,'static')
+STATICFILES_DIRS = [
+    #os.path.join (BASE_DIR, 'static'),
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
@@ -159,3 +168,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.LimitOffsetPagination'],
     'PAGE_SIZE': 100
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+# Login
+
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/../admin/'
+
+LOGOUT_REDIRECT_URL = 'home'
