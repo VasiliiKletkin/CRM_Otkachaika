@@ -6,8 +6,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Company(models.Model):
     name = models.CharField('Название компании', max_length=255)
     phone_number = PhoneNumberField('Телефонный номер')
-    city = models.CharField('Город', max_length=255, null=True, blank=True)
-    country = models.CharField('Страна', max_length=255, null=True, blank=True)
+    city = models.CharField('Город', max_length=255)
+    country = models.CharField('Страна', max_length=255)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
     balance = MoneyField('Баланс', max_digits=12,
                          decimal_places=2, default_currency='RUB', default=0)
