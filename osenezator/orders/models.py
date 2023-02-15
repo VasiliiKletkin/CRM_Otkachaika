@@ -36,4 +36,4 @@ class Order(models.Model):
         verbose_name_plural = 'Заказы'
 
     def __str__(self):
-        return f'Order id:{self.id} {self.address} {self.price} - {self.status}'
+        return f'Order id:{self.id} {self.address} {self.price} - {self.get_status_display()}'
