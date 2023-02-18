@@ -18,7 +18,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Прибыль сегодня</p>
                 <h5 class="font-weight-bolder">
-                  $53 000
+555
                 </h5>
                 <p class="mb-0">
                   <span class="text-success text-sm font-weight-bolder">+55%</span>
@@ -390,88 +390,126 @@
 {% block scripts %}
 
 <script>
+  const app = async () => {
+    var profiles = await fetch('http://localhost:8000/internal_api/profile/?user=' + '{{ request.user.id }}')
+    .then((response) => response.json())
+    
+    if (profiles.count===1){
+      var profile = profiles.results[0]
 
-  var ctx1 = document.getElementById("chart-line").getContext("2d");
+      var reports = await fetch('http://localhost:8000/internal_api/reports/?company=' + profile.company.id)
+      .then((response) => response.json())
+      .then((data) => data.results)
+      var orders = await fetch('http://localhost:8000/orders/today/?company=' + profile.company.id)
+      .then((response) => response.json())
 
-  var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+    }
 
-  gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-  gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-  gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-  new Chart(ctx1, {
-    type: "line",
-    data: {
-      labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [{
-        label: "Mobile apps",
-        tension: 0.4,
-        borderWidth: 0,
-        pointRadius: 0,
-        borderColor: "#5e72e4",
-        backgroundColor: gradientStroke1,
-        borderWidth: 3,
-        fill: true,
-        data: [50, 40, 300, 220, 500, 250, 400, 230, 700],
-        maxBarThickness: 6
+    else{
+      var last_reports = await fetch('http://localhost:8000/internal_api/reports/')
+      .then((response) => response.json())
+      .then((data) => data.results)
+    }
 
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false,
-        }
-      },
-      interaction: {
-        intersect: false,
-        mode: 'index',
-      },
-      scales: {
-        y: {
-          grid: {
-            drawBorder: false,
-            display: true,
-            drawOnChartArea: true,
-            drawTicks: false,
-            borderDash: [5, 5]
-          },
-          ticks: {
-            display: true,
-            padding: 10,
-            color: '#fbfbfb',
-            font: {
-              size: 11,
-              family: "Open Sans",
-              style: 'normal',
-              lineHeight: 2
-            },
-          }
+    var last_data = await last_reports.map((report) => report.count_orders);
+    var now_data = await now_reports.map((report) => report.count_orders);
+
+    var mounts = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    var ctx1 = document.getElementById("chart-line").getContext("2d");
+    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
+    new Chart(ctx1, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "2023",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#5e22e4",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: data,
+          maxBarThickness: 6
         },
-        x: {
-          grid: {
-            drawBorder: false,
+        {
+          label: "2022",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#5e72e4",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: data,
+          maxBarThickness: 6
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
             display: false,
-            drawOnChartArea: false,
-            drawTicks: false,
-            borderDash: [5, 5]
-          },
-          ticks: {
-            display: true,
-            color: '#ccc',
-            padding: 20,
-            font: {
-              size: 11,
-              family: "Open Sans",
-              style: 'normal',
-              lineHeight: 2
-            },
           }
         },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#fbfbfb',
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: false,
+              drawTicks: false,
+              borderDash: [5, 5]
+            },
+            ticks: {
+              display: true,
+              color: '#ccc',
+              padding: 20,
+              font: {
+                size: 11,
+                family: "Open Sans",
+                style: 'normal',
+                lineHeight: 2
+              },
+            }
+          },
+        },
       },
-    },
-  });
-</script>
+    });
+  }
 
-{% endblock scripts %}
+  app();
+
+  </script>
+  {% endblock scripts %}

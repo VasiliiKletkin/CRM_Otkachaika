@@ -11,7 +11,7 @@ class Report(models.Model):
     date_start = models.DateField("Дата начала отчета")
     date_end = models.DateField("Дата конца отчета")
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
-    profit = models.DecimalField("Прибыль",max_digits=10, decimal_places=2, blank=True, null=True)
+    profit = models.DecimalField("Прибыль", max_digits=10, decimal_places=2, blank=True, null=True)
     count_orders = models.IntegerField("Колличество заказов", blank=True, null=True)
     count_new_addresses = models.IntegerField("Колличетсво новых адресов", blank=True, null=True)
     count_new_clients = models.IntegerField("Колличетсво новых клиентов", blank=True, null=True)
