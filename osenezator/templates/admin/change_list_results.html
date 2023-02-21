@@ -16,7 +16,7 @@
         <thead>
         <tr>
             {% for header in result_headers %}
-                <th class="border-gray-200" {{ header.class_attrib }}>
+                <th class="border-gray-200 text-center" {{ header.class_attrib }}>
                     {% if header.sortable %}
                         {% if header.sort_priority > 0 %}
                             <a href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}"><span class="fa fa-arrows-alt"></span></a>&nbsp;
@@ -31,7 +31,7 @@
                         <a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>
                     {% else %}
                         {% if header.class_attrib == ' class="action-checkbox-column"' %}
-                            <div class="form-check">
+                            <div class="check">
                                 <label class="form-check-label">
                                     {{ header.text|capfirst }}
                                 </label>
@@ -49,11 +49,11 @@
             {% if result.form and result.form.non_field_errors %}
                 <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
             {% endif %}
-            <tr>
+            <tr class="text-center">
                 {% for item in result %}
                     {% if 'checkbox' in item %}
                         <td>
-                            <div class="form-check">
+                            <div class="check">
                                 <label class="form-check-label">
                                     {{ item|checkbox|safe }}
                                     <span class="form-check-sign"><span class="check"></span></span>

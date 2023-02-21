@@ -1,6 +1,7 @@
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
+from users.models import Profile
 
 user_model = get_user_model()
 
@@ -13,6 +14,7 @@ class Driver(user_model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
 
 class Dispatcher(user_model):
     class Meta:
@@ -33,6 +35,7 @@ class Owner(user_model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
 class Car(models.Model):
     name = models.CharField("Название", max_length=255)
     number = models.CharField("Регистрационный номер", max_length=255)
@@ -47,3 +50,15 @@ class Car(models.Model):
 
     def __str__(self):
         return f"{self.name}, {self.number}"
+
+
+class Telegram(models.Model):
+    telegram_id = models.CharField("Telegram id", max_length=50)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Telegram"
+        verbose_name_plural = "Telegram"
+
+    def __str__(self):
+        return f"{self.telegram_id}, {self.profile}"

@@ -33,14 +33,14 @@ ALLOWED_HOSTS = [ '*']
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
-
-
-
+    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'admin_argon.apps.AdminArgonConfig',
+    'django.contrib.admin',
 
     'debug_toolbar',
     'rest_framework',
@@ -58,8 +58,7 @@ INSTALLED_APPS = [
     'home',
     'about',
 
-    'admin_argon.apps.AdminArgonConfig',
-    'django.contrib.admin',
+    
 ]
 
 MIDDLEWARE = [

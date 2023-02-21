@@ -1,8 +1,10 @@
+from clients.models import Address
 from dal import autocomplete
 from django import forms
-from clients.models import Address
 from employees.models import Driver
+
 from .models import Order
+
 
 class OrderForm(forms.ModelForm):
     driver = forms.ModelChoiceField(

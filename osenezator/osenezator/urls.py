@@ -24,15 +24,15 @@ urlpatterns = [
     path('', include('home.urls')),
     path('about/', include('about.urls')),
 
-    #api
-    path('api-auth/', include('rest_framework.urls')),
+    #public api
+    path('api/', include('rest_framework.urls')),
+
+    #internal api
+    path('internal_api/', include('internal_api.urls')),
 
     #admin
     path('admin/', admin.site.urls),
     path('', include('admin_argon.urls')),
-
-    path('employees/', include('employees.urls')),
-    path('clients/', include('clients.urls')),
 ]
 
 if settings.DEBUG:
