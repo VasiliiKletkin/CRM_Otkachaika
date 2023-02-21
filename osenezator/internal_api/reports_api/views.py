@@ -7,7 +7,7 @@ from .serializers import ReportSerializer
 
 
 class ReportViewSet(viewsets.ModelViewSet):
-    queryset = Report.objects.order_by('date_created')[:24]
+    queryset = Report.objects.order_by('date_created')
     serializer_class = ReportSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['company',]

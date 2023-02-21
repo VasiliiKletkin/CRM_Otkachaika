@@ -6,3 +6,5 @@ sup:
 	python osenezator/manage.py createsuperuser
 req:
 	pip freeze > requirements.txt
+runbot:
+	python bot/main.py
