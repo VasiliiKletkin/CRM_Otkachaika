@@ -2,7 +2,7 @@
 Dashboard {% endblock title %} {% block overlay %}
 <div class="min-height-300 bg-primary position-absolute w-100"></div>
 {% endblock overlay %} {% block content %}
-<div class="container-fluid py-4">
+{% comment %} <div class="container-fluid py-4">
   <div class="row">
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
@@ -405,7 +405,7 @@ Dashboard {% endblock title %} {% block overlay %}
       </div>
     </div>
   </div>
-  {% include 'includes/footer.html' %}
+  {% include 'includes/footer.html' %} {% endcomment %}
 </div>
 
 {% endblock content %} {% block scripts %}
