@@ -255,6 +255,7 @@ Dashboard {% endblock title %} {% block overlay %}
         <div class="table-responsive">
           <table class="table align-items-center">
             <tbody>
+              {% for order in orders %}
               <tr>
                 <td class="w-30">
                   <div class="d-flex px-2 py-1 align-items-center">
@@ -266,7 +267,7 @@ Dashboard {% endblock title %} {% block overlay %}
                     </div>
                     <div class="ms-4">
                       <p class="text-xs font-weight-bold mb-0">Country:</p>
-                      <h6 class="text-sm mb-0">United States</h6>
+                      <h6 class="text-sm mb-0">{{order.id}}</h6>
                     </div>
                   </div>
                 </td>
@@ -289,108 +290,7 @@ Dashboard {% endblock title %} {% block overlay %}
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td class="w-30">
-                  <div class="d-flex px-2 py-1 align-items-center">
-                    <div>
-                      <img
-                        src="{% static 'img/icons/flags/DE.png' %}"
-                        alt="Country flag"
-                      />
-                    </div>
-                    <div class="ms-4">
-                      <p class="text-xs font-weight-bold mb-0">Country:</p>
-                      <h6 class="text-sm mb-0">Germany</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                    <h6 class="text-sm mb-0">3.900</h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Value:</p>
-                    <h6 class="text-sm mb-0">$440,000</h6>
-                  </div>
-                </td>
-                <td class="align-middle text-sm">
-                  <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                    <h6 class="text-sm mb-0">40.22%</h6>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="w-30">
-                  <div class="d-flex px-2 py-1 align-items-center">
-                    <div>
-                      <img
-                        src="{% static 'img/icons/flags/GB.png' %}"
-                        alt="Country flag"
-                      />
-                    </div>
-                    <div class="ms-4">
-                      <p class="text-xs font-weight-bold mb-0">Country:</p>
-                      <h6 class="text-sm mb-0">Great Britain</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                    <h6 class="text-sm mb-0">1.400</h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Value:</p>
-                    <h6 class="text-sm mb-0">$190,700</h6>
-                  </div>
-                </td>
-                <td class="align-middle text-sm">
-                  <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                    <h6 class="text-sm mb-0">23.44%</h6>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="w-30">
-                  <div class="d-flex px-2 py-1 align-items-center">
-                    <div>
-                      <img
-                        src="{% static 'img/icons/flags/BR.png' %}"
-                        alt="Country flag"
-                      />
-                    </div>
-                    <div class="ms-4">
-                      <p class="text-xs font-weight-bold mb-0">Country:</p>
-                      <h6 class="text-sm mb-0">Brasil</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                    <h6 class="text-sm mb-0">562</h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Value:</p>
-                    <h6 class="text-sm mb-0">$143,960</h6>
-                  </div>
-                </td>
-                <td class="align-middle text-sm">
-                  <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                    <h6 class="text-sm mb-0">32.14%</h6>
-                  </div>
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -512,21 +412,27 @@ Dashboard {% endblock title %} {% block overlay %}
 
 <script>
   const app = async () => {
-    var profiles = await fetch('http://localhost:8000/internal_api/profile/?user=' + '{{ request.user.id }}')
+    var profile = await fetch('http://localhost:8000/internal_api/users/{{ request.user.id }}/profile')
     .then((response) => response.json())
-    
-    if (profiles.count===1){
-      var profile = profiles.results[0]
 
-      var reports = await fetch('http://localhost:8000/internal_api/reports/?company=' + profile.company.id)
+    if (profile){
+      var reports = await fetch('http://localhost:8000/internal_api/reports/?company_id=' + profile.company)
       .then((response) => response.json())
       .then((data) => data.results)
-      var orders = await fetch('http://localhost:8000/internal_api/orders/today/?company=' + profile.company.id)
+
+      var orders = await fetch('http://localhost:8000/internal_api/orders/today/?company_id=' + profile.company)
       .then((response) => response.json())
     }
+    
 
-    var last_data = await last_reports.map((report) => report.count_orders);
-    var now_data = await now_reports.map((report) => report.count_orders);
+    if (reports.length > 12){
+      var now_data = await reports.slice(0, 13).map((report) => report.count_orders);
+      var last_data = await reports.slice(13).map((report) => report.count_orders);
+    }
+    else {
+      var now_data = await reports.map((report) => report.count_orders);
+      var last_data = [];
+    }
 
     var mounts = ["Янв", "Фев", "Апр", "Май", "Июнь", "Июль", "Авг", "Сен", "Окт", "Ноя", "Дек"]
 
@@ -539,7 +445,7 @@ Dashboard {% endblock title %} {% block overlay %}
     new Chart(ctx1, {
       type: "line",
       data: {
-        labels: labels,
+        labels: mounts,
         datasets: [{
           label: "2023",
           tension: 0.4,
@@ -549,7 +455,8 @@ Dashboard {% endblock title %} {% block overlay %}
           backgroundColor: gradientStroke1,
           borderWidth: 3,
           fill: true,
-          data: data,
+          //data: now_data,
+          data: [30, 20, 200, 120, 400, 150, 300, 130, 300, 200, 100, 140],
           maxBarThickness: 6
         },
         {
@@ -561,7 +468,8 @@ Dashboard {% endblock title %} {% block overlay %}
           backgroundColor: gradientStroke1,
           borderWidth: 3,
           fill: true,
-          data: data,
+          //data: last_data,
+          data: [50, 40, 300, 220, 500, 250, 400, 230, 500, 300, 200, 240],
           maxBarThickness: 6
         }],
       },

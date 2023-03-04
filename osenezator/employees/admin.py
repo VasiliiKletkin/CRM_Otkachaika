@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from mixins import AdminSuperUserInlineMixin, AdminSuperUserMixin
 from users.admin import ProfileInline
-from users.models import Profile
+from users.models import Profile, Telegram
 
 from .models import Car, Dispatcher, Driver, Owner
+
 
 class ProfileInline(AdminSuperUserInlineMixin, admin.StackedInline):
     model = Profile
@@ -16,6 +17,8 @@ class ProfileInline(AdminSuperUserInlineMixin, admin.StackedInline):
             fields.remove(field)
         return fields
 
+class TelegramInline(admin.StackedInline):
+    model = Telegram
 
 class CarInline(AdminSuperUserInlineMixin, admin.StackedInline):
     model = Car
@@ -26,7 +29,7 @@ class DriverAdmin(UserAdmin):
     list_filter = ('first_name', 'is_active',)
     search_fields = ('first_name', 'last_name', 'phone_number',)
     ordering = ('first_name', 'last_name', 'is_active',)
-    inlines = [ProfileInline, CarInline,]
+    inlines = [ProfileInline, TelegramInline, CarInline,]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request).filter(profile__user_type=Profile.DRIVER)

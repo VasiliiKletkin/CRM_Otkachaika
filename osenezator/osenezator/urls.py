@@ -20,9 +20,9 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    #pages
-    path('', include('home.urls')),
-    path('about/', include('about.urls')),
+    # pages
+    # path('', include('home.urls')),
+    # path('about/', include('about.urls')),
 
     #public api
     path('api/', include('rest_framework.urls')),

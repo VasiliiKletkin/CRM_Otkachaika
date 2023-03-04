@@ -10,6 +10,6 @@ class ReportViewSet(viewsets.ModelViewSet):
     queryset = Report.objects.order_by('date_created')
     serializer_class = ReportSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['company',]
+    filterset_fields = ['company_id',]
     pagination_class = LimitOffsetPagination
 

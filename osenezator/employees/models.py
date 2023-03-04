@@ -51,14 +51,3 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.name}, {self.number}"
 
-
-class Telegram(models.Model):
-    telegram_id = models.CharField("Telegram id", max_length=50)
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Telegram"
-        verbose_name_plural = "Telegram"
-
-    def __str__(self):
-        return f"{self.telegram_id}, {self.profile}"
