@@ -21,8 +21,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # pages
-    # path('', include('home.urls')),
-    # path('about/', include('about.urls')),
 
     #public api
     path('api/', include('rest_framework.urls')),
@@ -31,7 +29,7 @@ urlpatterns = [
     path('internal_api/', include('internal_api.urls')),
 
     #admin
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('', include('admin_argon.urls')),
 ]
 

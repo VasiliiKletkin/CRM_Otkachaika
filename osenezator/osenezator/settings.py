@@ -55,11 +55,6 @@ INSTALLED_APPS = [
     'users',
     'reports',
     'services',
-
-    'home',
-    'about',
-
-    
 ]
 
 MIDDLEWARE = [
