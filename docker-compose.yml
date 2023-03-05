@@ -4,19 +4,23 @@ services:
   bot:
     image: bot
     build:
-      context: ./bot
+      context: bot/
       dockerfile: Dockerfile
-    #restart: always
+    restart: always
     command: python main.py
     # volumes:
     #   - ./bot:/app/bot
     env_file:
       - .env
-  
-  django:
-    image: django
+  web:
     build:
-      context: ./osenezator
+        context: unearth/
+        dockerfile: Dockerfile
+    ports:
+    - "8080:7000"
+  crm_django:
+    build:
+      context: osenezator/
       dockerfile: Dockerfile
     restart: always
     command: "python manage.py runserver 0.0.0.0:8000"
@@ -26,4 +30,4 @@ services:
     #   - ./osenezator:/app/django
     env_file:
       - .env
-  
+
