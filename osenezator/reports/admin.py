@@ -1,10 +1,10 @@
 from django.contrib import admin
-from mixins import AdminSuperUserMixin
+from mixins import SuperUserAdminMixin
 
 from .models import Report
 
 
-class ReportAdmin(AdminSuperUserMixin, admin.ModelAdmin):
+class ReportAdmin(SuperUserAdminMixin, admin.ModelAdmin):
 
     list_display = ('date_start', 'date_end', 'date_created', 'profit', 'company',)
     list_filter = ('company__name',)

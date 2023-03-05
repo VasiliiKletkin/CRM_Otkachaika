@@ -1,6 +1,6 @@
 
 
-class AdminSuperUserMixin:
+class SuperUserAdminMixin:
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -44,7 +44,7 @@ class AdminSuperUserMixin:
             instance.save()
         return formset.save_m2m()
 
-class AdminSuperUserInlineMixin:
+class SuperUserInlineAdminMixin:
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)

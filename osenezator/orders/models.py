@@ -28,7 +28,7 @@ class Order(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='orders')
     dispatcher = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name='created_orders')
     description = models.TextField("Описание", blank=True, null=True)
-    price = models.DecimalField("Цена", max_digits=8, decimal_places=2)
+    price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
     date_planned = models.DateTimeField("Планируемая дата выполнения", null=True, blank=True, default=timezone.now)
     date_started = MonitorField("Дата начала выполнения", monitor='status', when=[INPROGRESS], null=True, blank=True, default=None, editable=False)
