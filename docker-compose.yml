@@ -12,12 +12,6 @@ services:
     #   - ./bot:/app/bot
     env_file:
       - .env
-  web:
-    build:
-        context: unearth/
-        dockerfile: Dockerfile
-    ports:
-    - "8080:7000"
   crm_django:
     build:
       context: osenezator/
