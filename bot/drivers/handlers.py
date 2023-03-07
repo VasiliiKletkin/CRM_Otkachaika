@@ -26,7 +26,7 @@ async def start(message: Message):
 
 @dp.message_handler(Text(equals=ORDERS, ignore_case=True))
 async def show_orders(message: Message):
-    orders = get_orders(driver_id)
+    orders = await get_orders(driver_id)
     if orders:
         for order in orders:
             await message.answer(get_order_info(order), reply_markup=inline_order_keyboard(order))

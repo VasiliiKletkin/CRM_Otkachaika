@@ -8,11 +8,12 @@ services:
       dockerfile: Dockerfile
     restart: always
     command: python main.py
-    # volumes:
-    #   - ./bot:/app/bot
+    volumes:
+      - ./bot:/app/bot
     env_file:
       - .env
   crm_django:
+    container_name: crm_django
     build:
       context: osenezator/
       dockerfile: Dockerfile
@@ -20,8 +21,8 @@ services:
     command: "python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
-    # volumes:
-    #   - ./osenezator:/app/django
+    volumes:
+      - ./osenezator:/app/django
     env_file:
       - .env
 

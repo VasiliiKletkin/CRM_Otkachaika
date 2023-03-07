@@ -13,10 +13,12 @@ def check_user(telegram_id):
     response = requests.get(url).json()
     return response
 
-def get_orders(driver_id):
+async def get_orders(driver_id):
     url = f"{BASE_URL}internal_api/orders/today/?driver_id={driver_id}"
-    response = requests.get(url).json()
-    return response
+    response = requests.get(url)
+    if response:
+        print("200 ofofoofofof")
+        return response.json()
 
 def completed_order(order_id):
     url = f"{BASE_URL}internal_api/orders/{order_id}/completed/"
