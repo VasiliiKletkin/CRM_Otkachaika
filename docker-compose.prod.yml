@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  bot:
+    build:
+      context: bot/
+      dockerfile: Dockerfile
+    restart: always
+    command: python main.py
+    volumes:
+      - ./bot:/app/bot
+    env_file:
+      - bot/.env.prod
+  web:
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    restart: always
+    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
+    expose:
+      - 8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    env_file:
+      - crm/.env.prod
+    depends_on:
+      - db
+  db:
+    image: postgres:12.12-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - crm/.env.prod
+
+  nginx:
+    build: 
+      ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web

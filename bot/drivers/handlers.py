@@ -4,24 +4,22 @@ from aiogram.types.callback_query import CallbackQuery
 from drivers.utils import get_order_info
 from config import dp
 from drivers.api import (canceled_order, completed_order, get_orders,
-                         started_order)
+                         started_order, check_user)
 
 from .keyboards import (ORDERS, canceled_call_back, completed_call_back,
                         inline_order_keyboard, inprogress_call_back,
                         main_menu_keyboard, not_available_orders_keyboard)
 
-driver_id = 3
-
 
 @dp.message_handler(commands=['start', 'help'])
 async def start(message: Message):
-    # user = check_user(message.chat.id)
-    # if user:
-    text = "Привет это бот Откачайка для водителей" \
-        "Вы можете смотреть все заказы, выполнять их и тд" \
-        "Все функции указаны на клавиатуре" \
-        "Выбирете из следующего списка команд:"
-    await message.answer(text, reply_markup=main_menu_keyboard())
+    user = check_user(message.chat.id)
+    if user.profile == "DRIVER":
+        text = "Привет это бот Откачайка для водителей" \
+            "Вы можете смотреть все заказы, выполнять их и тд" \
+            "Все функции указаны на клавиатуре" \
+            "Выбирете из следующего списка команд:"
+        await message.answer(text, reply_markup=main_menu_keyboard())
 
 
 @dp.message_handler(Text(equals=ORDERS, ignore_case=True))

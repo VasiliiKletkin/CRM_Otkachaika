@@ -12,4 +12,4 @@ COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
 
 WORKDIR /app/bot
-COPY . /app/bot
+COPY . .
