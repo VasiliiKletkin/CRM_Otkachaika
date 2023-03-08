@@ -9,7 +9,7 @@ load_dotenv()
 BASE_URL= os.getenv('BASE_URL')
 
 def check_user(telegram_id):
-    url = f"{BASE_URL}internal_api/driver/?telegram_id={telegram_id}"
+    url = f"{BASE_URL}internal_api/users/profile/?telegram_id={telegram_id}"
     response = requests.get(url).json()
     return response
 

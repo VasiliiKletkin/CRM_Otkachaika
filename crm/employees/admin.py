@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
 from users.admin import ProfileInline
-from users.models import Profile, Telegram
+from users.models import Profile
 
 from .models import Car, Dispatcher, Driver, Owner
 
@@ -30,10 +30,6 @@ class ProfileInline(SuperUserInlineAdminMixin, admin.StackedInline):
         for field in fields_to_remove:
             fields.remove(field)
         return fields
-
-
-class TelegramInline(admin.StackedInline):
-    model = Telegram
 
 
 class CarInline(SuperUserInlineAdminMixin, admin.StackedInline):
@@ -66,7 +62,7 @@ class EmployeesAminMixin:
 
 class DriverAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DRIVER
-    inlines = [ProfileInline, TelegramInline, CarInline,]
+    inlines = [ProfileInline, CarInline,]
 
 
 class DispatcherAdmin(EmployeesAminMixin, UserAdmin):

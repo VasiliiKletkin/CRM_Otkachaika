@@ -21,6 +21,7 @@ class Profile(models.Model):
     user_type = models.CharField(choices=USER_TYPES, max_length=20)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     phone_number = PhoneNumberField('Телефонный номер')
+    telegram_id = models.CharField('telegram_id', max_length=20)
 
     class Meta:
         verbose_name = 'Профиль'
@@ -28,15 +29,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.get_user_type_display()}-{self.company}'
-    
-
-class Telegram(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    telegram_id = models.CharField('telegram_id', max_length=20)
-
-    class Meta:
-        verbose_name = 'Telegram'
-        verbose_name_plural ='Telegram'
-
-    def __str__(self):
-        return f'{self.user}-{self.telegram_id}'

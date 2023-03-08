@@ -6,7 +6,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from users.models import Profile, Telegram
+from users.models import Profile
 
 from .serializers import DriverSerializer
 
@@ -15,12 +15,7 @@ class DriverViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
 
-class TelegramViewSet(viewsets.ModelViewSet):
-    queryset = Telegram.objects.all()
-    serializer_class = DriverSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['telegram_id',]
-    
+
 class DriverAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Driver.objects.filter(profile__user_type=Profile.DRIVER)
