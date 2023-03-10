@@ -3,10 +3,10 @@ from aiogram.utils.callback_data import CallbackData
 
 ORDERS = 'ЗАКАЗЫ'
 MAIN_MENU = (
-    (ORDERS, "orders" ),
+    ORDERS,
 )
 
-inprogress_call_back = CallbackData('INPROGRESS', 'order_id')
+in_progress_call_back = CallbackData('INPROGRESS', 'order_id')
 completed_call_back = CallbackData('COMPLETED', 'order_id')
 canceled_call_back = CallbackData('CANCELED', 'order_id')
 
@@ -20,7 +20,7 @@ def main_menu_keyboard() -> ReplyKeyboardMarkup:
 def inline_order_keyboard(order)->InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
 
-    in_progress_button = InlineKeyboardButton('Начать', callback_data=inprogress_call_back.new(order_id=order['id']))
+    in_progress_button = InlineKeyboardButton('Начать', callback_data=in_progress_call_back.new(order_id=order['id']))
     completed_button = InlineKeyboardButton('Завершить', callback_data=completed_call_back.new(order_id=order['id']))
     canceled_button = InlineKeyboardButton('Отменить', callback_data=canceled_call_back.new(order_id=order['id']))
 

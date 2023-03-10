@@ -1,3 +1,11 @@
+from drivers.api import get_profile
+
+async def is_driver(telegram_id):
+    profile = await get_profile(telegram_id)
+    return profile if profile.get("user_type") == "DRIVER" else None
+
+
+
 def get_order_info(order):
     
     id = order.get('id')

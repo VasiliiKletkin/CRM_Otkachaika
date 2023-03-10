@@ -2,34 +2,39 @@ version: '3.4'
 
 services:
   bot:
+    container_name: bot
     build:
       context: bot/
       dockerfile: Dockerfile
     restart: always
     command: python main.py
-    expose:
-      - 1234
     volumes:
       - ./bot:/app/bot
     env_file:
       - ./.env.dev
-  web:
-    build:
-      context: crm/
-      dockerfile: Dockerfile
-    restart: always
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - 8000:8000
-    volumes:
-      - ./crm:/app/web
-    env_file:
-      - ./.env.dev
-  
+
+    
   # db:
   #   image: postgres:12.12-alpine
   #   restart: always
   #   volumes:
   #     - postgres_data:/var/lib/postgresql/data/
   #   environment:
-  #     - crm/.env.dev
+  #     - ./.env.dev
+
+
+  web:
+    container_name: web
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    restart: always
+    command: gunicorn crm.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./crm:/app/web
+    env_file:
+      - ./.env.dev
+    ports:
+      - 8000:8000
+  
+
