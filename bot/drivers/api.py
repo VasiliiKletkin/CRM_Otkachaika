@@ -1,34 +1,30 @@
+import os
+
 import requests
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+BASE_URL = os.environ.get('BASE_URL')
 
 
-BASE_URL= os.getenv('BASE_URL')
+def get_profile(telegram_id):
+    url = f"{BASE_URL}internal_api/users/profile/?telegram_id={telegram_id}"
+    return requests.get(url).json()
 
-def check_user(telegram_id):
-    url = f"{BASE_URL}internal_api/driver/?telegram_id={telegram_id}"
-    response = requests.get(url).json()
-    return response
 
 def get_orders(driver_id):
     url = f"{BASE_URL}internal_api/orders/today/?driver_id={driver_id}"
-    response = requests.get(url).json()
-    return response
+    return requests.get(url).json()
+
 
 def completed_order(order_id):
     url = f"{BASE_URL}internal_api/orders/{order_id}/completed/"
-    response = requests.get(url).json()
-    return response
+    return requests.get(url).json()
+
 
 def started_order(order_id):
     url = f"{BASE_URL}internal_api/orders/{order_id}/started/"
-    response = requests.get(url).json()
-    return response
+    return requests.get(url).json()
+
 
 def canceled_order(order_id):
     url = f"{BASE_URL}internal_api/orders/{order_id}/canceled/"
-    response = requests.get(url).json()
-    return response
+    return requests.get(url).json()

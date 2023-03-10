@@ -11,16 +11,16 @@ services:
     volumes:
       - ./bot:/app/bot
     env_file:
-      - ./.env.dev
+      - ./.env.prod
 
-    
+
   # db:
   #   image: postgres:12.12-alpine
   #   restart: always
   #   volumes:
   #     - postgres_data:/var/lib/postgresql/data/
   #   environment:
-  #     - ./.env.dev
+  #     - ./.env.prod
 
 
   web:
@@ -31,10 +31,27 @@ services:
     restart: always
     command: gunicorn crm.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - ./crm:/app/web
+      - ./crm/staticfiles:/app/web/staticfiles
+      - ./crm/mediafiles:/home/app/web/mediafiles
     env_file:
-      - ./.env.dev
-    ports:
-      - 8000:8000
-  
+      - ./.env.prod
+    expose:
+      - 8000
+    # depends_on:
+    #   - db
 
+
+
+  nginx:
+    container_name: nginx
+    build:
+      context:  nginx/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./crm/staticfiles:/app/web/staticfiles
+      - ./crm/mediafiles:/home/app/web/mediafiles
+    depends_on:
+      - web
