@@ -21,7 +21,7 @@
             },
             "pathMappings": [
                 {
-                    "localRoot": "${workspaceFolder}/osenezator",
+                    "localRoot": "${workspaceFolder}/crm",
                     "remoteRoot": "/app/django"
                 }
             ],

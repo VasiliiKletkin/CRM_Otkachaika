@@ -1,0 +1,57 @@
+version: '3.4'
+
+services:
+  bot:
+    container_name: bot
+    build:
+      context: bot/
+      dockerfile: Dockerfile
+    restart: always
+    command: python main.py
+    volumes:
+      - ./bot:/app/bot
+    env_file:
+      - ./.env.prod
+
+
+  # db:
+  #   image: postgres:12.12-alpine
+  #   restart: always
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   environment:
+  #     - ./.env.prod
+
+
+  web:
+    container_name: web
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    restart: always
+    command: gunicorn crm.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./crm/staticfiles:/app/web/staticfiles
+      - ./crm/mediafiles:/home/app/web/mediafiles
+    env_file:
+      - ./.env.prod
+    expose:
+      - 8000
+    # depends_on:
+    #   - db
+
+
+
+  nginx:
+    container_name: nginx
+    build:
+      context:  nginx/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./crm/staticfiles:/app/web/staticfiles
+      - ./crm/mediafiles:/home/app/web/mediafiles
+    depends_on:
+      - web
