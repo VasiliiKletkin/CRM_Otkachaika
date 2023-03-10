@@ -21,14 +21,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "secret")
+SECRET_KEY = os.environ.get("SECRET_KEY", "secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", True)
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
-# For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://45.146.167.193:80',
+# ]
+
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:80',
+# ]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Application definition
 
@@ -162,14 +173,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': ['rest_framework.pagination.LimitOffsetPagination'],
     'PAGE_SIZE': 100
 }
-
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:1337',
-]
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
 
 
 # Login

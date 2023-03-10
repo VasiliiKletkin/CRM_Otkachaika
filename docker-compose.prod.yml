@@ -43,11 +43,13 @@ services:
 
 
   nginx:
+    container_name: nginx
     build:
       context:  nginx/
       dockerfile: Dockerfile
+    restart: always
     ports:
-      - 1337:80
+      - 80:80
     volumes:
       - ./crm/staticfiles:/app/web/staticfiles
       - ./crm/mediafiles:/home/app/web/mediafiles
