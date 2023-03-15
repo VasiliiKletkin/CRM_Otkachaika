@@ -1,19 +1,6 @@
 version: '3.4'
 
 services:
-  bot:
-    container_name: bot
-    build:
-      context: bot/
-      dockerfile: Dockerfile
-    restart: always
-    command: python main.py
-    volumes:
-      - ./bot:/app/bot
-    env_file:
-      - ./.env.dev
-
-    
   # db:
   #   image: postgres:12.12-alpine
   #   restart: always
@@ -22,6 +9,43 @@ services:
   #   environment:
   #     - ./.env.dev
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    env_file:
+      - ./.env.dev
+    ports:
+      - 15672:15672
+      - 5672:5672
+  
+  celeryworker:
+    container_name: celeryworker
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    command: celery -A crm.celery.app worker --pool=prefork -l info
+    volumes:
+      - ./crm:/app/web
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - rabbitmq
+  
+  celeryscheduler:
+    container_name: celeryscheduler
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    command: celery -A crm beat -l info
+    volumes:
+      - ./crm:/app/web
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - rabbitmq
 
   web:
     container_name: web
@@ -29,12 +53,24 @@ services:
       context: crm/
       dockerfile: Dockerfile
     restart: always
-    command: gunicorn crm.wsgi:application --bind 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./crm:/app/web
     env_file:
       - ./.env.dev
     ports:
       - 8000:8000
-  
+    # depends_on:
+    #   - db
 
+  # bot:
+  #   container_name: bot
+  #   build:
+  #     context: bot/
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   command: python main.py
+  #   volumes:
+  #     - ./bot:/app/bot
+  #   env_file:
+  #     - ./.env.dev
