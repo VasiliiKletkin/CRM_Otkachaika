@@ -1,17 +1,17 @@
-from drivers.api import get_profile
+from drivers.api import get_api_profile, get_api_orders_today
 
 async def is_driver(telegram_id):
-    profile = await get_profile(telegram_id)
+    profile = await get_api_profile(telegram_id)
     return profile if profile.get("user_type") == "DRIVER" else None
 
-
+async def get_orders_today():
+    return await get_api_orders_today()
 
 def get_order_info(order):
-    
     id = order.get('id')
     address = order.get('address')
     home = address.get('home')    
-    street = address.get('home')    
+    street = address.get('street')    
     city = address.get('city')
     address_display = f"{street} {home} {city}"
     price = order.get('price')

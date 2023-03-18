@@ -16,11 +16,11 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.order_by('date_created')
     serializer_class = OrderSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['driver',]
+    filterset_fields = ('driver', 'company')
     pagination_class = LimitOffsetPagination
 
     @action(detail=True)
-    def started(self, request, pk=None):
+    def inprogress(self, request, pk=None):
         order = get_object_or_404(Order, pk=pk)
         order.status = Order.INPROGRESS
         order.save()
@@ -45,17 +45,11 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def today(self, request, *args, **kwargs):
-        company_id = request.GET.get('company_id')
-        driver_id = request.GET.get('driver_id')
         current_datetime = datetime.today()
-        today_orders = Order.objects.filter(Q(date_planned__date__lte=current_datetime) | Q(
-            date_planned__isnull=True), status__in=[Order.CONFIRMED, Order.INPROGRESS])
-        if driver_id:
-            today_orders = today_orders.filter(driver_id=driver_id)
-        if company_id:
-            today_orders = today_orders.filter(company_id=company_id)
-
-        serializer = self.get_serializer(today_orders, many=True)
+        orders = Order.objects.filter(Q(date_planned__date__lte=current_datetime) | Q(
+            date_planned__isnull=True), status__in=[Order.CONFIRMED, Order.INPROGRESS], is_showed=False)
+        serializer = self.get_serializer(list(orders), many=True)
+        orders.update(is_showed=True)
         return Response(serializer.data)
 
     # def today(self, request, *args, **kwargs):
