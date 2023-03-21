@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,6 +121,15 @@ DATABASES = {
     }
 }
 
+RABBITMQ = {
+    "PROTOCOL": os.environ.get("PROTOCOL", "amqp"),
+    "HOST": os.environ.get("RABBITMQ_HOST", "localhost"),
+    "PORT": os.environ.get("RABBITMQ_PORT", 5672),
+    "USER": os.environ.get("RABBITMQ_DEFAULT_USER", "guest"),
+    "PASSWORD": os.environ.get("RABBITMQ_DEFAULT_PASS", "guest"),
+}
+
+CELERY_BROKER_URL = f"{RABBITMQ['PROTOCOL']}://{RABBITMQ['USER']}:{RABBITMQ['PASSWORD']}@{RABBITMQ['HOST']}:{RABBITMQ['PORT']}"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -1,6 +1,68 @@
 version: '3.4'
 
 services:
+  # db:
+  #   image: postgres:12.12-alpine
+  #   restart: always
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   environment:
+  #     - ./.env.dev
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    env_file:
+      - ./.env.dev
+    ports:
+      - 15672:15672
+      - 5672:5672
+  
+  celeryworker:
+    container_name: celeryworker
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    command: celery -A crm.celery.app worker --pool=prefork -l info
+    volumes:
+      - ./crm:/app/web
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - rabbitmq
+  
+  celeryscheduler:
+    container_name: celeryscheduler
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    command: celery -A crm beat -l info
+    volumes:
+      - ./crm:/app/web
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - rabbitmq
+
+  web:
+    container_name: web
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./crm:/app/web
+    env_file:
+      - ./.env.dev
+    ports:
+      - 8000:8000
+    # depends_on:
+    #   - db
+
   bot:
     container_name: bot
     build:
@@ -12,29 +74,3 @@ services:
       - ./bot:/app/bot
     env_file:
       - ./.env.dev
-
-    
-  # db:
-  #   image: postgres:12.12-alpine
-  #   restart: always
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data/
-  #   environment:
-  #     - ./.env.dev
-
-
-  web:
-    container_name: web
-    build:
-      context: crm/
-      dockerfile: Dockerfile
-    restart: always
-    command: gunicorn crm.wsgi:application --bind 0.0.0.0:8000
-    volumes:
-      - ./crm:/app/web
-    env_file:
-      - ./.env.dev
-    ports:
-      - 8000:8000
-  
-

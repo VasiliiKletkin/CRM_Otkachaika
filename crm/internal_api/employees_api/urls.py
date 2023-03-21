@@ -1,11 +1,10 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from .views import DriverAutocomplete, DriverViewSet
+from .views import DriverAutocomplete
 
 
 router = routers.SimpleRouter()
-router.register(r'drivers', DriverViewSet)
 
 
 urlpatterns = [

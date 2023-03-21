@@ -31,10 +31,10 @@ class Order(models.Model):
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
     date_planned = models.DateTimeField("Планируемая дата выполнения", null=True, blank=True, default=timezone.now)
-    date_started = MonitorField("Дата начала выполнения", monitor='status', when=[INPROGRESS], null=True, blank=True, default=None, editable=False)
-    date_completed = MonitorField("Дата завершения", monitor='status', when=[COMPLETED], null=True, blank=True, default=None, editable=False)
+    date_started = MonitorField("Дата начала выполнения", monitor='status', when=[INPROGRESS], null=True, blank=True, default=None)
+    date_completed = MonitorField("Дата завершения", monitor='status', when=[COMPLETED], null=True, blank=True, default=None)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='orders')
-
+    is_showed = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
         verbose_name ='Заказ'

@@ -1,18 +1,18 @@
 from employees.models import Dispatcher, Driver, Owner
+from internal_api.users_api.serializers import UserSerializer
 from rest_framework import serializers
 
 
-class DriverSerializer(serializers.ModelSerializer):
-    class Meta:
+class DriverSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         model = Driver
-        fields = '__all__'
 
-class DispatcherSerializer(serializers.ModelSerializer):
-    class Meta:
+
+class DispatcherSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         model = Dispatcher
-        fields = '__all__'
 
-class OwnerSerializer(serializers.ModelSerializer):
-    class Meta:
+
+class OwnerSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         model = Owner
-        fields = '__all__'

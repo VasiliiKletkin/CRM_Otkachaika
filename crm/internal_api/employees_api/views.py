@@ -1,19 +1,7 @@
 from dal import autocomplete
 from django.db.models import Q
-from django_filters.rest_framework import DjangoFilterBackend
 from employees.models import Driver
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.response import Response
 from users.models import Profile
-
-from .serializers import DriverSerializer
-
-
-class DriverViewSet(viewsets.ModelViewSet):
-    queryset = Driver.objects.all()
-    serializer_class = DriverSerializer
 
 
 class DriverAutocomplete(autocomplete.Select2QuerySetView):
