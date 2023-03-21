@@ -6,5 +6,5 @@ user:
 	python crm/manage.py createsuperuser
 req:
 	pip freeze > requirements.txt
-telbot:
+runbot:
 	python bot/main.py
