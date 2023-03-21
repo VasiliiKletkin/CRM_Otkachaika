@@ -7,7 +7,7 @@ import asyncio
 import aioschedule
 
 async def scheduler():
-    aioschedule.every(TIME_UPDATE_ORDERS).minutes.do(send_orders)
+    aioschedule.every(int(TIME_UPDATE_ORDERS)).minutes.do(send_orders)
     while True:
         await aioschedule.run_pending()
         await asyncio.sleep(1)
