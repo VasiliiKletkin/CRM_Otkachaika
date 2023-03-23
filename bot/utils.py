@@ -5,7 +5,10 @@ async def is_driver(telegram_id):
     return profile if profile.get("user_type") == "DRIVER" else None
 
 async def get_orders_today():
-    return await get_api_orders_today()
+    response = await get_api_orders_today()
+    if not response: response = []
+    return response
+
 
 def get_order_info(order):
     id = order.get('id')
