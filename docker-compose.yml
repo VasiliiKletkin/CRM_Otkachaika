@@ -3,6 +3,7 @@ version: '3.4'
 services:
   postgres:
     image: postgres:12.12-alpine
+    container_name: postgres
     restart: always
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
@@ -62,6 +63,8 @@ services:
       - 8000:8000
     depends_on:
       - postgres
+      - rabbitmq
+
 
   bot:
     container_name: bot
