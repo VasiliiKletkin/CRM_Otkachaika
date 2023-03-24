@@ -1,5 +1,6 @@
 #!make
 include .env.prod
+#include .env.dev
 
 run:
 	python crm/manage.py runserver
