@@ -42,7 +42,7 @@ class Car(models.Model):
     driver = models.OneToOneField(
         user_model, on_delete=models.SET_NULL, related_name='car', null=True, blank=True)
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name='cars')
+        Company, on_delete=models.PROTECT, related_name='cars')
 
     class Meta:
         verbose_name = "Машина"

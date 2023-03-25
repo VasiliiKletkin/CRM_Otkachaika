@@ -132,4 +132,3 @@ staticfiles
 
 rabbitmq
 postgres_data
-*.dump

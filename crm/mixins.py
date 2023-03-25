@@ -14,16 +14,16 @@ class SuperUserAdminMixin:
             return list_display
         fields_to_remove = ('company', )
         for field in fields_to_remove:
-            list_display.remove(field)
+            if field in list_display: list_display.remove(field)
         return list_display
 
     def get_fields(self, request, obj=None):
-        fields = super().get_fields(request, obj)
+        fields = list(super().get_fields(request, obj))
         if request.user.is_superuser:
             return fields
         fields_to_remove = ('company', )
         for field in fields_to_remove:
-            fields.remove(field)
+            if field in fields: fields.remove(field)
         return fields
     
     def save_model(self, request, obj, form, change):

@@ -17,11 +17,11 @@ class Profile(models.Model):
         (DISPATCHER, 'Диспетчер'),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
     user_type = models.CharField(choices=USER_TYPES, max_length=20)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT)
     phone_number = PhoneNumberField('Телефонный номер')
-    telegram_id = models.CharField('telegram_id', max_length=20)
+    telegram_id = models.CharField('telegram_id', max_length=20, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Профиль'

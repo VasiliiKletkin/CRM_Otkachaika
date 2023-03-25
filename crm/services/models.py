@@ -33,8 +33,8 @@ class ServiceProduct(models.Model):
 
 
 class SubscriptionCompany(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    service = models.ForeignKey(ServiceProduct, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT)
+    service = models.ForeignKey(ServiceProduct, on_delete=models.PROTECT)
     is_active = models.BooleanField("Активный", default=True)
     subscribed_on = models.DateTimeField(
         "Дата начала подписки", auto_now_add=True)

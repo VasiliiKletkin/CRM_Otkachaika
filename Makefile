@@ -1,6 +1,6 @@
 #!make
-include .env.prod
-#include .env.dev
+#include .env.prod
+include .env.dev
 
 run:
 	python crm/manage.py runserver
@@ -15,7 +15,9 @@ runbot:
 
 
 dmigr:
-	docker-compose exec web python manage.py migrate
+	docker-compose exec web python manage.py makemigrations && docker-compose exec web python manage.py migrate
+duser:
+	docker-compose exec web python manage.py createsuperuser
 
 
 dcreatedb:
