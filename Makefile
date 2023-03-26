@@ -18,7 +18,8 @@ dmigr:
 	docker-compose exec web python manage.py makemigrations && docker-compose exec web python manage.py migrate
 duser:
 	docker-compose exec web python manage.py createsuperuser
-
+dshell:
+	docker-compose exec web python manage.py shell
 
 dcreatedb:
 	docker-compose exec postgres createdb -h ${POSTGRES_HOST} -U ${POSTGRES_USER} ${POSTGRES_DATABASE}

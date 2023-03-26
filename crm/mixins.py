@@ -2,6 +2,13 @@
 
 class SuperUserAdminMixin:
 
+    def remove_fields(self,request, fields, fields_to_remove=('company',)):
+        if request.user.is_superuser:
+            return fields 
+        for field in fields_to_remove:
+            if field in fields: fields.remove(field)
+        return fields
+    
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -9,27 +16,17 @@ class SuperUserAdminMixin:
         return qs.filter(company=request.user.profile.company)
 
     def get_list_display(self, request):
-        list_display = list(super().get_list_display(request))        
-        if request.user.is_superuser:
-            return list_display
-        fields_to_remove = ('company', )
-        for field in fields_to_remove:
-            if field in list_display: list_display.remove(field)
-        return list_display
+        list_display = list(super().get_list_display(request))    
+        return self.remove_fields(request, list_display)
 
     def get_fields(self, request, obj=None):
         fields = list(super().get_fields(request, obj))
-        if request.user.is_superuser:
-            return fields
-        fields_to_remove = ('company', )
-        for field in fields_to_remove:
-            if field in fields: fields.remove(field)
-        return fields
+        return self.remove_fields(request, fields)
     
     def save_model(self, request, obj, form, change):
         if request.user.is_superuser:
             return super().save_model(request, obj, form, change)
-        obj.company = request.user.profile.company
+        if not obj.id: obj.company = request.user.profile.company
         return super().save_model(request, obj, form, change)
 
     def save_formset(self, request, form, formset, change):
