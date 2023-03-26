@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'admin_argon.apps.AdminArgonConfig',
+    'admin_argon.apps.AdminArgonConfig',
     'django.contrib.admin',
 
     'debug_toolbar',
