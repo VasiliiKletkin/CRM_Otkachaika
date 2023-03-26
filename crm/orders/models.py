@@ -6,6 +6,8 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 import random
 
+from employees.models import Driver, Dispatcher
+
 User = get_user_model()
 
 class Order(models.Model):
@@ -34,8 +36,8 @@ class Order(models.Model):
     )
 
     status = StatusField("Статус", default=CONFIRMED)
-    driver = models.ForeignKey(User, verbose_name="Водитель", on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
-    address = models.ForeignKey(Address, verbose_name="Адрес", on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
+    driver = models.ForeignKey(Driver, verbose_name="Водитель", on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
+    address = models.ForeignKey(Address, verbose_name="Адрес", on_delete=models.PROTECT, related_name='orders')
     dispatcher = models.ForeignKey(User, verbose_name="Диспетчер", on_delete=models.PROTECT, related_name='created_orders')
     description = models.TextField("Описание", blank=True, null=True)
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
@@ -52,19 +54,20 @@ class Order(models.Model):
         verbose_name_plural = 'Заказы'
 
     def __str__(self):
-        return f'Order id:{self.id} {self.address} {self.price} - {self.get_status_display()}'
+        return f'Заказ N{self.id}, {self.address} - {self.get_status_display()}'
 
 class OrderRequest(Order):
     class Meta:
-        verbose_name = 'Заявка'
+        verbose_name = 'Заявку'
         verbose_name_plural = 'Заявки'
         proxy = True
 
     def __str__(self):
-        return f'Order reqiest id:{self.id} {self.address} {self.price} - {self.get_status_display()}'
+        return f'Заявка N{self.id}, {self.address}'
     
     def save(self, *args, **kwargs):
-        if not self.company:
+        if not self.company_id:
             companies = Company.objects.filter(city=self.address.city, subscriptions__is_active=True)
             self.company = random.choice(companies)
+            self.status = self.CONFIRMATION
         return super().save(*args, **kwargs)

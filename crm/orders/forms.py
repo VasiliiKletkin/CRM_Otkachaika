@@ -10,7 +10,7 @@ from .models import Order
 class OrderForm(forms.ModelForm):
     driver = forms.ModelChoiceField(
         queryset=Driver.objects.all(),
-        widget=autocomplete.ModelSelect2(url='driver-autocomplete')
+        widget=autocomplete.ModelSelect2(url='driver-autocomplete'), required=False
     )
     address = forms.ModelChoiceField(
         queryset=Address.objects.all(),
@@ -18,7 +18,7 @@ class OrderForm(forms.ModelForm):
     )
     company = forms.ModelChoiceField(
         queryset=Company.objects.all(),
-        widget=autocomplete.ModelSelect2(url='company-autocomplete')
+        widget=autocomplete.ModelSelect2(url='company-autocomplete'), required=False
     )
 
     class Meta:

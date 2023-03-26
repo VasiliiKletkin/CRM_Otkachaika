@@ -9,7 +9,7 @@ user_model = get_user_model()
 class Driver(user_model):
     class Meta:
         proxy = True
-        verbose_name = "Водитель"
+        verbose_name = "Водителя"
         verbose_name_plural = "Водители"
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Driver(user_model):
 class Dispatcher(user_model):
     class Meta:
         proxy = True
-        verbose_name = "Диспетчер"
+        verbose_name = "Диспетчера"
         verbose_name_plural = "Диспетчеры"
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Dispatcher(user_model):
 class Owner(user_model):
     class Meta:
         proxy = True
-        verbose_name = "Владелец"
+        verbose_name = "Владельца"
         verbose_name_plural = "Владельцы"
 
     def __str__(self):
@@ -45,7 +45,7 @@ class Car(models.Model):
         Company, on_delete=models.PROTECT, related_name='cars')
 
     class Meta:
-        verbose_name = "Машина"
+        verbose_name = "Машину"
         verbose_name_plural = "Машины"
 
     def __str__(self):
