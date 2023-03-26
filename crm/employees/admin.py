@@ -69,17 +69,14 @@ class EmployeesAminMixin:
 class DriverAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DRIVER
     inlines = [ProfileInline, CarInline,]
-    groups = ["Водители"]
 
 
 class DispatcherAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DISPATCHER
-    groups = ["Диспетчеры"]
 
 
 class OwnerAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.OWNER
-    groups = ["Владельцы"]
 
 
 admin.site.register(Car, CarAdmin)
