@@ -131,3 +131,4 @@ mediafiles
 staticfiles
 
 rabbitmq
+postgres_data

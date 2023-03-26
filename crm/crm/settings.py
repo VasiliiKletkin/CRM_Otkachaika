@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "secret_key")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split()
 
 # CSRF_TRUSTED_ORIGINS = [
 #     'http://45.146.167.193:80',

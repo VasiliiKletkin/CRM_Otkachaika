@@ -1,13 +1,14 @@
 version: '3.4'
 
 services:
-  # db:
-  #   image: postgres:12.12-alpine
-  #   restart: always
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data/
-  #   environment:
-  #     - ./.env.dev
+  postgres:
+    image: postgres:12.12-alpine
+    container_name: postgres
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.dev
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -60,8 +61,10 @@ services:
       - ./.env.dev
     ports:
       - 8000:8000
-    # depends_on:
-    #   - db
+    depends_on:
+      - postgres
+      - rabbitmq
+
 
   bot:
     container_name: bot

@@ -12,10 +12,9 @@ from .keyboards import inline_order_keyboard, main_menu_keyboard
 async def start(message: Message):
     if is_driver(message.chat.id):
         text = "Привет это бот Откачайка для водителей \n" \
-            "Вы можете смотреть все заказы, выполнять их и тд" \
-            "Все функции указаны на клавиатуре" \
-            "Выберете из следующего списка команд:"
-        await message.answer(text, reply_markup=main_menu_keyboard())
+            "Вам будут отправлять заказы в этот чат" \
+            "Вы сможете их начать, завершить или отменить"
+        await message.answer(text)
 
 
 @dp.callback_query_handler(order_call_back.filter(status="CANCELED"))

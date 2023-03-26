@@ -7,7 +7,7 @@ from clients.models import Client, Address
 
 
 class Report(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.PROTECT)
     date_start = models.DateField("Дата начала отчета")
     date_end = models.DateField("Дата конца отчета")
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)

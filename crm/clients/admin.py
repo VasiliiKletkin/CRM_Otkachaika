@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mixins import SuperUserInlineAdminMixin, SuperUserAdminMixin
+from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
 
 from .models import Address, Client
 
@@ -13,15 +13,21 @@ class ClientAdmin(SuperUserAdminMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'phone_number',
                     'address', 'is_active', 'company',)
     list_filter = ('is_active', 'company',)
-    search_fields = ('first_name', 'last_name', 'address', 'is_active',)
+    search_fields = ('first_name', 'last_name', 'address', 'is_active')
     ordering = ('is_active',)
 
 
-class AddressAdmin(SuperUserAdminMixin, admin.ModelAdmin):
-    list_display = ('street', 'home', 'city', 'company',)
-    list_filter = ('city', 'company',)
-    search_fields = ('street', 'home', 'city',)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('street', 'home', 'city')
+    list_filter = ('city',)
+    search_fields = ('street', 'home', 'city')
     inlines = [ClientInline,]
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(clients__company=request.user.profile.company)
 
 
 admin.site.register(Address, AddressAdmin)

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
 from users.admin import ProfileInline
 from users.models import Profile
@@ -46,6 +47,11 @@ class EmployeesAminMixin:
     def get_queryset(self, request):
         qs = super().get_queryset(request).filter(profile__user_type=self.user_type)
         return qs
+
+    def save_model(self, request, obj, form, change):
+        if not obj.id:
+            obj.is_staff = True
+        return super().save_model(request, obj, form, change)
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)

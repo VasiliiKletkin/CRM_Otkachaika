@@ -8,8 +8,6 @@ class Address(models.Model):
     home = models.CharField("Дом", max_length=255)
     city = models.CharField("Город", max_length=255)
     country = models.CharField("Страна", max_length=50)
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name='addresses')
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
 
     class Meta:
@@ -27,10 +25,10 @@ class Client(models.Model):
         "Фамилия", max_length=200,  null=True, blank=True)
     phone_number = PhoneNumberField('Телефонный номер')
     address = models.ForeignKey(
-        Address, on_delete=models.CASCADE, related_name='clients')
+        Address, on_delete=models.PROTECT, related_name='clients')
     is_active = models.BooleanField('Активный', default=True)
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name='clients')
+        Company, on_delete=models.PROTECT, related_name='clients')
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
 
     class Meta:
