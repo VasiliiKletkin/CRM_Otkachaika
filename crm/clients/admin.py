@@ -1,11 +1,8 @@
 from django.contrib import admin
 from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
-from .forms import AddressForm
+
+from .forms import AddressForm, RegionForm, CityForm, StreetForm
 from .models import Address, City, Client, Country, Region, Street
-
-
-class StreetAdmin(admin.ModelAdmin):
-    pass
 
 
 class CountyAdmin(admin.ModelAdmin):
@@ -13,11 +10,15 @@ class CountyAdmin(admin.ModelAdmin):
 
 
 class RegionAdmin(admin.ModelAdmin):
-    pass
+    form = RegionForm
 
 
 class CityAdmin(admin.ModelAdmin):
-    pass
+    form = CityForm
+
+
+class StreetAdmin(admin.ModelAdmin):
+    form = StreetForm
 
 
 class ClientInline(SuperUserInlineAdminMixin, admin.StackedInline):

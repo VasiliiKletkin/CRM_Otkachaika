@@ -9,9 +9,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Company(models.Model):
     name = models.CharField('Название компании', max_length=255)
     phone_number = PhoneNumberField('Телефонный номер')
+    country = models.ForeignKey(
+        'clients.Country', on_delete=models.PROTECT, verbose_name='Страна', related_name='companies')
     work_of_cities = models.ManyToManyField(
         'clients.City', verbose_name='Города или Населенные пункты из которых принимаются заказы', related_name='companies')
-    country = models.CharField('Страна', max_length=255)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
     balance = MoneyField('Баланс', max_digits=10,
                          decimal_places=2, default_currency='RUB', default=0)

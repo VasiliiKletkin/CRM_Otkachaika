@@ -9,5 +9,6 @@ class CompanyForm(forms.ModelForm):
         model = Company
         fields = ('__all__')
         widgets = {
-            'work_of_cities': autocomplete.ModelSelect2Multiple(url='city-autocomplete'),
+            'country': autocomplete.ModelSelect2(url='country-autocomplete'),
+            'work_of_cities': autocomplete.ModelSelect2Multiple(url='city-autocomplete', forward=["country"]),
         }

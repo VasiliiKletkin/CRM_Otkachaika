@@ -1,6 +1,51 @@
-from clients.models import Address, City, Street
+from clients.models import Address, City, Country, Region, Street
 from dal import autocomplete
 from django.db.models import Q
+
+
+class CountryAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Country.objects.all()
+        if self.q:
+            qs = qs.filter(Q(name__icontains=self.q))
+        return qs
+
+
+class RegionAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Region.objects.all()
+        if self.q:
+            qs = qs.filter(Q(name__icontains=self.q))
+        return qs
+
+
+class CityAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = City.objects.all()
+
+        country = self.forwarded.get('country', None)
+        if country:
+            qs = qs.filter(Q(region__country=country))
+
+        region = self.forwarded.get('region', None)
+        if region:
+            qs = qs.filter(Q(region=region))
+
+        if self.q:
+            qs = qs.filter(Q(name__icontains=self.q)
+                           | Q(region__name__istartswith=self.q))
+        return qs
+
+
+class StreetAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Street.objects.all()
+        city = self.forwarded.get('city', None)
+        if city:
+            qs = qs.filter(city=city)
+        if self.q:
+            qs = qs.filter(Q(name__icontains=self.q))
+        return qs
 
 
 class AddressAutocomplete(autocomplete.Select2QuerySetView):
@@ -11,21 +56,4 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(Q(street__istartswith=self.q)
                            | Q(home__istartswith=self.q))
-        return qs
-
-
-class CitiesAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = City.objects.all()
-        if self.q:
-            qs = qs.filter(Q(name__istartswith=self.q)
-                           | Q(region__name__istartswith=self.q))
-        return qs
-
-
-class StreetAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Street.objects.all()
-        if self.q:
-            qs = qs.filter(Q(name__istartswith=self.q))
         return qs

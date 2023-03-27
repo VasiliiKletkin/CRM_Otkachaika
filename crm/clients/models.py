@@ -37,20 +37,20 @@ class City(models.Model):
         verbose_name_plural = "Города"
 
     def __str__(self):
-        return f"{self.name} {self.region}"
+        return f"{self.name}, {self.region}"
 
 
 class Street(models.Model):
     name = models.CharField('Название', max_length=255)
     city = models.ForeignKey(
-        Region, on_delete=models.PROTECT, verbose_name="Город", related_name="streets")
+        City, on_delete=models.PROTECT, verbose_name="Улица", related_name="streets")
 
     class Meta:
         verbose_name = "Улицу"
         verbose_name_plural = "Улицы"
 
     def __str__(self):
-        return f"{self.name} {self.city}"
+        return f"ул. {self.name}, {self.city.name}"
 
 
 class Address(models.Model):
