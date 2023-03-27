@@ -3,11 +3,62 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+class Country(models.Model):
+    name = models.CharField('Название', max_length=255)
+
+    class Meta:
+        verbose_name = "Страну"
+        verbose_name_plural = "Страны"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Region(models.Model):
+    name = models.CharField('Название', max_length=255)
+    country = models.ForeignKey(
+        Country, on_delete=models.PROTECT, verbose_name="Cтрана", related_name="regions")
+
+    class Meta:
+        verbose_name = "Регион"
+        verbose_name_plural = "Регионы"
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class City(models.Model):
+    name = models.CharField('Название', max_length=255)
+    region = models.ForeignKey(
+        Region, on_delete=models.PROTECT, verbose_name="Регион", related_name="cities")
+
+    class Meta:
+        verbose_name = "Город"
+        verbose_name_plural = "Города"
+
+    def __str__(self):
+        return f"{self.name} {self.region}"
+
+
+class Street(models.Model):
+    name = models.CharField('Название', max_length=255)
+    city = models.ForeignKey(
+        Region, on_delete=models.PROTECT, verbose_name="Город", related_name="streets")
+
+    class Meta:
+        verbose_name = "Улицу"
+        verbose_name_plural = "Улицы"
+
+    def __str__(self):
+        return f"{self.name} {self.city}"
+
+
 class Address(models.Model):
-    street = models.CharField("Улица", max_length=255)
+    city = models.ForeignKey(
+        City, on_delete=models.PROTECT, verbose_name="Город", related_name="addresses")
+    street = models.ForeignKey(
+        Street, on_delete=models.PROTECT, verbose_name="Улица", related_name="addresses")
     home = models.CharField("Дом", max_length=255)
-    city = models.CharField("Город", max_length=255)
-    country = models.CharField("Страна", max_length=50)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
 
     class Meta:
@@ -15,7 +66,6 @@ class Address(models.Model):
         verbose_name_plural = "Адресa"
 
         indexes = [
-            models.Index(name="address_street_idx", fields=['street']),
             models.Index(name="address_home_idx", fields=['home']),
         ]
 

@@ -1,12 +1,12 @@
+import random
+
 from clients.models import Address
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
+from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-import random
-
-from employees.models import Driver, Dispatcher
 
 User = get_user_model()
 
@@ -46,7 +46,7 @@ class Order(models.Model):
     date_planned = models.DateTimeField("Планируемая дата выполнения", null=True, blank=True)
     date_started = MonitorField("Дата начала выполнения", monitor='status', when=[INPROGRESS], null=True, blank=True, default=None)
     date_completed = MonitorField("Дата выполнения", monitor='status', when=[COMPLETED], null=True, blank=True, default=None)
-    company = models.ForeignKey(Company, verbose_name="Компания", on_delete=models.PROTECT, related_name='orders')
+    company = models.ForeignKey(Company, verbose_name="Компания", on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     is_sent = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
