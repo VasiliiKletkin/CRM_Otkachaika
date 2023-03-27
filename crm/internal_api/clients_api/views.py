@@ -57,7 +57,17 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
         if company:
             qs = qs.filter(clients__company=company)
         if self.q:
-            qs = qs.filter(Q(home__icontains=self.q)
-                           | Q(street__name__icontains=self.q)
-                           | Q(street__city__name__icontains=self.q))
+            if len(self.q.split()) > 1:
+                splitted_line = self.q.split()
+                qs = qs.filter(Q(home__icontains=splitted_line[1]) & Q(
+                    street__name__icontains=splitted_line[0]))
+            else:
+                qs = qs.filter(Q(home__icontains=self.q)
+                               | Q(street__name__icontains=self.q)
+                               | Q(street__city__name__icontains=self.q)
+                               | Q(street__city__name__icontains=self.q)
+                               )
+
         return qs
+        Address.objects.filter(Q(home__icontains='35') &
+                               Q(street__name__icontains='пушкин'))

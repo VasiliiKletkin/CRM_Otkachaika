@@ -35,6 +35,9 @@ class City(models.Model):
     class Meta:
         verbose_name = "Город"
         verbose_name_plural = "Города"
+        indexes = [
+            models.Index(name="city_name_idx", fields=['name']),
+        ]
 
     def __str__(self):
         return f"{self.name}, {self.region}"
@@ -48,7 +51,9 @@ class Street(models.Model):
     class Meta:
         verbose_name = "Улицу"
         verbose_name_plural = "Улицы"
-
+        indexes = [
+            models.Index(name="street_name_idx", fields=['name']),
+        ]
     def __str__(self):
         return f"ул. {self.name}, {self.city.name}"
 
@@ -64,7 +69,6 @@ class Address(models.Model):
     class Meta:
         verbose_name = "Адрес"
         verbose_name_plural = "Адресa"
-
         indexes = [
             models.Index(name="address_home_idx", fields=['home']),
         ]

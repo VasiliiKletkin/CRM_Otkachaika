@@ -10,7 +10,7 @@ class OrderForm(forms.ModelForm):
         fields = ('__all__')
         widgets = {
             'company': autocomplete.ModelSelect2(url='company-autocomplete'),
-            'driver' : autocomplete.ModelSelect2(url='driver-autocomplete', forward=['company']),
-            'address': autocomplete.ModelSelect2(url='address-autocomplete', forward=['company']),
+            'driver': autocomplete.ModelSelect2(url='driver-autocomplete', forward=['company']),
+            'address': autocomplete.ModelSelect2(url='address-autocomplete', attrs={'data-minimum-input-length': 3}, forward=['company']),
             'description': forms.Textarea(attrs={'rows': 2, 'cols': 125}),
         }

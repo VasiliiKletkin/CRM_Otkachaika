@@ -4,7 +4,7 @@ from clients.models import Address
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
-from employees.models import Dispatcher, Driver
+from employees.models import Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 

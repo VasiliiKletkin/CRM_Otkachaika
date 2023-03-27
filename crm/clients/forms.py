@@ -10,7 +10,7 @@ class AddressForm(forms.ModelForm):
         fields = ('__all__')
         widgets = {
             'city': autocomplete.ModelSelect2(url='city-autocomplete'),
-            'street': autocomplete.ModelSelect2(url='street-autocomplete', forward=['city']),
+            'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}, forward=['city']),
         }
 
 
@@ -19,7 +19,7 @@ class RegionForm(forms.ModelForm):
         model = Region
         fields = ('__all__')
         widgets = {
-            'country': autocomplete.ModelSelect2(url='country-autocomplete'),
+            'country': autocomplete.ModelSelect2(url='country-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
 
 
@@ -28,7 +28,7 @@ class CityForm(forms.ModelForm):
         model = City
         fields = ('__all__')
         widgets = {
-            'region': autocomplete.ModelSelect2(url='region-autocomplete'),
+            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
 
 
@@ -37,5 +37,5 @@ class StreetForm(forms.ModelForm):
         model = Street
         fields = ('__all__')
         widgets = {
-            'city': autocomplete.ModelSelect2(url='city-autocomplete'),
+            'city': autocomplete.ModelSelect2(url='city-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
