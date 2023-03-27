@@ -1,8 +1,7 @@
 from companies.forms import CompanyForm
-from .models import ServiceProductCompany, SubscriptionCompany
 from django.contrib import admin
 
-from .models import Company
+from .models import Company, ServiceProductCompany, SubscriptionCompany
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -11,6 +10,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ('name', 'phone_number', 'date_created')
     ordering = ('name', 'date_created', 'work_of_cities',)
     form = CompanyForm
+
 
 class SubscriptionCompanyAdmin(admin.ModelAdmin):
     list_display = ('company', 'service', 'subscribed_on',

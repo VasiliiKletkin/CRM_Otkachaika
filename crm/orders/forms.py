@@ -9,8 +9,8 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ('__all__')
         widgets = {
-            'driver' : autocomplete.ModelSelect2(url='driver-autocomplete'),
-            'address': autocomplete.ModelSelect2(url='address-autocomplete'),
             'company': autocomplete.ModelSelect2(url='company-autocomplete'),
+            'driver' : autocomplete.ModelSelect2(url='driver-autocomplete', forward=['company']),
+            'address': autocomplete.ModelSelect2(url='address-autocomplete', forward=['company']),
             'description': forms.Textarea(attrs={'rows': 2, 'cols': 125}),
         }

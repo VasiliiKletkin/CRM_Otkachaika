@@ -10,5 +10,5 @@ class CompanyAutocomplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_superuser:
             qs = qs.filter(profile__company=self.request.user.profile.company)
         if self.q:
-            qs = qs.filter(Q(name__istartswith=self.q))
+            qs = qs.filter(Q(name__icontains=self.q))
         return qs

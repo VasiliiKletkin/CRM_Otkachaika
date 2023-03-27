@@ -33,7 +33,7 @@ class CityAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q)
-                           | Q(region__name__istartswith=self.q))
+                           | Q(region__name__icontains=self.q))
         return qs
 
 
@@ -53,7 +53,11 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
         qs = Address.objects.all()
         if not self.request.user.is_superuser:
             qs = qs.filter(clients__company=self.request.user.profile.company)
+        company = self.forwarded.get('company', None)
+        if company:
+            qs = qs.filter(clients__company=company)
         if self.q:
-            qs = qs.filter(Q(street__istartswith=self.q)
-                           | Q(home__istartswith=self.q))
+            qs = qs.filter(Q(home__icontains=self.q)
+                           | Q(street__name__icontains=self.q)
+                           | Q(street__city__name__icontains=self.q))
         return qs
