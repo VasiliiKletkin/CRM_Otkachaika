@@ -13,6 +13,10 @@ req:
 runbot:
 	python bot/main.py
 
+dup:
+	docker-compose -f "docker-compose.prod.yml" up -d
+dbuild:
+	docker-compose -f "docker-compose.prod.yml" build
 
 dmigr:
 	docker-compose exec web python manage.py makemigrations && docker-compose exec web python manage.py migrate

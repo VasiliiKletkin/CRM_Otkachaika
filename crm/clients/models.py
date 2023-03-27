@@ -14,6 +14,11 @@ class Address(models.Model):
         verbose_name = "Адрес"
         verbose_name_plural = "Адресa"
 
+        indexes = [
+            models.Index(name="address_street_idx", fields=['street']),
+            models.Index(name="address_home_idx", fields=['home']),
+        ]
+
     def __str__(self):
         return f"{self.street} {self.home}, {self.city}"
 

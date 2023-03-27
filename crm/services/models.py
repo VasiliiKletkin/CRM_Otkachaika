@@ -43,6 +43,10 @@ class SubscriptionCompany(models.Model):
     class Meta:
         verbose_name = "Подписка компании"
         verbose_name_plural = "Подписки компаний"
+    
+    indexes = [
+        models.Index(name="subscription_company_is_active_idx", fields=['is_active']),
+        ]
 
     def __str__(self):
         return f"{self.id}"

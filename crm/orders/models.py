@@ -53,6 +53,12 @@ class Order(models.Model):
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
+        indexes = [
+            models.Index(name="order_status_idx", fields=['status']),
+            models.Index(name="order_date_created_idx", fields=['date_created']),
+            models.Index(name="order_is_sent_idx", fields=['is_sent']),
+        ]
+
     def __str__(self):
         return f'Заказ N{self.id}, {self.address} - {self.get_status_display()}'
 
@@ -68,6 +74,6 @@ class OrderRequest(Order):
     def save(self, *args, **kwargs):
         if not self.company_id:
             companies = Company.objects.filter(city=self.address.city, subscriptions__is_active=True)
-            self.company = random.choice(companies)
+            if companies: self.company = random.choice(companies)
             self.status = self.CONFIRMATION
         return super().save(*args, **kwargs)

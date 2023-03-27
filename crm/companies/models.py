@@ -9,13 +9,17 @@ class Company(models.Model):
     city = models.CharField('Город', max_length=255)
     country = models.CharField('Страна', max_length=255)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
-    balance = MoneyField('Баланс', max_digits=12,
+    balance = MoneyField('Баланс', max_digits=10,
                          decimal_places=2, default_currency='RUB', default=0)
     is_active = models.BooleanField('Активный', default=True)
 
     class Meta:
         verbose_name = "Компания"
         verbose_name_plural = "Компании"
+
+        indexes = [
+            models.Index(name="company_name_idx", fields=['name']),
+        ]
 
     def __str__(self):
         return f"{self.name}"

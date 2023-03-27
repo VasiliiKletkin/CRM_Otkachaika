@@ -27,5 +27,10 @@ class Profile(models.Model):
         verbose_name = 'Профиль'
         verbose_name_plural ='Профили'
 
+        indexes = [
+            models.Index(name="profile_user_type_idx", fields=['user_type']),
+            models.Index(name="profile_telegram_id_idx", fields=['telegram_id']),
+        ]
+
     def __str__(self):
         return f'{self.get_user_type_display()}-{self.company}'
