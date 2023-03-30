@@ -132,3 +132,4 @@ staticfiles
 
 rabbitmq
 postgres_data
+.env.prod
