@@ -1,4 +1,4 @@
-from clients.models import Address, City, Country, Region, Street
+from addresses.models import Address, City, Country, Region, Street
 from dal import autocomplete
 from django.db.models import Q
 
@@ -67,7 +67,4 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
                                | Q(street__city__name__icontains=self.q)
                                | Q(street__city__name__icontains=self.q)
                                )
-
         return qs
-        Address.objects.filter(Q(home__icontains='35') &
-                               Q(street__name__icontains='пушкин'))

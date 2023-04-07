@@ -71,17 +71,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Заказ N{self.id}, {self.address} - {self.get_status_display()}'
-
-
-class OrderRequest(Order):
-    class Meta:
-        verbose_name = 'Заявку'
-        verbose_name_plural = 'Заявки'
-        proxy = True
-
-    def __str__(self):
-        return f'Заявка N{self.id}, {self.address}'
-
+    
     def save(self, *args, **kwargs):
         if not self.company_id:
             companies = Company.objects.filter(
