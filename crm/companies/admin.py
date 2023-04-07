@@ -1,7 +1,8 @@
 from companies.forms import CompanyForm
 from django.contrib import admin
 
-from .models import Company, ServiceProductCompany, SubscriptionCompany
+from .forms import SubscriptionsCompanyForm
+from .models import Company, ServiceCompany, SubscriptionCompany
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -16,12 +17,13 @@ class SubscriptionCompanyAdmin(admin.ModelAdmin):
     list_display = ('company', 'service', 'subscribed_on',
                     'expiring_on', 'is_active',)
     readonly_fields = ('subscribed_on', 'expiring_on',)
+    form = SubscriptionsCompanyForm
 
 
-class ServiceProductCompanyAdmin(admin.ModelAdmin):
+class ServiceCompanyAdmin(admin.ModelAdmin):
     list_display = ('title', 'period', 'price',)
 
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(SubscriptionCompany, SubscriptionCompanyAdmin)
-admin.site.register(ServiceProductCompany, ServiceProductCompanyAdmin)
+admin.site.register(ServiceCompany, ServiceCompanyAdmin)

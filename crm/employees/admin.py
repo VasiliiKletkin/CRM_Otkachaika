@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Group
 from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
 from users.admin import ProfileInline
+from users.forms import ProfileInlineForm
 from users.models import Profile
 
 from .models import Car, Dispatcher, Driver, Owner
@@ -24,6 +24,7 @@ class CarAdmin(SuperUserAdminMixin, admin.ModelAdmin):
 
 class ProfileInline(SuperUserInlineAdminMixin, admin.StackedInline):
     model = Profile
+    form = ProfileInlineForm
 
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
@@ -31,10 +32,6 @@ class ProfileInline(SuperUserInlineAdminMixin, admin.StackedInline):
         for field in fields_to_remove:
             fields.remove(field)
         return fields
-
-
-class CarInline(SuperUserInlineAdminMixin, admin.StackedInline):
-    model = Car
 
 
 class EmployeesAminMixin:
@@ -64,6 +61,10 @@ class EmployeesAminMixin:
                 instance.company = request.user.profile.company
             instance.save()
         return formset.save_m2m()
+
+
+class CarInline(SuperUserInlineAdminMixin, admin.StackedInline):
+    model = Car
 
 
 class DriverAdmin(EmployeesAminMixin, UserAdmin):

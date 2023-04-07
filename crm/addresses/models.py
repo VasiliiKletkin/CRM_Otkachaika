@@ -44,7 +44,7 @@ class City(models.Model):
 class Street(models.Model):
     name = models.CharField('Название', max_length=255)
     city = models.ForeignKey(
-        City, on_delete=models.PROTECT, verbose_name="Улица", related_name="streets")
+        City, on_delete=models.PROTECT, verbose_name="Город", related_name="streets")
 
     class Meta:
         verbose_name = "Улицу"

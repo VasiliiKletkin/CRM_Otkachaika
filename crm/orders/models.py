@@ -36,6 +36,8 @@ class Order(models.Model):
         (ONLINE_TRANSFER, 'Онлайн перевод'),
     )
 
+    company = models.ForeignKey(Company, verbose_name="Компания",
+                                on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     status = StatusField("Статус", default=CONFIRMED)
     driver = models.ForeignKey(Driver, verbose_name="Водитель",
                                on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
@@ -54,8 +56,6 @@ class Order(models.Model):
                                 INPROGRESS], null=True, blank=True, default=None)
     date_completed = MonitorField("Дата выполнения", monitor='status', when=[
                                   COMPLETED], null=True, blank=True, default=None)
-    company = models.ForeignKey(Company, verbose_name="Компания",
-                                on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     is_sent = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
@@ -71,7 +71,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Заказ N{self.id}, {self.address} - {self.get_status_display()}'
-    
+
     def save(self, *args, **kwargs):
         if not self.company_id:
             companies = Company.objects.filter(

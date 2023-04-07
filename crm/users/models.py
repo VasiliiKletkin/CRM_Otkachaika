@@ -17,19 +17,23 @@ class Profile(models.Model):
         (DISPATCHER, 'Диспетчер'),
     )
 
+    company = models.ForeignKey(
+        Company, verbose_name='Компания', on_delete=models.PROTECT)
     user = models.OneToOneField(User, on_delete=models.PROTECT)
-    user_type = models.CharField(choices=USER_TYPES, max_length=20)
-    company = models.ForeignKey(Company, on_delete=models.PROTECT)
+    user_type = models.CharField(
+        choices=USER_TYPES, verbose_name='Тип пользователя', max_length=20)
     phone_number = PhoneNumberField('Телефонный номер')
-    telegram_id = models.CharField('telegram_id', max_length=20, null=True, blank=True)
+    telegram_id = models.CharField(
+        'telegram_id', max_length=20, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Профиль'
-        verbose_name_plural ='Профили'
+        verbose_name_plural = 'Профили'
 
         indexes = [
             models.Index(name="profile_user_type_idx", fields=['user_type']),
-            models.Index(name="profile_telegram_id_idx", fields=['telegram_id']),
+            models.Index(name="profile_telegram_id_idx",
+                         fields=['telegram_id']),
         ]
 
     def __str__(self):

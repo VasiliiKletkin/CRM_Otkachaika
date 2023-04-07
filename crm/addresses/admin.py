@@ -1,5 +1,6 @@
 from clients.models import Client
 from django.contrib import admin
+from clients.forms import ClientInlineForm
 
 from mixins import SuperUserInlineAdminMixin
 
@@ -26,6 +27,7 @@ class StreetAdmin(admin.ModelAdmin):
 class ClientInline(SuperUserInlineAdminMixin, admin.StackedInline):
     model = Client
     extra = 1
+    form = ClientInlineForm
 
 
 class AddressAdmin(admin.ModelAdmin):

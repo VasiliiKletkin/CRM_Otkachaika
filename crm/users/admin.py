@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from mixins import SuperUserInlineAdminMixin
 
+from .forms import ProfileInlineForm
 from .models import Profile
 
 user_model = get_user_model()
@@ -10,6 +11,7 @@ user_model = get_user_model()
 
 class ProfileInline(SuperUserInlineAdminMixin, admin.StackedInline):
     model = Profile
+    form = ProfileInlineForm
 
 
 class CustomUserAdmin(UserAdmin):

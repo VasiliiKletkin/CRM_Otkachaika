@@ -31,7 +31,7 @@ class Company(models.Model):
         return f"{self.name}"
 
 
-class ServiceProductCompany(models.Model):
+class ServiceCompany(models.Model):
     MONTH = "ONE_MONTH"
     THREE_MONTHS = "THREE_MONTHS"
     SIX_MONTHS = "SIX_MONTHS"
@@ -51,8 +51,8 @@ class ServiceProductCompany(models.Model):
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
 
     class Meta:
-        verbose_name = "Услуги для компании"
-        verbose_name_plural = "Услуги для компаний"
+        verbose_name = "Услугу"
+        verbose_name_plural = "Услуги"
 
     def __str__(self):
         return f"{self.title} {self.get_period_display()}"
@@ -61,7 +61,7 @@ class ServiceProductCompany(models.Model):
 class SubscriptionCompany(models.Model):
     company = models.ForeignKey(Company, verbose_name="Компании",
                                 on_delete=models.PROTECT, related_name='subscriptions')
-    service = models.ForeignKey(ServiceProductCompany, verbose_name="Услуга",
+    service = models.ForeignKey(ServiceCompany, verbose_name="Услуга",
                                 on_delete=models.PROTECT, related_name='subscriptions')
     is_active = models.BooleanField("Активный", default=True)
     subscribed_on = models.DateTimeField(
@@ -82,12 +82,12 @@ class SubscriptionCompany(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            if self.service.period == ServiceProductCompany.MONTH:
+            if self.service.period == ServiceCompany.MONTH:
                 self.expiring_on = timezone.now() + relativedelta(days=30)
-            elif self.service.period == ServiceProductCompany.THREE_MONTHS:
+            elif self.service.period == ServiceCompany.THREE_MONTHS:
                 self.expiring_on = timezone.now() + relativedelta(month=3)
-            elif self.service.period == ServiceProductCompany.SIX_MONTHS:
+            elif self.service.period == ServiceCompany.SIX_MONTHS:
                 self.expiring_on = timezone.now() + relativedelta(month=6)
-            elif self.service.period == ServiceProductCompany.TWELVE_MONTHS:
+            elif self.service.period == ServiceCompany.TWELVE_MONTHS:
                 self.expiring_on = timezone.now() + relativedelta(month=12)
         return super().save(*args, **kwargs)
