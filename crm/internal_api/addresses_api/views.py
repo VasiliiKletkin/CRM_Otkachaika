@@ -14,6 +14,12 @@ class CountryAutocomplete(autocomplete.Select2QuerySetView):
 class RegionAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Region.objects.all()
+
+        country = self.forwarded.get('country', None)
+
+        if country:
+            qs = qs.filter(Q(country=country))
+
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q))
         return qs

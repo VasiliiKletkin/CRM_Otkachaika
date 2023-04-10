@@ -13,22 +13,22 @@ class Country(models.Model):
 
 
 class Region(models.Model):
-    name = models.CharField('Название', max_length=255)
     country = models.ForeignKey(
         Country, on_delete=models.PROTECT, verbose_name="Cтрана", related_name="regions")
+    name = models.CharField('Название', max_length=255)
 
     class Meta:
         verbose_name = "Регион"
         verbose_name_plural = "Регионы"
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name}, {self.country}"
 
 
 class City(models.Model):
-    name = models.CharField('Название', max_length=255)
     region = models.ForeignKey(
         Region, on_delete=models.PROTECT, verbose_name="Регион", related_name="cities")
+    name = models.CharField('Название', max_length=255)
 
     class Meta:
         verbose_name = "Город"
@@ -42,9 +42,9 @@ class City(models.Model):
 
 
 class Street(models.Model):
-    name = models.CharField('Название', max_length=255)
     city = models.ForeignKey(
         City, on_delete=models.PROTECT, verbose_name="Город", related_name="streets")
+    name = models.CharField('Название', max_length=255)
 
     class Meta:
         verbose_name = "Улицу"

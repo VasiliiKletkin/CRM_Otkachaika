@@ -19,5 +19,5 @@ class SubscriptionsCompanyForm(forms.ModelForm):
         fields = ('__all__')
         widgets = {
             'company': autocomplete.ModelSelect2(url='company-autocomplete'),
-            'service': autocomplete.ModelSelect2Multiple(url='servicecompany-autocomplete'),
+            'service': autocomplete.ModelSelect2(url='servicecompany-autocomplete'),
         }

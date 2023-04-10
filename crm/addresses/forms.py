@@ -28,7 +28,8 @@ class CityForm(forms.ModelForm):
         model = City
         fields = ('__all__')
         widgets = {
-            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'country': autocomplete.ModelSelect2(url='country-autocomplete'),
+            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3},  forward=['country']),
         }
 
 
