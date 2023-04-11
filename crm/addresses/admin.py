@@ -31,9 +31,7 @@ class ClientInline(SuperUserInlineAdminMixin, admin.StackedInline):
 
 
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ('street', 'home', 'city')
-    list_filter = ('city',)
-    search_fields = ('street', 'home', 'city')
+    search_fields = ('street', 'home')
     inlines = [ClientInline,]
     form = AddressForm
 
@@ -42,6 +40,16 @@ class AddressAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(clients__company=request.user.profile.company)
+    
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+        is_superuser = request.user.is_superuser
+        for instance in instances:
+            if not is_superuser:
+                instance.company = request.user.profile.company
+            instance.save()
+        return formset.save_m2m()
+
 
 
 admin.site.register(Street, StreetAdmin)

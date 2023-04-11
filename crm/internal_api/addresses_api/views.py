@@ -46,9 +46,17 @@ class CityAutocomplete(autocomplete.Select2QuerySetView):
 class StreetAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Street.objects.all()
+
         city = self.forwarded.get('city', None)
+        cities = self.forwarded.get('cities', None)
         if city:
-            qs = qs.filter(city=city)
+            cities = [city]
+        if cities:
+            qs = qs.filter(city__in=cities)
+
+        if not cities and not self.request.user.is_superuser:
+            qs = qs.filter(city__in=self.request.user.profile.company.cities.all())
+
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q))
         return qs

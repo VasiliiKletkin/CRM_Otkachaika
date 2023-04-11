@@ -54,12 +54,10 @@ class Street(models.Model):
         ]
 
     def __str__(self):
-        return f"ул. {self.name}, {self.city.name}"
+        return f"ул. {self.name}, {self.city.name}, {self.city.region.name}"
 
 
 class Address(models.Model):
-    city = models.ForeignKey(
-        City, on_delete=models.PROTECT, verbose_name="Город", related_name="addresses")
     street = models.ForeignKey(
         Street, on_delete=models.PROTECT, verbose_name="Улица", related_name="addresses")
     home = models.CharField("Дом", max_length=255)
@@ -73,4 +71,4 @@ class Address(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.street} {self.home}, {self.city}"
+        return f"{self.home}, ул. {self.street.name}, {self.street.city.name}"

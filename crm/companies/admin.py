@@ -7,9 +7,9 @@ from .models import Company, ServiceCompany, SubscriptionCompany
 
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number', 'date_created')
-    list_filter = ('date_created', 'work_of_cities',)
+    list_filter = ('date_created', 'cities',)
     search_fields = ('name', 'phone_number', 'date_created')
-    ordering = ('name', 'date_created', 'work_of_cities',)
+    ordering = ('name', 'date_created', 'cities',)
     form = CompanyForm
 
 

@@ -9,8 +9,7 @@ class AddressForm(forms.ModelForm):
         model = Address
         fields = ('__all__')
         widgets = {
-            'city': autocomplete.ModelSelect2(url='city-autocomplete'),
-            'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}, forward=['city']),
+            'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
 
 
