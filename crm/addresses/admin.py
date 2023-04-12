@@ -1,7 +1,6 @@
+from clients.forms import ClientInlineForm
 from clients.models import Client
 from django.contrib import admin
-from clients.forms import ClientInlineForm
-
 from mixins import SuperUserInlineAdminMixin
 
 from .forms import AddressForm, CityForm, RegionForm, StreetForm
@@ -40,7 +39,7 @@ class AddressAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(clients__company=request.user.profile.company)
-    
+
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
         is_superuser = request.user.is_superuser
@@ -49,7 +48,6 @@ class AddressAdmin(admin.ModelAdmin):
                 instance.company = request.user.profile.company
             instance.save()
         return formset.save_m2m()
-
 
 
 admin.site.register(Street, StreetAdmin)
