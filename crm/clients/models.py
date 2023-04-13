@@ -23,4 +23,9 @@ class Client(models.Model):
         verbose_name_plural = "Клиенты"
 
     def __str__(self):
-        return f"id:{self.id}, {self.phone_number}"
+        client_display = f"{self.phone_number}"
+        if self.first_name:
+            client_display += f" {self.first_name}"
+        if self.last_name:
+            client_display += f" {self.last_name}"
+        return client_display 

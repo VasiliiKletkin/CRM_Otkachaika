@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .forms import ClientForm
-from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
+from mixins import SuperUserAdminMixin
 
+from .forms import ClientForm
 from .models import Client
 
 
 class ClientAdmin(SuperUserAdminMixin, admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number',
+    list_display = ('phone_number', 'first_name', 'last_name',
                     'address', 'is_active', 'company',)
     list_filter = ('is_active', 'company',)
     search_fields = ('first_name', 'last_name', 'address', 'is_active')

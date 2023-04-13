@@ -27,8 +27,8 @@ urlpatterns = [
     path('internal_api/', include('internal_api.urls')),
 
     #admin
-    path('admin/', admin.site.urls),
-    path('', include('admin_argon.urls')),
+    path('', admin.site.urls),
+    # path('', include('admin_argon.urls')),
 ]
 
 if settings.DEBUG:

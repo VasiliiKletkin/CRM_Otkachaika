@@ -9,7 +9,7 @@ class ReportAdmin(SuperUserAdminMixin, admin.ModelAdmin):
 
     list_display = ('date_start', 'date_end',
                     'date_created', 'profit', 'company',)
-    list_filter = ('company__name',)
+    # list_filter = ('company__name',)
     date_hierarchy = 'date_created'
     ordering = ('date_created',)
     form = ReportForm
