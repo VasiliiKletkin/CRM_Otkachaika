@@ -1,12 +1,11 @@
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
-from users.models import Profile
 
-user_model = get_user_model()
+User = get_user_model()
 
 
-class Driver(user_model):
+class Driver(User):
     class Meta:
         proxy = True
         verbose_name = "Водителя"
@@ -16,7 +15,7 @@ class Driver(user_model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Dispatcher(user_model):
+class Dispatcher(User):
     class Meta:
         proxy = True
         verbose_name = "Диспетчера"
@@ -26,7 +25,7 @@ class Dispatcher(user_model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Owner(user_model):
+class Owner(User):
     class Meta:
         proxy = True
         verbose_name = "Владельца"
@@ -40,7 +39,7 @@ class Car(models.Model):
     name = models.CharField("Название", max_length=255)
     number = models.CharField("Регистрационный номер", max_length=255)
     driver = models.OneToOneField(
-        user_model, on_delete=models.SET_NULL, related_name='car', null=True, blank=True)
+        User, on_delete=models.SET_NULL, related_name='car', null=True, blank=True)
     company = models.ForeignKey(
         Company, on_delete=models.PROTECT, related_name='cars')
 
@@ -50,4 +49,3 @@ class Car(models.Model):
 
     def __str__(self):
         return f"{self.name}, {self.number}"
-

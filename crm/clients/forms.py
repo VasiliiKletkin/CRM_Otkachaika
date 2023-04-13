@@ -1,41 +1,22 @@
 from dal import autocomplete
 from django import forms
 
-from .models import Address, City, Country, Region, Street
+from .models import Client
 
 
-class AddressForm(forms.ModelForm):
+class ClientForm(forms.ModelForm):
     class Meta:
-        model = Address
+        model = Client
         fields = ('__all__')
         widgets = {
-            'city': autocomplete.ModelSelect2(url='city-autocomplete'),
-            'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}, forward=['city']),
+            'address': autocomplete.ModelSelect2(url='address-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'company': autocomplete.ModelSelect2(url='company-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
 
-
-class RegionForm(forms.ModelForm):
+class ClientInlineForm(forms.ModelForm):
     class Meta:
-        model = Region
+        model = Client
         fields = ('__all__')
         widgets = {
-            'country': autocomplete.ModelSelect2(url='country-autocomplete', attrs={'data-minimum-input-length': 3}),
-        }
-
-
-class CityForm(forms.ModelForm):
-    class Meta:
-        model = City
-        fields = ('__all__')
-        widgets = {
-            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3}),
-        }
-
-
-class StreetForm(forms.ModelForm):
-    class Meta:
-        model = Street
-        fields = ('__all__')
-        widgets = {
-            'city': autocomplete.ModelSelect2(url='city-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'company': autocomplete.ModelSelect2(url='company-autocomplete', attrs={'data-minimum-input-length': 3}),
         }

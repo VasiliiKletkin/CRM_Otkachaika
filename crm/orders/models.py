@@ -1,6 +1,7 @@
 import random
 
-from clients.models import Address
+from addresses.models import Address
+from clients.models import Client
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -36,11 +37,15 @@ class Order(models.Model):
         (ONLINE_TRANSFER, 'Онлайн перевод'),
     )
 
+    company = models.ForeignKey(Company, verbose_name="Компания",
+                                on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     status = StatusField("Статус", default=CONFIRMED)
     driver = models.ForeignKey(Driver, verbose_name="Водитель",
                                on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     address = models.ForeignKey(
         Address, verbose_name="Адрес", on_delete=models.PROTECT, related_name='orders')
+    client = models.ForeignKey(
+        Client, verbose_name="Клиент", on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     dispatcher = models.ForeignKey(
         User, verbose_name="Диспетчер", on_delete=models.PROTECT, related_name='created_orders')
     description = models.TextField("Описание", blank=True, null=True)
@@ -54,8 +59,6 @@ class Order(models.Model):
                                 INPROGRESS], null=True, blank=True, default=None)
     date_completed = MonitorField("Дата выполнения", monitor='status', when=[
                                   COMPLETED], null=True, blank=True, default=None)
-    company = models.ForeignKey(Company, verbose_name="Компания",
-                                on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     is_sent = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
@@ -72,18 +75,8 @@ class Order(models.Model):
     def __str__(self):
         return f'Заказ N{self.id}, {self.address} - {self.get_status_display()}'
 
-
-class OrderRequest(Order):
-    class Meta:
-        verbose_name = 'Заявку'
-        verbose_name_plural = 'Заявки'
-        proxy = True
-
-    def __str__(self):
-        return f'Заявка N{self.id}, {self.address}'
-
     def save(self, *args, **kwargs):
-        if not self.company_id:
+        if not self.company:
             companies = Company.objects.filter(
                 city=self.address.city, subscriptions__is_active=True)
             if companies:

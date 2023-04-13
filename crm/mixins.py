@@ -31,13 +31,10 @@ class SuperUserAdminMixin:
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
-        if request.user.is_superuser:            
-            for instance in instances:
-                instance.save()
-            return formset.save_m2m()
-
+        is_superuser = request.user.is_superuser
         for instance in instances:
-            instance.company = request.user.profile.company
+            if not is_superuser:
+                instance.company = request.user.profile.company
             instance.save()
         return formset.save_m2m()
 
