@@ -51,12 +51,9 @@ class OrderAdmin(SuperUserAdminMixin, admin.ModelAdmin):
                        ('price', 'type_payment'), ('date_planned', 'date_started', 'date_completed'), 'is_sent')
         self.fields = ('company', 'status', 'dispatcher', 'driver', 'address', 'client', 'description',  'price',
                        'type_payment', 'date_planned', 'date_started', 'date_completed', 'is_sent')
-        if not request.user.is_superuser:
-            self.readonly_fields = ('company', 'dispatcher', 'driver', 'address',
-                                    'client', 'description', 'date_started', 'price', 'type_payment', 'date_planned', 'date_completed', 'is_sent')
-        else:
-            self.readonly_fields = ('company', 'driver', 'address', 'client', 'description', 'price',
-                                    'type_payment', 'date_planned')
+        self.readonly_fields = ('company', 'dispatcher', 'driver', 'address',
+                                'client', 'description', 'date_started', 'price', 'type_payment', 'date_planned', 'date_completed', 'is_sent')
+
         return super().change_view(request, object_id, extra_context)
 
 
