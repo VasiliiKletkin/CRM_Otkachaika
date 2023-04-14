@@ -17,6 +17,8 @@ dcollect:
 	docker-compose exec web python manage.py collectstatic
 dup:
 	docker-compose -f "docker-compose.prod.yml" up -d
+dstop:
+	docker-compose -f "docker-compose.prod.yml" stop
 dbuild:
 	docker-compose -f "docker-compose.prod.yml" build
 
