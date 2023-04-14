@@ -13,11 +13,11 @@ async def get_orders_today():
 def get_order_info(order):
     id = order.get('id')
     address = order.get('address')
-    address_dysplay_name = address.get('address_dysplay_name')
+    address_display_name = address.get('address_display_name')
     price = order.get('price')
     description = order.get('description')
     order_display = f"ID:{id}, Цена:{price}р \n" \
-                    f"{address_dysplay_name} \n"
+                    f"{address_display_name} \n"
     if description:
         order_display +=f" {description}"
     return order_display

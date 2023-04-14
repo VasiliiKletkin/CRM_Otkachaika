@@ -1,10 +1,11 @@
-from rest_framework import serializers
 from clients.models import Address
+from rest_framework import serializers
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    address_dysplay_name = serializers.SerializerMethodField()
-    def get_address_dysplay_name(self, obj):
+    address_display_name = serializers.SerializerMethodField()
+
+    def get_address_display_name(self, obj):
         return str(obj)
 
     class Meta:
