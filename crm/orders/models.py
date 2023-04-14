@@ -5,7 +5,7 @@ from clients.models import Client
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
-from employees.models import Driver
+from employees.models import Driver, Dispatcher
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
@@ -47,7 +47,7 @@ class Order(models.Model):
     client = models.ForeignKey(
         Client, verbose_name="Клиент", on_delete=models.PROTECT, null=True, blank=True, related_name='orders')
     dispatcher = models.ForeignKey(
-        User, verbose_name="Диспетчер", on_delete=models.PROTECT, related_name='created_orders')
+        Dispatcher, verbose_name="Диспетчер", on_delete=models.PROTECT, related_name='created_orders')
     description = models.TextField("Описание", blank=True, null=True)
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
     type_payment = models.CharField(
