@@ -3,9 +3,9 @@ from rest_framework import serializers
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    address_display_name = serializers.SerializerMethodField()
+    address_display = serializers.SerializerMethodField()
 
-    def get_address_display_name(self, obj):
+    def get_address_display(self, obj):
         return str(obj)
 
     class Meta:

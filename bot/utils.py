@@ -13,11 +13,14 @@ async def get_orders_today():
 def get_order_info(order):
     id = order.get('id')
     address = order.get('address')
-    address_display_name = address.get('address_display_name')
+    type_payment_display = order.get('type_payment_display')
+    status_display = order.get('status_display')
+    address_display = address.get('address_display')
     price = order.get('price')
     description = order.get('description')
-    order_display = f"ID:{id}, Цена:{price}р \n" \
-                    f"{address_display_name} \n"
+    order_display = f"ID:{id}, Статус:{status_display} \n" \
+                    f"Цена:{price}р, Оплата: {type_payment_display} \n" \
+                    f"Адрес: {address_display} \n"
     if description:
-        order_display +=f" {description}"
+        order_display +=f"Описание: {description}"
     return order_display
