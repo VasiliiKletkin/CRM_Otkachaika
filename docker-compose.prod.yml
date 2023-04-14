@@ -31,7 +31,7 @@ services:
     volumes:
       - ./crm:/app/web
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - rabbitmq
   
