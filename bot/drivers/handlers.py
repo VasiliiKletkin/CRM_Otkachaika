@@ -11,8 +11,8 @@ from .keyboards import inline_order_keyboard, main_menu_keyboard
 @dp.message_handler(commands=['start', 'help'])
 async def start(message: Message):
     if is_driver(message.chat.id):
-        text = "Привет это бот Откачайка для водителей \n" \
-            "Вам будут отправлять заказы в этот чат" \
+        text = "Привет это бот Откачайка для водителей\n" \
+            "Вам будут отправлять заказы в этот чат\n" \
             "Вы сможете их начать, завершить или отменить"
         await message.answer(text)
 
