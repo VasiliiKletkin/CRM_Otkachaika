@@ -8,7 +8,7 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env.dev
+      - ./.env
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -17,7 +17,7 @@ services:
     volumes:
       - ./rabbitmq:/var/lib/rabbitmq
     env_file:
-      - ./.env.dev
+      - ./.env
     ports:
       - 15672:15672
       - 5672:5672
@@ -31,7 +31,7 @@ services:
     volumes:
       - ./crm:/app/web
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - rabbitmq
   
@@ -44,7 +44,7 @@ services:
     volumes:
       - ./crm:/app/web
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - rabbitmq
 
@@ -58,7 +58,7 @@ services:
     volumes:
       - ./crm:/app/web
     env_file:
-      - ./.env.dev
+      - ./.env
     ports:
       - 8000:8000
     depends_on:
@@ -76,4 +76,4 @@ services:
     volumes:
       - ./bot:/app/bot
     env_file:
-      - ./.env.dev
+      - ./.env
