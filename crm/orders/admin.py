@@ -52,7 +52,7 @@ class OrderAdmin(SuperUserAdminMixin, admin.ModelAdmin):
         self.fields = ('company', 'status', 'dispatcher', 'driver', 'address', 'client', 'description',  'price',
                        'type_payment', 'date_planned', 'date_started', 'date_completed', 'is_sent')
         self.readonly_fields = ('company', 'dispatcher', 'driver', 'address',
-                                'client', 'description', 'date_started', 'price', 'type_payment', 'date_planned', 'date_completed', 'is_sent')
+                                'client', 'description', 'date_started', 'price', 'type_payment', 'date_planned', 'date_completed')
 
         return super().change_view(request, object_id, extra_context)
 
