@@ -9,6 +9,8 @@ from rest_framework import serializers
 class OrderSerializer(serializers.ModelSerializer):
     type_payment_display = serializers.CharField(
         source="get_type_payment_display")
+    status_display = serializers.CharField(
+        source="get_status_display")
 
     address = AddressSerializer()
     driver = DriverSerializer()

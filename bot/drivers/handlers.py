@@ -20,18 +20,21 @@ async def start(message: Message):
 @dp.callback_query_handler(order_call_back.filter(status="CANCELED"))
 async def callback_canceled_order(call: CallbackQuery, callback_data: dict):
     order = await canceled_order(callback_data['order_id'])
+    await call.message.edit_text(get_order_info(order))
     await call.message.edit_reply_markup(reply_markup=inline_order_keyboard(order))
 
 
 @dp.callback_query_handler(order_call_back.filter(status="INPROGRESS"))
 async def callback_started_order(call: CallbackQuery, callback_data: dict):
     order = await inprogress_order(callback_data['order_id'])
+    await call.message.edit_text(get_order_info(order))
     await call.message.edit_reply_markup(reply_markup=inline_order_keyboard(order))
 
 
 @dp.callback_query_handler(order_call_back.filter(status="COMPLETED"))
 async def callback_completed_order(call: CallbackQuery, callback_data: dict):
     order = await completed_order(callback_data['order_id'])
+    await call.message.edit_text(get_order_info(order))
     await call.message.edit_reply_markup(reply_markup=inline_order_keyboard(order))
 
 
