@@ -59,7 +59,7 @@ class Order(models.Model):
                                 INPROGRESS], null=True, blank=True, default=None)
     date_completed = MonitorField("Дата выполнения", monitor='status', when=[
                                   COMPLETED], null=True, blank=True, default=None)
-    is_sent = models.BooleanField("Отправлен водителю", default=False)
+    is_sent = models.BooleanField("Отправлен", default=False)
 
     class Meta:
         verbose_name = 'Заказ'
