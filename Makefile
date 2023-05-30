@@ -16,10 +16,12 @@ dcollect:
 	docker-compose exec web python manage.py collectstatic
 dup:
 	docker-compose -f "docker-compose.prod.yml" up -d
-dstop:
-	docker-compose -f "docker-compose.prod.yml" stop
+dupbuild:
+	docker-compose -f "docker-compose.prod.yml" up --build
 dbuild:
 	docker-compose -f "docker-compose.prod.yml" build
+dstop:
+	docker-compose -f "docker-compose.prod.yml" stop
 
 dmigr:
 	docker-compose exec web python manage.py makemigrations && docker-compose exec web python manage.py migrate

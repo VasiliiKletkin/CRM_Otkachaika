@@ -188,10 +188,10 @@ REST_FRAMEWORK = {
 
 
 # Login
-LOGIN_URL = '/auth/login/'
-LOGIN_REDIRECT_URL = '/../admin/'
+# LOGIN_URL = '/auth/login/'
+# LOGIN_REDIRECT_URL = '/../admin/'
 
-LOGOUT_REDIRECT_URL = 'admin:index'
+# LOGOUT_REDIRECT_URL = 'admin:index'
 
 
 
