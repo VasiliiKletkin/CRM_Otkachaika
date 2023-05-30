@@ -14,7 +14,7 @@ The goal of the project is to automate the process of ossenization services for 
 
 ## Start project with `docker-compose`
 
-$ cp .env.example .env.local
+$ cp .env.example .env
 $ docker-compose up -d --build
 
 Exec commands for docker containers:
