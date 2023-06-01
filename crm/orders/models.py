@@ -4,6 +4,7 @@ from addresses.models import Address
 from clients.models import Client
 from companies.models import Company
 from django.contrib.auth import get_user_model
+from .tasks import send_order_to_driver
 from django.db import models
 from employees.models import Driver, Dispatcher
 from model_utils import Choices
@@ -83,3 +84,6 @@ class Order(models.Model):
                 self.company = random.choice(companies)
             self.status = self.CONFIRMATION
         return super().save(*args, **kwargs)
+    
+    def send_to_driver(self):
+        send_order_to_driver.delay(self.id)

@@ -13,14 +13,12 @@ app.autodiscover_tasks()
 
 # app.conf.beat_schedule = {
 
-#     "periodic_add_numbers": {
-
-#         "task": "orders.tasks.add_numbers",
-#         "schedule": crontab(minute="*\1"),
-
+#     "parse_data": {
+#         "task": "tickets.tasks.parse_data",
+#         "schedule": crontab(minute="*/1"),
+#     },
+#         "send_ads": {
+#         "task": "ads.tasks.send_ads",
+#         "schedule": crontab(minute="*/1"),
 #     },
 # }
-
-@app.task(bind=True)
-def debug_task(self):
-    print(f"HELLO FROM DEBUG")

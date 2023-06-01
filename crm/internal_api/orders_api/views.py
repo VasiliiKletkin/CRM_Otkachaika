@@ -43,15 +43,6 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(order)
         return Response(serializer.data)
 
-    @action(detail=False)
-    def today(self, request, *args, **kwargs):
-        current_datetime = datetime.today()
-        orders = Order.objects.filter(Q(date_planned__date__lte=current_datetime) | Q(
-            date_planned__isnull=True), status__in=[Order.CONFIRMED, Order.INPROGRESS], is_sent=False)
-        serializer = self.get_serializer(list(orders), many=True)
-        orders.update(is_sent=True)
-        return Response(serializer.data)
-
     # def today(self, request, *args, **kwargs):
     #     company_id = request.GET.get('company_id')
     #     current_datetime = datetime.now()
