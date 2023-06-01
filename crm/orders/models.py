@@ -4,11 +4,12 @@ from addresses.models import Address
 from clients.models import Client
 from companies.models import Company
 from django.contrib.auth import get_user_model
-from .tasks import send_order_to_driver
 from django.db import models
-from employees.models import Driver, Dispatcher
+from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
+
+from .tasks import send_order_to_driver
 
 User = get_user_model()
 

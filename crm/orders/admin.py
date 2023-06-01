@@ -38,17 +38,13 @@ class OrderAdmin(SuperUserAdminMixin, admin.ModelAdmin):
         return super().save_model(request, obj, form, change)
 
     def add_view(self, request, extra_content=None):
-        self.fields = ('company', ('driver', 'address'), 'client',
-                       'description',  ('price', 'type_payment'), 'date_planned')
         self.fields = ('company', 'driver', 'address', 'client', 'description', 'price',
                        'type_payment', 'date_planned')
 
         self.readonly_fields = ()
-        return super().add_view(request)
+        return super().add_view(request, extra_context=extra_content)
 
     def change_view(self, request, object_id, extra_context=None):
-        self.fields = ('company', ('status', 'dispatcher'), ('driver', 'address'), 'client', 'description',
-                       ('price', 'type_payment'), ('date_planned', 'date_started', 'date_completed'), 'is_sent')
         self.fields = ('company', 'status', 'dispatcher', 'driver', 'address', 'client', 'description',  'price',
                        'type_payment', 'date_planned', 'date_started', 'date_completed', 'is_sent')
         self.readonly_fields = ('company', 'dispatcher', 'driver', 'address',
