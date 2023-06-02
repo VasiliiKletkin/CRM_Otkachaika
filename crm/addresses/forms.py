@@ -1,23 +1,19 @@
 from dal import autocomplete
 from django import forms
 
-from .models import Address, City, Country, Region, Street
+from .models import Address, City, Country, District, Region, Street
 
 
-class AddressForm(forms.ModelForm):
+class CountyForm(forms.ModelForm):
     def clean(self):
-        home = self.cleaned_data['home']
-        street = self.cleaned_data['street']
-        if Address.objects.filter(street_id=street, home=home).exists():
-            raise forms.ValidationError('Такой адрес уже существует')
+        name = self.cleaned_data['name']
+        if Country.objects.filter(name=name).exists():
+            raise forms.ValidationError('Такая страна уже существует')
         return super().clean()
 
     class Meta:
-        model = Address
+        model = Country
         fields = ('__all__')
-        widgets = {
-            'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}),
-        }
 
 
 class RegionForm(forms.ModelForm):
@@ -48,16 +44,31 @@ class CityForm(forms.ModelForm):
         model = City
         fields = ('__all__')
         widgets = {
-            'country': autocomplete.ModelSelect2(url='country-autocomplete'),
-            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3},  forward=['country']),
+            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3}),
+        }
+
+
+class DistrictForm(forms.ModelForm):
+    def clean(self):
+        city = self.cleaned_data['city']
+        name = self.cleaned_data['name']
+        if District.objects.filter(city_id=city, name=name).exists():
+            raise forms.ValidationError('Такой район уже существует')
+        return super().clean()
+
+    class Meta:
+        model = District
+        fields = ('__all__')
+        widgets = {
+            'city': autocomplete.ModelSelect2(url='city-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
 
 
 class StreetForm(forms.ModelForm):
     def clean(self):
-        city = self.cleaned_data['city']
+        district = self.cleaned_data['district']
         name = self.cleaned_data['name']
-        if Street.objects.filter(city_id=city, name=name).exists():
+        if Street.objects.filter(district_id=district, name=name).exists():
             raise forms.ValidationError('Такая улица уже существует')
         return super().clean()
 
@@ -65,5 +76,21 @@ class StreetForm(forms.ModelForm):
         model = Street
         fields = ('__all__')
         widgets = {
-            'city': autocomplete.ModelSelect2(url='city-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'district': autocomplete.ModelSelect2(url='district-autocomplete', attrs={'data-minimum-input-length': 3}),
+        }
+
+
+class AddressForm(forms.ModelForm):
+    def clean(self):
+        home = self.cleaned_data['home']
+        street = self.cleaned_data['street']
+        if Address.objects.filter(street_id=street, home=home).exists():
+            raise forms.ValidationError('Такой адрес уже существует')
+        return super().clean()
+
+    class Meta:
+        model = Address
+        fields = ('__all__')
+        widgets = {
+            'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}),
         }

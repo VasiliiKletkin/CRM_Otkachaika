@@ -16,7 +16,7 @@ class Telegram(models.Model):
         verbose_name_plural = 'Телеграм профили'
 
     def __str__(self):
-        return f'{self.username}-{self.user_id}'
+        return f'{self.username}-{self.user_id}, {self.first_name} {self.last_name}'
 
 
 class Profile(models.Model):

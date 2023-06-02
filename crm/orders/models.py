@@ -5,6 +5,8 @@ from clients.models import Client
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -88,3 +90,9 @@ class Order(models.Model):
     
     def send_to_driver(self):
         send_order_to_driver.delay(self.id)
+
+
+@receiver(post_save, sender=Order)
+def post_save_order(sender, instance, created, **kwargs):
+    if not instance.is_sent:
+        instance.send_to_driver()

@@ -36,12 +36,13 @@ class Owner(User):
 
 
 class Car(models.Model):
+    company = models.ForeignKey(
+        Company, on_delete=models.PROTECT, verbose_name='Компания', related_name='cars')
     name = models.CharField("Название", max_length=255)
     number = models.CharField("Регистрационный номер", max_length=255)
     driver = models.OneToOneField(
-        User, on_delete=models.SET_NULL, related_name='car', null=True, blank=True)
-    company = models.ForeignKey(
-        Company, on_delete=models.PROTECT, related_name='cars')
+        User, on_delete=models.SET_NULL, verbose_name='Водитель',related_name='car', null=True, blank=True)
+    
 
     class Meta:
         verbose_name = "Машину"
