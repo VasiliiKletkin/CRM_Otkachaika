@@ -2,15 +2,10 @@ from clients.forms import ClientInlineForm
 from clients.models import Client
 from companies.mixins import CompanyInlineAdminMixin
 from django.contrib import admin
+from django_currentuser.middleware import get_current_user
 
-from .forms import (
-    AddressForm,
-    CityForm,
-    CountyForm,
-    DistrictForm,
-    RegionForm,
-    StreetForm,
-)
+from .forms import (AddressForm, CityForm, CountyForm, DistrictForm,
+                    RegionForm, StreetForm)
 from .models import Address, City, Country, District, Region, Street
 
 
@@ -46,6 +41,13 @@ class AddressAdmin(admin.ModelAdmin):
         ClientInline,
     ]
     form = AddressForm
+
+    def get_queryset(self, request):
+        user = get_current_user()
+        queryset = super().get_queryset(request)
+        if not user.is_superuser:
+            return queryset.filter(street__in=user.profile.company.work_place.streets.all())
+        return queryset
 
 
 admin.site.register(Street, StreetAdmin)
