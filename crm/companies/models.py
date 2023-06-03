@@ -1,24 +1,13 @@
-from addresses.models import City, Country, Street
+from addresses.models import City, Country, District, Region, Street
 from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.utils import timezone
 from djmoney.models.fields import MoneyField
 from model_utils import Choices
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Company(models.Model):
     name = models.CharField('Название компании', max_length=255)
-    phone_number = PhoneNumberField('Телефонный номер')
-    country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, verbose_name='Страна', related_name='companies')
-    cities = models.ManyToManyField(
-        City, verbose_name='Города или Населенные пункты из которых принимаются заказы', related_name='companies')
-    streets = models.ManyToManyField(
-        Street, verbose_name='Улицы из которых принимаются заказы', related_name='companies')
-    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
-    balance = MoneyField('Баланс', max_digits=10,
-                         decimal_places=2, default_currency='RUB', default=0)
     is_active = models.BooleanField('Активный', default=True)
 
     class Meta:
@@ -33,6 +22,39 @@ class Company(models.Model):
         return f"{self.name}"
 
 
+class WorkPlaceCompany(models.Model):
+    company = models.OneToOneField(Company, related_name='work_place', on_delete=models.CASCADE)
+    countries = models.ManyToManyField(
+        Country, verbose_name='Страны из которых принимаются заказы', related_name='companies')
+    regions = models.ManyToManyField(
+        Region, verbose_name='Регионы из которых принимаются заказы', related_name='companies')
+    cities = models.ManyToManyField(
+        City, verbose_name='Города или Населенные пункты из которых принимаются заказы', related_name='companies')
+    districts = models.ManyToManyField(
+        District, verbose_name='Районы которых принимаются заказы', related_name='companies')
+    streets = models.ManyToManyField(
+        Street, verbose_name='Улицы из которых принимаются заказы', related_name='companies')
+    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Прием заказов"
+        verbose_name_plural = "Прием заказов"
+
+    def __str__(self):
+        return f"{self.id}"
+
+class AccountingCompany(models.Model):
+    company = models.OneToOneField(Company, related_name='accounting', on_delete=models.CASCADE)
+    balance = MoneyField('Баланс', max_digits=10,
+                         decimal_places=2, default_currency='RUB', default=0)
+    class Meta:
+        verbose_name = "Аккаунтинг"
+        verbose_name_plural = "Аккаунтинг"
+
+    def __str__(self):
+        return f"{self.id}"
+
+    
 class ServiceCompany(models.Model):
     MONTH = "ONE_MONTH"
     THREE_MONTHS = "THREE_MONTHS"

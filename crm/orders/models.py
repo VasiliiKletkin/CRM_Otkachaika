@@ -5,9 +5,13 @@ from clients.models import Client
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
-from employees.models import Driver, Dispatcher
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
+
+from .tasks import send_order_to_driver
 
 User = get_user_model()
 
@@ -57,7 +61,7 @@ class Order(models.Model):
         "Планируемая дата выполнения", null=True, blank=True)
     date_started = MonitorField("Дата начала выполнения", monitor='status', when=[
                                 INPROGRESS], null=True, blank=True, default=None)
-    date_completed = MonitorField("Дата выполнения", monitor='status', when=[
+    date_completed = MonitorField("Дата конца выполнения", monitor='status', when=[
                                   COMPLETED], null=True, blank=True, default=None)
     is_sent = models.BooleanField("Отправлен", default=False)
 
@@ -83,3 +87,12 @@ class Order(models.Model):
                 self.company = random.choice(companies)
             self.status = self.CONFIRMATION
         return super().save(*args, **kwargs)
+    
+    def send_to_driver(self):
+        send_order_to_driver.delay(self.id)
+
+
+@receiver(post_save, sender=Order)
+def post_save_order(sender, instance, created, **kwargs):
+    if not instance.is_sent:
+        instance.send_to_driver()

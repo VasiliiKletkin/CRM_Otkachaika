@@ -5,6 +5,20 @@ from model_utils import Choices
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+class Telegram(models.Model):
+    user_id = models.CharField(max_length=32)
+    username = models.CharField(max_length=32)
+    first_name = models.CharField(max_length=32, blank=True, null=True)
+    last_name = models.CharField(max_length=32, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Телеграм профиль'
+        verbose_name_plural = 'Телеграм профили'
+
+    def __str__(self):
+        return f'{self.username}-{self.user_id}, {self.first_name} {self.last_name}'
+
+
 class Profile(models.Model):
 
     OWNER = 'OWNER'
@@ -20,11 +34,10 @@ class Profile(models.Model):
     company = models.ForeignKey(
         Company, verbose_name='Компания', on_delete=models.PROTECT)
     user = models.OneToOneField(User, on_delete=models.PROTECT)
-    user_type = models.CharField(
-        choices=USER_TYPES, verbose_name='Тип пользователя', max_length=20)
+    user_type = models.CharField('Тип пользователя',
+        choices=USER_TYPES, max_length=20)
     phone_number = PhoneNumberField('Телефонный номер')
-    telegram_id = models.CharField(
-        'telegram_id', max_length=20, null=True, blank=True)
+    telegram = models.OneToOneField(Telegram, on_delete=models.PROTECT, help_text='Введите username без "@"', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Профиль'

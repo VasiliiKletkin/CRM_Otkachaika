@@ -3,12 +3,13 @@ from clients.models import Client
 from django.contrib import admin
 from mixins import SuperUserInlineAdminMixin
 
-from .forms import AddressForm, CityForm, RegionForm, StreetForm
-from .models import Address, City, Country, Region, Street
+from .forms import (AddressForm, CityForm, CountyForm, DistrictForm,
+                    RegionForm, StreetForm)
+from .models import Address, City, Country, District, Region, Street
 
 
 class CountyAdmin(admin.ModelAdmin):
-    pass
+    form = CountyForm
 
 
 class RegionAdmin(admin.ModelAdmin):
@@ -18,6 +19,10 @@ class RegionAdmin(admin.ModelAdmin):
 class CityAdmin(admin.ModelAdmin):
     form = CityForm
 
+
+class DistrictAdmin(admin.ModelAdmin):
+    form = DistrictForm
+    
 
 class StreetAdmin(admin.ModelAdmin):
     form = StreetForm
@@ -36,9 +41,9 @@ class AddressAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(clients__company=request.user.profile.company)
+        if not request.user.is_superuser:
+            return qs.filter(street__in=request.user.profile.company.work_place.streets.all())
+        return qs
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
@@ -48,9 +53,10 @@ class AddressAdmin(admin.ModelAdmin):
                 instance.company = request.user.profile.company
             instance.save()
         return formset.save_m2m()
-
+        
 
 admin.site.register(Street, StreetAdmin)
+admin.site.register(District, DistrictAdmin)
 admin.site.register(Country, CountyAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(City, CityAdmin)

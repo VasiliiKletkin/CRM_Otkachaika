@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
     command: celery -A crm.celery.app worker --pool=prefork -l info
     volumes:
-      - ./crm:/app/web
+      - ./crm:/home/app/web
     env_file:
       - ./.env
     depends_on:
@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile
     command: celery -A crm beat -l info
     volumes:
-      - ./crm:/app/web
+      - ./crm:/home/app/web
     env_file:
       - ./.env
     depends_on:
@@ -56,7 +56,7 @@ services:
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./crm:/app/web
+      - ./crm:/home/app/web
     env_file:
       - ./.env
     ports:
@@ -64,16 +64,16 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-
+  
 
   bot:
     container_name: bot
     build:
-      context: bot/
+      context: crm/
       dockerfile: Dockerfile
     restart: always
-    command: python main.py
+    command: python manage.py bot
     volumes:
-      - ./bot:/app/bot
+      - ./crm:/home/app/web
     env_file:
       - ./.env

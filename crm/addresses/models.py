@@ -14,7 +14,7 @@ class Country(models.Model):
 
 class Region(models.Model):
     country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, verbose_name="Cтрана", related_name="regions")
+        Country, on_delete=models.PROTECT, verbose_name="Страна", related_name="regions")
     name = models.CharField('Название', max_length=255)
 
     class Meta:
@@ -38,12 +38,28 @@ class City(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name}, {self.region}"
+        return f"г.{self.name}, {self.region}"
 
+
+class District(models.Model):
+    city = models.ForeignKey(
+        City, on_delete=models.PROTECT, verbose_name="Город", related_name="districts")
+    name = models.CharField('Название', max_length=255)
+
+    class Meta:
+        verbose_name = "Район"
+        verbose_name_plural = "Районы"
+        indexes = [
+            models.Index(name="district_name_idx", fields=['name']),
+        ]
+
+    def __str__(self):
+        return f"р-он.{self.name}, {self.city}"
+    
 
 class Street(models.Model):
-    city = models.ForeignKey(
-        City, on_delete=models.PROTECT, verbose_name="Город", related_name="streets")
+    district = models.ForeignKey(
+        District, on_delete=models.PROTECT, verbose_name="Район", related_name="streets")
     name = models.CharField('Название', max_length=255)
 
     class Meta:
@@ -54,7 +70,7 @@ class Street(models.Model):
         ]
 
     def __str__(self):
-        return f"ул. {self.name}, {self.city.name}, {self.city.region.name}"
+        return f"ул. {self.name}, {self.district.name}, {self.district.city.name}, {self.district.city.region.name}"
 
 
 class Address(models.Model):
@@ -65,10 +81,10 @@ class Address(models.Model):
 
     class Meta:
         verbose_name = "Адрес"
-        verbose_name_plural = "Адресa"
+        verbose_name_plural = "Адреса"
         indexes = [
             models.Index(name="address_home_idx", fields=['home']),
         ]
 
     def __str__(self):
-        return f"{self.home}, ул. {self.street.name}, {self.street.city.name}"
+        return f"{self.home}, ул. {self.street.name}, {self.street.district.city.name}"

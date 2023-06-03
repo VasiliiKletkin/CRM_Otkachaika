@@ -1,16 +1,13 @@
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.contrib.auth import login
-from .forms import CreationForm
+from dal import autocomplete
+from django.db.models import Q
+
+from .models import Telegram
 
 
-class SignUp(CreateView):
-    form_class = CreationForm
-    success_url = reverse_lazy('admin')
-    template_name = "users/signup.html"
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect("home")
+class TelegramAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Telegram.objects.all()
+        if self.q:
+            qs = qs.filter(Q(user_id=self.q)
+                           | Q(username=self.q))
+        return qs

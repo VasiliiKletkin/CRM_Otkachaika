@@ -1,7 +1,8 @@
-from django.urls import path, include
-from . import views
+from django.urls import include, path
+
+from .views import TelegramAutocomplete
 
 urlpatterns = [
-    path('signup/', views.SignUp.as_view(), name='signup'),
-    path('', include('django.contrib.auth.urls')),
+    path('telegram-autocomplete/', TelegramAutocomplete.as_view(),
+         name='telegram-autocomplete'),
 ]

@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
 from employees.models import Driver
 from mixins import SuperUserAdminMixin
@@ -32,6 +32,15 @@ class OrderAdmin(SuperUserAdminMixin, admin.ModelAdmin):
     ordering = ('date_created', 'date_completed')
     form = OrderForm
 
+    actions = ("uppercase", )
+
+    @admin.action(description='Отправить водителю')
+    def uppercase(modeladmin, request, queryset):
+        for obj in queryset:
+            obj.send_to_driver()
+        messages.success(request, "Выбранные заказы были отправлены")
+
+
     def save_model(self, request, obj, form, change):
         if not obj.id:
             obj.dispatcher = request.user
@@ -44,14 +53,14 @@ class OrderAdmin(SuperUserAdminMixin, admin.ModelAdmin):
                        'type_payment', 'date_planned')
 
         self.readonly_fields = ()
-        return super().add_view(request)
+        return super().add_view(request, extra_context=extra_content)
 
     def change_view(self, request, object_id, extra_context=None):
         self.fields = ('company', ('status', 'dispatcher'), ('driver', 'address'), 'client', 'description',
                        ('price', 'type_payment'), ('date_planned', 'date_started', 'date_completed'), 'is_sent')
         self.fields = ('company', 'status', 'dispatcher', 'driver', 'address', 'client', 'description',  'price',
-                       'type_payment', 'date_planned', 'date_started', 'date_completed', 'is_sent')
-        self.readonly_fields = ('company', 'dispatcher', 'driver', 'address',
+                       'type_payment', 'date_created', 'date_planned', 'date_started', 'date_completed', 'is_sent')
+        self.readonly_fields = ('company', 'dispatcher', 'driver', 'address', 'date_created',
                                 'client', 'description', 'date_started', 'price', 'type_payment', 'date_planned', 'date_completed', 'is_sent')
 
         return super().change_view(request, object_id, extra_context)
