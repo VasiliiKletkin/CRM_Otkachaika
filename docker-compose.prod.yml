@@ -75,7 +75,7 @@ services:
     restart: always
     command: python manage.py bot
     volumes:
-      - ./bot:/home/app/web
+      - ./crm:/home/app/web
     env_file:
       - ./.env
 
