@@ -1,3 +1,6 @@
+from typing import Any
+from django.db.models.query import QuerySet
+from django.http.request import HttpRequest
 from companies.forms import CompanyForm
 from django.contrib import admin
 
@@ -41,7 +44,6 @@ class ServiceCompanyAdmin(admin.ModelAdmin):
         "period",
         "price",
     )
-
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(ServiceCompany, ServiceCompanyAdmin)

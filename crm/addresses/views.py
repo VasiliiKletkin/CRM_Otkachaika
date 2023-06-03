@@ -123,11 +123,9 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
 
         if not self.request.user.is_superuser:
             qs = qs.filter(street__in=self.request.user.profile.company.work_place.streets.all())
-        else:
-            company = self.forwarded.get('company', None)
-            if company:
-                company = Company.objects.get(id=company)
-                qs = qs.filter(street__in=company.streets.all())
+        elif company := self.forwarded.get('company', None):
+            company = Company.objects.get(id=company)
+            qs = qs.filter(street__in=company.work_place.streets.all())
 
         if self.q:
             if len(self.q.split()) > 1:

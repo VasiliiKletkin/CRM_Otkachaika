@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django_currentuser.middleware import get_current_user
 from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -117,8 +118,9 @@ class Order(CompanyMixin, models.Model):
         return f"Заказ N{self.id}, {self.address} - {self.get_status_display()}"
 
     def save(self, *args, **kwargs):
+        user = get_current_user()
         if not self.id:
-            self.dispatcher = self.request.user
+            self.dispatcher = user
 
         # if not self.company:
         #     companies = Company.objects.filter(

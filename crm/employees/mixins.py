@@ -1,3 +1,6 @@
+from django_currentuser.middleware import get_current_user
+
+
 class EmployeesAminMixin:
     prepopulated_fields = {
         "username": (
@@ -43,7 +46,11 @@ class EmployeesAminMixin:
     )
 
     def get_queryset(self, request):
-        return super().get_queryset(request).filter(profile__user_type=self.user_type)
+        user = get_current_user()
+        queryset = super().get_queryset(request).filter(profile__user_type=self.user_type)
+        if not user.is_superuser:
+            return queryset.filter(profile__company=user.profile.company)
+        return queryset
 
     def save_model(self, request, obj, form, change):
         if not obj.id:

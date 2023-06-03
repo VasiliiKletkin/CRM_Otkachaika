@@ -3,8 +3,14 @@ from clients.models import Client
 from companies.mixins import CompanyInlineAdminMixin
 from django.contrib import admin
 
-from .forms import (AddressForm, CityForm, CountyForm, DistrictForm,
-                    RegionForm, StreetForm)
+from .forms import (
+    AddressForm,
+    CityForm,
+    CountyForm,
+    DistrictForm,
+    RegionForm,
+    StreetForm,
+)
 from .models import Address, City, Country, District, Region, Street
 
 

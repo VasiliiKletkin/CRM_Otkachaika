@@ -2,7 +2,6 @@ from companies.mixins import CompanyAdminMixin, CompanyInlineAdminMixin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from users.admin import ProfileInline
-from users.forms import ProfileInlineForm
 from users.models import Profile
 
 from .forms import CarForm
@@ -27,7 +26,11 @@ class CarAdmin(CompanyAdminMixin, admin.ModelAdmin):
 class ProfileEmployeeInline(ProfileInline):
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
-        return self.remove_fields(request, fields, fields_to_remove=("user_type",))
+        fields_to_remove = ("user_type",)
+        for field in fields_to_remove:
+            if field in fields:
+                fields.remove(field)
+        return fields
 
 
 class CarInline(CompanyInlineAdminMixin, admin.StackedInline):

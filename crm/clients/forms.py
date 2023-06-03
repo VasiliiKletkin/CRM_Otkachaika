@@ -9,8 +9,8 @@ class ClientForm(forms.ModelForm):
         model = Client
         fields = ('__all__')
         widgets = {
-            'address': autocomplete.ModelSelect2(url='address-autocomplete', attrs={'data-minimum-input-length': 3}),
-            'company': autocomplete.ModelSelect2(url='company-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'company': autocomplete.ModelSelect2(url='company-autocomplete'),
+            'address': autocomplete.ModelSelect2(url='address-autocomplete', forward=['company'], attrs={'data-minimum-input-length': 3}),
         }
 
 class ClientInlineForm(forms.ModelForm):
@@ -18,5 +18,5 @@ class ClientInlineForm(forms.ModelForm):
         model = Client
         fields = ('__all__')
         widgets = {
-            'company': autocomplete.ModelSelect2(url='company-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'company': autocomplete.ModelSelect2(url='company-autocomplete'),
         }
