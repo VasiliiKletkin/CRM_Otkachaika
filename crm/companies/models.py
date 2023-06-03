@@ -5,6 +5,8 @@ from django.utils import timezone
 from djmoney.models.fields import MoneyField
 from model_utils import Choices
 
+from companies.mixins import CompanyMixin
+
 
 class Company(models.Model):
     name = models.CharField('Название компании', max_length=255)
@@ -22,7 +24,7 @@ class Company(models.Model):
         return f"{self.name}"
 
 
-class WorkPlaceCompany(models.Model):
+class WorkPlaceCompany(CompanyMixin, models.Model):
     company = models.OneToOneField(Company, related_name='work_place', on_delete=models.CASCADE)
     countries = models.ManyToManyField(
         Country, verbose_name='Страны из которых принимаются заказы', related_name='companies')
@@ -43,7 +45,7 @@ class WorkPlaceCompany(models.Model):
     def __str__(self):
         return f"{self.id}"
 
-class AccountingCompany(models.Model):
+class AccountingCompany(CompanyMixin, models.Model):
     company = models.OneToOneField(Company, related_name='accounting', on_delete=models.CASCADE)
     balance = MoneyField('Баланс', max_digits=10,
                          decimal_places=2, default_currency='RUB', default=0)
@@ -82,7 +84,7 @@ class ServiceCompany(models.Model):
         return f"{self.title} {self.get_period_display()}"
 
 
-class SubscriptionCompany(models.Model):
+class SubscriptionCompany(CompanyMixin, models.Model):
     company = models.ForeignKey(Company, verbose_name="Компании",
                                 on_delete=models.PROTECT, related_name='subscriptions')
     service = models.ForeignKey(ServiceCompany, verbose_name="Услуга",

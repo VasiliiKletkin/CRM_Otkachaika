@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Country(models.Model):
-    name = models.CharField('Название', max_length=255)
+    name = models.CharField("Название", max_length=255)
 
     class Meta:
         verbose_name = "Страну"
@@ -14,8 +14,9 @@ class Country(models.Model):
 
 class Region(models.Model):
     country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, verbose_name="Страна", related_name="regions")
-    name = models.CharField('Название', max_length=255)
+        Country, on_delete=models.PROTECT, verbose_name="Страна", related_name="regions"
+    )
+    name = models.CharField("Название", max_length=255)
 
     class Meta:
         verbose_name = "Регион"
@@ -27,14 +28,15 @@ class Region(models.Model):
 
 class City(models.Model):
     region = models.ForeignKey(
-        Region, on_delete=models.PROTECT, verbose_name="Регион", related_name="cities")
-    name = models.CharField('Название', max_length=255)
+        Region, on_delete=models.PROTECT, verbose_name="Регион", related_name="cities"
+    )
+    name = models.CharField("Название", max_length=255)
 
     class Meta:
         verbose_name = "Город"
         verbose_name_plural = "Города"
         indexes = [
-            models.Index(name="city_name_idx", fields=['name']),
+            models.Index(name="city_name_idx", fields=["name"]),
         ]
 
     def __str__(self):
@@ -43,30 +45,32 @@ class City(models.Model):
 
 class District(models.Model):
     city = models.ForeignKey(
-        City, on_delete=models.PROTECT, verbose_name="Город", related_name="districts")
-    name = models.CharField('Название', max_length=255)
+        City, on_delete=models.PROTECT, verbose_name="Город", related_name="districts"
+    )
+    name = models.CharField("Название", max_length=255)
 
     class Meta:
         verbose_name = "Район"
         verbose_name_plural = "Районы"
         indexes = [
-            models.Index(name="district_name_idx", fields=['name']),
+            models.Index(name="district_name_idx", fields=["name"]),
         ]
 
     def __str__(self):
         return f"р-он.{self.name}, {self.city}"
-    
+
 
 class Street(models.Model):
     district = models.ForeignKey(
-        District, on_delete=models.PROTECT, verbose_name="Район", related_name="streets")
-    name = models.CharField('Название', max_length=255)
+        District, on_delete=models.PROTECT, verbose_name="Район", related_name="streets"
+    )
+    name = models.CharField("Название", max_length=255)
 
     class Meta:
         verbose_name = "Улицу"
         verbose_name_plural = "Улицы"
         indexes = [
-            models.Index(name="street_name_idx", fields=['name']),
+            models.Index(name="street_name_idx", fields=["name"]),
         ]
 
     def __str__(self):
@@ -75,7 +79,8 @@ class Street(models.Model):
 
 class Address(models.Model):
     street = models.ForeignKey(
-        Street, on_delete=models.PROTECT, verbose_name="Улица", related_name="addresses")
+        Street, on_delete=models.PROTECT, verbose_name="Улица", related_name="addresses"
+    )
     home = models.CharField("Дом", max_length=255)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
 
@@ -83,8 +88,16 @@ class Address(models.Model):
         verbose_name = "Адрес"
         verbose_name_plural = "Адреса"
         indexes = [
-            models.Index(name="address_home_idx", fields=['home']),
+            models.Index(name="address_home_idx", fields=["home"]),
         ]
 
     def __str__(self):
         return f"{self.home}, ул. {self.street.name}, {self.street.district.city.name}"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if not self.request.user.is_superuser:
+            return queryset.filter(
+                street__in=self.request.user.profile.company.work_place.streets.all()
+            )
+        return queryset

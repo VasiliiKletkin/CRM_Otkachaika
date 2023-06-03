@@ -1,6 +1,6 @@
+from companies.mixins import CompanyAdminMixin, CompanyInlineAdminMixin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from mixins import SuperUserAdminMixin, SuperUserInlineAdminMixin
 from users.admin import ProfileInline
 from users.forms import ProfileInlineForm
 from users.models import Profile
@@ -10,43 +10,50 @@ from .mixins import EmployeesAminMixin
 from .models import Car, Dispatcher, Driver, Owner
 
 
-class CarAdmin(SuperUserAdminMixin, admin.ModelAdmin):
-    list_display = ('name', 'number', 'company')
-    list_filter = ('name',)
-    search_fields = ('name', 'number',)
-    ordering = ('name', 'number',)
+class CarAdmin(CompanyAdminMixin, admin.ModelAdmin):
+    list_display = ("name", "number", "company")
+    list_filter = ("name",)
+    search_fields = (
+        "name",
+        "number",
+    )
+    ordering = (
+        "name",
+        "number",
+    )
     form = CarForm
 
 
-class ProfileInline(SuperUserInlineAdminMixin, admin.StackedInline):
-    model = Profile
-    form = ProfileInlineForm
-
+class ProfileEmployeeInline(ProfileInline):
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
-        fields_to_remove = ('user_type', )
-        for field in fields_to_remove:
-            fields.remove(field)
-        return fields
+        return self.remove_fields(request, fields, fields_to_remove=("user_type",))
 
 
-class CarInline(SuperUserInlineAdminMixin, admin.StackedInline):
+class CarInline(CompanyInlineAdminMixin, admin.StackedInline):
     model = Car
 
 
 class DriverAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DRIVER
-    inlines = [ProfileInline, CarInline,]
+    inlines = [
+        ProfileEmployeeInline,
+        CarInline,
+    ]
 
 
 class DispatcherAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DISPATCHER
-    inlines = [ProfileInline,]
+    inlines = [
+        ProfileEmployeeInline,
+    ]
 
 
 class OwnerAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.OWNER
-    inlines = [ProfileInline,]
+    inlines = [
+        ProfileEmployeeInline,
+    ]
 
 
 admin.site.register(Car, CarAdmin)

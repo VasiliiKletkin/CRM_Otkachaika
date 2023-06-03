@@ -18,10 +18,6 @@ class AccountingCompanyInlineAdmin(admin.StackedInline):
 
 
 class SubscriptionCompanyInlineAdmin(admin.StackedInline):
-    # list_display = ('company', 'service', 'subscribed_on',
-    #                 'expiring_on', 'is_active',)
-    # readonly_fields = ('subscribed_on', 'expiring_on',)
-    extra=0
     model = SubscriptionCompany
     form = SubscriptionsCompanyForm
 
@@ -32,11 +28,19 @@ class CompanyAdmin(admin.ModelAdmin):
     # search_fields = ('name', 'phone_number', 'date_created')
     # ordering = ('name', 'date_created', 'cities',)
     form = CompanyForm
-    inlines = [WorkPlaceCompanyInlineAdmin, AccountingCompanyInlineAdmin, SubscriptionCompanyInlineAdmin]
+    inlines = [
+        WorkPlaceCompanyInlineAdmin,
+        AccountingCompanyInlineAdmin,
+        SubscriptionCompanyInlineAdmin,
+    ]
 
 
 class ServiceCompanyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'period', 'price',)
+    list_display = (
+        "title",
+        "period",
+        "price",
+    )
 
 
 admin.site.register(Company, CompanyAdmin)

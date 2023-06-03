@@ -1,7 +1,7 @@
+from companies.mixins import CompanyAdminMixin
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
 from employees.models import Driver
-from mixins import SuperUserAdminMixin
 from orders.forms import OrderForm
 from users.models import Profile
 
@@ -9,8 +9,8 @@ from .models import Order
 
 
 class DriversFilter(SimpleListFilter):
-    title = 'Водители'
-    parameter_name = 'driver'
+    title = "Водители"
+    parameter_name = "driver"
 
     def lookups(self, request, model_admin):
         qs = Driver.objects.all()
@@ -24,44 +24,86 @@ class DriversFilter(SimpleListFilter):
             return queryset.filter(driver_id=self.value())
 
 
-class OrderAdmin(SuperUserAdminMixin, admin.ModelAdmin):
-    list_display = ('address', 'price', 'driver',
-                    'status', 'date_completed', 'company')
-    list_filter = ('status', DriversFilter)
-    search_fields = ('address',)
-    ordering = ('date_created', 'date_completed')
+class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
+    list_display = ("address", "price", "driver", "status", "date_completed", "company")
+    list_filter = ("status", DriversFilter)
+    search_fields = ("address",)
+    ordering = ("date_created", "date_completed")
     form = OrderForm
 
-    actions = ("uppercase", )
+    actions = ("uppercase",)
 
-    @admin.action(description='Отправить водителю')
+    @admin.action(description="Отправить водителю")
     def uppercase(modeladmin, request, queryset):
         for obj in queryset:
             obj.send_to_driver()
         messages.success(request, "Выбранные заказы были отправлены")
 
-
-    def save_model(self, request, obj, form, change):
-        if not obj.id:
-            obj.dispatcher = request.user
-        return super().save_model(request, obj, form, change)
-
     def add_view(self, request, extra_content=None):
-        self.fields = ('company', ('driver', 'address'), 'client',
-                       'description',  ('price', 'type_payment'), 'date_planned')
-        self.fields = ('company', 'driver', 'address', 'client', 'description', 'price',
-                       'type_payment', 'date_planned')
+        self.fields = (
+            "company",
+            ("driver", "address"),
+            "client",
+            "description",
+            ("price", "type_payment"),
+            "date_planned",
+        )
+        self.fields = (
+            "company",
+            "driver",
+            "address",
+            "client",
+            "description",
+            "price",
+            "type_payment",
+            "date_planned",
+        )
 
         self.readonly_fields = ()
         return super().add_view(request, extra_context=extra_content)
 
     def change_view(self, request, object_id, extra_context=None):
-        self.fields = ('company', ('status', 'dispatcher'), ('driver', 'address'), 'client', 'description',
-                       ('price', 'type_payment'), ('date_planned', 'date_started', 'date_completed'), 'is_sent')
-        self.fields = ('company', 'status', 'dispatcher', 'driver', 'address', 'client', 'description',  'price',
-                       'type_payment', 'date_created', 'date_planned', 'date_started', 'date_completed', 'is_sent')
-        self.readonly_fields = ('company', 'dispatcher', 'driver', 'address', 'date_created',
-                                'client', 'description', 'date_started', 'price', 'type_payment', 'date_planned', 'date_completed', 'is_sent')
+        self.fields = (
+            "company",
+            ("status", "dispatcher"),
+            ("driver", "address"),
+            "client",
+            "description",
+            ("price", "type_payment"),
+            ("date_planned", "date_started", "date_completed"),
+            "is_sent",
+        )
+        self.fields = (
+            "company",
+            "status",
+            "dispatcher",
+            "driver",
+            "address",
+            "client",
+            "description",
+            "price",
+            "type_payment",
+            "date_created",
+            "date_planned",
+            "date_started",
+            "date_completed",
+            "is_sent",
+        )
+        self.readonly_fields = (
+            "company",
+            "dispatcher",
+            "driver",
+            "address",
+            "date_created",
+            "client",
+            "description",
+            "date_started",
+            "price",
+            "type_payment",
+            "date_planned",
+            "date_completed",
+            "is_sent",
+        )
 
         return super().change_view(request, object_id, extra_context)
 
