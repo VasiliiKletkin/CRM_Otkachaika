@@ -61,7 +61,7 @@ class Order(models.Model):
         "Планируемая дата выполнения", null=True, blank=True)
     date_started = MonitorField("Дата начала выполнения", monitor='status', when=[
                                 INPROGRESS], null=True, blank=True, default=None)
-    date_completed = MonitorField("Дата выполнения", monitor='status', when=[
+    date_completed = MonitorField("Дата конца выполнения", monitor='status', when=[
                                   COMPLETED], null=True, blank=True, default=None)
     is_sent = models.BooleanField("Отправлен", default=False)
 

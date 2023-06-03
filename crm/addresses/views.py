@@ -80,7 +80,7 @@ class DistrictAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class StreetAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
+    def get_queryset(self):  # sourcery skip: use-named-expression
         qs = Street.objects.all()
 
         country = self.forwarded.get('country', None)
@@ -104,9 +104,9 @@ class StreetAutocomplete(autocomplete.Select2QuerySetView):
         if districts:
             qs = qs.filter(district__in=districts)
 
-        # #for new address
-        # if not self.request.user.is_superuser:
-        #     qs = qs.filter(street__in=self.request.user.profile.company.cities.all())
+        #for new addresses from owner
+        if not districts and not self.request.user.is_superuser:
+            qs = self.request.user.profile.company.work_place.streets.all() 
 
         if self.q:
             if len(self.q.split()) > 1:
@@ -136,9 +136,5 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
                     street__name__icontains=splitted_line[0]) 
                     | Q(street__name__icontains=self.q))
             else:
-                qs = qs.filter(Q(home__icontains=self.q)
-                               | Q(street__name__icontains=self.q)
-                               | Q(street__city__name__icontains=self.q)
-                               | Q(street__city__name__icontains=self.q)
-                               )
+                qs = qs.filter(Q(home__icontains=self.q) | Q(street__name__icontains=self.q))
         return qs

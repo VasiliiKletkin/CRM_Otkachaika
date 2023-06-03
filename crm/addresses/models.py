@@ -14,7 +14,7 @@ class Country(models.Model):
 
 class Region(models.Model):
     country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, verbose_name="Cтрана", related_name="regions")
+        Country, on_delete=models.PROTECT, verbose_name="Страна", related_name="regions")
     name = models.CharField('Название', max_length=255)
 
     class Meta:
@@ -81,7 +81,7 @@ class Address(models.Model):
 
     class Meta:
         verbose_name = "Адрес"
-        verbose_name_plural = "Адресa"
+        verbose_name_plural = "Адреса"
         indexes = [
             models.Index(name="address_home_idx", fields=['home']),
         ]
