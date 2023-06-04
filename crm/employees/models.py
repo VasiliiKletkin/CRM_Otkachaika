@@ -1,3 +1,4 @@
+from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -35,14 +36,20 @@ class Owner(User):
         return f"{self.first_name} {self.last_name}"
 
 
-class Car(models.Model):
+class Car(CompanyMixin, models.Model):
     company = models.ForeignKey(
-        Company, on_delete=models.PROTECT, verbose_name='Компания', related_name='cars')
+        Company, on_delete=models.PROTECT, verbose_name="Компания", related_name="cars"
+    )
     name = models.CharField("Название", max_length=255)
     number = models.CharField("Регистрационный номер", max_length=255)
     driver = models.OneToOneField(
-        User, on_delete=models.SET_NULL, verbose_name='Водитель',related_name='car', null=True, blank=True)
-    
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name="Водитель",
+        related_name="car",
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = "Машину"

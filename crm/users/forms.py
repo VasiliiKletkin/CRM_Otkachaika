@@ -9,6 +9,6 @@ class ProfileInlineForm(forms.ModelForm):
         model = Profile
         fields = ('__all__')
         widgets = {
-            'company': autocomplete.ModelSelect2(url='company-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'company': autocomplete.ModelSelect2(url='company-autocomplete'),
             'telegram': autocomplete.ModelSelect2(url='telegram-autocomplete'),
         }

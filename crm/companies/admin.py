@@ -1,3 +1,6 @@
+from typing import Any
+from django.db.models.query import QuerySet
+from django.http.request import HttpRequest
 from companies.forms import CompanyForm
 from django.contrib import admin
 
@@ -18,26 +21,28 @@ class AccountingCompanyInlineAdmin(admin.StackedInline):
 
 
 class SubscriptionCompanyInlineAdmin(admin.StackedInline):
-    # list_display = ('company', 'service', 'subscribed_on',
-    #                 'expiring_on', 'is_active',)
-    # readonly_fields = ('subscribed_on', 'expiring_on',)
-    extra=0
     model = SubscriptionCompany
     form = SubscriptionsCompanyForm
 
 
 class CompanyAdmin(admin.ModelAdmin):
-    # list_display = ('name', 'date_created')
-    # list_filter = ('date_created', 'cities',)
-    # search_fields = ('name', 'phone_number', 'date_created')
-    # ordering = ('name', 'date_created', 'cities',)
+    list_display = ('name','is_active',)
+    search_fields = ('name',)
+    ordering = ('is_active', )
     form = CompanyForm
-    inlines = [WorkPlaceCompanyInlineAdmin, AccountingCompanyInlineAdmin, SubscriptionCompanyInlineAdmin]
+    inlines = [
+        WorkPlaceCompanyInlineAdmin,
+        AccountingCompanyInlineAdmin,
+        SubscriptionCompanyInlineAdmin,
+    ]
 
 
 class ServiceCompanyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'period', 'price',)
-
+    list_display = (
+        "title",
+        "period",
+        "price",
+    )
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(ServiceCompany, ServiceCompanyAdmin)

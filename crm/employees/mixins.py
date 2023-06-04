@@ -1,20 +1,56 @@
+from django_currentuser.middleware import get_current_user
+
 
 class EmployeesAminMixin:
-    prepopulated_fields = {'username': ('first_name' , 'last_name',)}
-    list_display = ('username', 'first_name', 'last_name', 'is_active', )
-    list_filter = ('first_name', 'is_active',)
-    search_fields = ('first_name', 'last_name', 'phone_number',)
-    ordering = ('first_name', 'last_name', 'is_active',)
+    prepopulated_fields = {
+        "username": (
+            "first_name",
+            "last_name",
+        )
+    }
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "is_active",
+    )
+    list_filter = (
+        "first_name",
+        "is_active",
+    )
+    search_fields = (
+        "first_name",
+        "last_name",
+        "phone_number",
+    )
+    ordering = (
+        "first_name",
+        "last_name",
+        "is_active",
+    )
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('first_name', 'last_name', 'username', 'email', 'password1', 'password2', ),
-        }),
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
     )
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request).filter(profile__user_type=self.user_type)
-        return qs
+        user = get_current_user()
+        queryset = super().get_queryset(request).filter(profile__user_type=self.user_type)
+        if not user.is_superuser:
+            return queryset.filter(profile__company=user.profile.company)
+        return queryset
 
     def save_model(self, request, obj, form, change):
         if not obj.id:
@@ -23,12 +59,9 @@ class EmployeesAminMixin:
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=False)
-        is_superuser = request.user.is_superuser
         for instance in instances:
-            user_type = hasattr(instance, 'user_type')
+            user_type = hasattr(instance, "user_type")
             if user_type:
                 instance.user_type = self.user_type
-            if not is_superuser:
-                instance.company = request.user.profile.company
             instance.save()
         return formset.save_m2m()
