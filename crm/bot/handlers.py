@@ -26,26 +26,22 @@ def send_welcome(message):
 def order_callback_started(call: types.CallbackQuery):
     callback_data: dict = order_callback.parse(callback_data=call.data)
     order = Order.objects.get(id=callback_data['order_id'])
-    order.status = Order.INPROGRESS
-    order.save()
+    order.start()
     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                           text=get_order_info(order), reply_markup=get_order_inline_keyboard(order))
-    
+
 @bot.callback_query_handler(func=None, order_config=order_callback.filter(button="complete"))
 def order_callback_completed(call: types.CallbackQuery):
     callback_data: dict = order_callback.parse(callback_data=call.data)
     order = Order.objects.get(id=callback_data['order_id'])
-    order.status = Order.COMPLETED
-    order.save()
+    order.complete()
     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                           text=get_order_info(order), reply_markup=get_order_inline_keyboard(order))
-
 
 @bot.callback_query_handler(func=None, order_config=order_callback.filter(button="cancel"))
 def callback_order_canceled(call: types.CallbackQuery):
     callback_data: dict = order_callback.parse(callback_data=call.data)
     order = Order.objects.get(id=callback_data['order_id'])
-    order.status = Order.CANCELED
-    order.save()
+    order.cancel()
     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                           text=get_order_info(order), reply_markup=get_order_inline_keyboard(order))

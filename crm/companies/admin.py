@@ -26,10 +26,9 @@ class SubscriptionCompanyInlineAdmin(admin.StackedInline):
 
 
 class CompanyAdmin(admin.ModelAdmin):
-    # list_display = ('name', 'date_created')
-    # list_filter = ('date_created', 'cities',)
-    # search_fields = ('name', 'phone_number', 'date_created')
-    # ordering = ('name', 'date_created', 'cities',)
+    list_display = ('name','is_active',)
+    search_fields = ('name',)
+    ordering = ('is_active', )
     form = CompanyForm
     inlines = [
         WorkPlaceCompanyInlineAdmin,

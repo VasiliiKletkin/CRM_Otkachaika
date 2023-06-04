@@ -122,17 +122,28 @@ class Order(CompanyMixin, models.Model):
         if not self.id:
             self.dispatcher = user
 
-        # if not self.company:
-        #     companies = Company.objects.filter(
-        #         city=self.address.city, subscriptions__is_active=True)
-        #     if companies:
-        #         self.company = random.choice(companies)
-        #     self.status = self.CONFIRMATION
+        if not self.company:
+            if companies := Company.objects.filter(
+                streets=self.address.street, subscriptions__is_active=True
+            ):
+                self.company = random.choice(companies)
+            self.status = self.CONFIRMATION
         return super().save(*args, **kwargs)
 
     def send_to_driver(self):
         send_order_to_driver.delay(self.id)
+        
+    def start(self):
+        self.status = Order.INPROGRESS
+        self.save()
+        
+    def complete(self):
+        self.status = Order.COMPLETED
+        self.save()
 
+    def cancel(self):
+        self.status = Order.CANCELED
+        self.save()
 
 @receiver(post_save, sender=Order)
 def post_save_order(sender, instance, created, **kwargs):

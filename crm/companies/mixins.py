@@ -3,9 +3,9 @@ from django_currentuser.middleware import get_current_user
 
 class CompanyMixin:
     def save(self, *args, **kwargs):
-        user = get_current_user()
-        if not user.is_superuser and not self.id:
-            self.company = user.profile.company
+        if user:= get_current_user():
+            if not user.is_superuser and not self.id:
+                self.company = user.profile.company
         return super().save(*args, **kwargs)
 
 
