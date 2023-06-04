@@ -4,7 +4,6 @@
 from bot.callbacks import order_callback
 from bot.config import bot
 from bot.keyboards import get_order_inline_keyboard
-
 from bot.utils import get_order_info
 from orders.models import Order
 from telebot import types
@@ -13,7 +12,6 @@ from users.models import Telegram
 
 @bot.message_handler(commands=['start',])
 def send_welcome(message):
-  bot.send_message(message.chat.id, "Это бот Откачайкаа")
   obj, created = Telegram.objects.update_or_create(
     user_id=message.from_user.id,
     defaults={"username": message.from_user.username,
@@ -21,6 +19,9 @@ def send_welcome(message):
                "last_name": message.from_user.last_name
                }
     )
+  bot.send_message(message.chat.id, "Это бот Откачайка")
+  bot.send_message(message.chat.id, f"Ваш ID:{obj.user_id}, Ваш username:{obj.username}")
+
 
 @bot.callback_query_handler(func=None, order_config=order_callback.filter(button="start"))
 def order_callback_started(call: types.CallbackQuery):
