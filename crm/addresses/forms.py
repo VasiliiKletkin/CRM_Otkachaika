@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django import forms
 
-from .models import Address, City, Country, District, Region, Street
+from .models import Address, City, Country, Region, Street
 
 
 class CountyForm(forms.ModelForm):
@@ -44,31 +44,15 @@ class CityForm(forms.ModelForm):
         model = City
         fields = ('__all__')
         widgets = {
-            'region': autocomplete.ModelSelect2(url='region-autocomplete', attrs={'data-minimum-input-length': 3}),
-        }
-
-
-class DistrictForm(forms.ModelForm):
-    def clean(self):
-        city = self.cleaned_data['city']
-        name = self.cleaned_data['name']
-        if District.objects.filter(city_id=city, name=name).exists():
-            raise forms.ValidationError('Такой район уже существует')
-        return super().clean()
-
-    class Meta:
-        model = District
-        fields = ('__all__')
-        widgets = {
-            'city': autocomplete.ModelSelect2(url='city-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'region': autocomplete.ModelSelect2(url='region-autocomplete'),
         }
 
 
 class StreetForm(forms.ModelForm):
     def clean(self):
-        district = self.cleaned_data['district']
+        city = self.cleaned_data['city']
         name = self.cleaned_data['name']
-        if Street.objects.filter(district_id=district, name=name).exists():
+        if Street.objects.filter(city_id=city, name=name).exists():
             raise forms.ValidationError('Такая улица уже существует')
         return super().clean()
 
@@ -76,7 +60,7 @@ class StreetForm(forms.ModelForm):
         model = Street
         fields = ('__all__')
         widgets = {
-            'district': autocomplete.ModelSelect2(url='district-autocomplete', attrs={'data-minimum-input-length': 3}),
+            'city': autocomplete.ModelSelect2(url='city-autocomplete'),
         }
 
 

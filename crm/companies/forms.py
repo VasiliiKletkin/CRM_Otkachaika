@@ -19,8 +19,7 @@ class WorkPlaceCompanyInlineForm(forms.ModelForm):
             'countries': autocomplete.ModelSelect2Multiple(url='country-autocomplete'),
             'regions': autocomplete.ModelSelect2Multiple(url='region-autocomplete', forward=["countries"]),
             'cities': autocomplete.ModelSelect2Multiple(url='city-autocomplete', forward=["regions"]),
-            'districts': autocomplete.ModelSelect2Multiple(url='district-autocomplete', forward=["cities"]),
-            'streets': autocomplete.ModelSelect2Multiple(url='street-autocomplete', forward=["districts"]),
+            'streets': autocomplete.ModelSelect2Multiple(url='street-autocomplete', forward=["cities"]),
         }
 
 
