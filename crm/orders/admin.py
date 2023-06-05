@@ -58,7 +58,6 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
             "type_payment",
             "date_planned",
         )
-
         self.readonly_fields = ()
         return super().add_view(request, extra_context=extra_content)
 

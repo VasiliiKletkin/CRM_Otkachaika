@@ -2,7 +2,7 @@ from companies.models import Company
 from dal import autocomplete
 from django.db.models import Q
 
-from .models import Address, City, Country, District, Region, Street
+from .models import Address, City, Country, Region, Street
 
 
 class CountryAutocomplete(autocomplete.Select2QuerySetView):
@@ -17,13 +17,10 @@ class RegionAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Region.objects.all()
 
-        country = self.forwarded.get('country', None)
-        if country:
+        if country := self.forwarded.get('country', None):
             qs = qs.filter(Q(country=country))
-        
-        #for workplace
-        countries = self.forwarded.get('countries', None)
-        if countries:
+
+        if countries := self.forwarded.get('countries', None):
             qs = qs.filter(country__in=countries)
 
         if self.q:
@@ -35,44 +32,14 @@ class CityAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = City.objects.all()
 
-        country = self.forwarded.get('country', None)
-        if country:
+        if country := self.forwarded.get('country', None):
             qs = qs.filter(Q(region__country=country))
 
-        region = self.forwarded.get('region', None)
-        if region:
+        if region := self.forwarded.get('region', None):
             qs = qs.filter(Q(region=region))
-        
-        #for workplace
-        regions = self.forwarded.get('regions', None)
-        if regions:
+
+        if regions := self.forwarded.get('regions', None):
             qs = qs.filter(region__in=regions)
-        
-        if self.q:
-            qs = qs.filter(Q(name__icontains=self.q))
-        return qs
-
-
-class DistrictAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = District.objects.all()
-
-        country = self.forwarded.get('country', None)
-        if country:
-            qs = qs.filter(Q(city__region__country=country))
-
-        region = self.forwarded.get('region', None)
-        if region:
-            qs = qs.filter(Q(city__region=region))
-
-        city = self.forwarded.get('city', None)
-        if city:
-            qs = qs.filter(Q(city=city))
-        
-        #for workplace
-        cities = self.forwarded.get('cities', None)
-        if cities:
-            qs = qs.filter(city__in=cities)
 
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q))
@@ -80,33 +47,24 @@ class DistrictAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class StreetAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):  # sourcery skip: use-named-expression
+    def get_queryset(self):
         qs = Street.objects.all()
 
-        country = self.forwarded.get('country', None)
-        if country:
-            qs = qs.filter(Q(district__city__region__country=country))
+        if country := self.forwarded.get('country', None):
+            qs = qs.filter(Q(city__region__country=country))
 
-        region = self.forwarded.get('region', None)
-        if region:
-            qs = qs.filter(Q(district__city__region=region))
+        if region := self.forwarded.get('region', None):
+            qs = qs.filter(Q(city__region=region))
 
-        city = self.forwarded.get('city', None)
-        if city:
-            qs = qs.filter(Q(district__city=city))
-        
-        district = self.forwarded.get('district', None)
-        if district:
-            qs = qs.filter(Q(district=district))
+        if city := self.forwarded.get('city', None):
+            qs = qs.filter(Q(city=city))
 
-        #for workplace
-        districts = self.forwarded.get('districts', None)
-        if districts:
-            qs = qs.filter(district__in=districts)
+        if cities := self.forwarded.get('cities', None):
+            qs = qs.filter(city__in=cities)
 
         #for new addresses from owner
-        if not districts and not self.request.user.is_superuser:
-            qs = self.request.user.profile.company.work_place.streets.all() 
+        # if not cities and not self.request.user.is_superuser:
+        #     qs = self.request.user.profile.company.work_place.streets.all()
 
         if self.q:
             if len(self.q.split()) > 1:
@@ -120,13 +78,11 @@ class StreetAutocomplete(autocomplete.Select2QuerySetView):
 class AddressAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Address.objects.all()
-
-        if not self.request.user.is_superuser:
-            qs = qs.filter(street__in=self.request.user.profile.company.work_place.streets.all())
-        elif company := self.forwarded.get('company', None):
-            company = Company.objects.get(id=company)
-            qs = qs.filter(street__in=company.work_place.streets.all())
-
+        # if not self.request.user.is_superuser:
+        #     qs = qs.filter(street__in=self.request.user.profile.company.work_place.regions.all())
+        # elif company := self.forwarded.get('company', None):
+        #     company = Company.objects.get(id=company)
+        #     qs = qs.filter(street__in=company.work_place.streets.all())
         if self.q:
             if len(self.q.split()) > 1:
                 splitted_line = self.q.split()

@@ -1,4 +1,4 @@
-from addresses.models import City, Country, District, Region, Street
+from addresses.models import City, Country, Region, Street
 from companies.mixins import CompanyMixin
 from dateutil.relativedelta import relativedelta
 from django.db import models
@@ -40,11 +40,6 @@ class WorkPlaceCompany(CompanyMixin, models.Model):
     cities = models.ManyToManyField(
         City,
         verbose_name="Города или Населенные пункты из которых принимаются заказы",
-        related_name="companies",
-    )
-    districts = models.ManyToManyField(
-        District,
-        verbose_name="Районы которых принимаются заказы",
         related_name="companies",
     )
     streets = models.ManyToManyField(
