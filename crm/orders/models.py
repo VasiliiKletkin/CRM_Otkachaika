@@ -5,7 +5,7 @@ from clients.models import Client
 from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.contrib.auth import get_user_model
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_currentuser.middleware import get_current_user
@@ -131,7 +131,7 @@ class Order(CompanyMixin, models.Model):
         return super().save(*args, **kwargs)
 
     def send_to_driver(self):
-        send_order_to_driver.delay(self.id)
+        transaction.on_commit(lambda: send_order_to_driver.delay(self.id))
         
     def start(self):
         self.status = Order.INPROGRESS
