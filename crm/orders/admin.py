@@ -64,7 +64,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
     def change_view(self, request, object_id, extra_context=None):
         self.fields = (
             "company",
-            ("status", "dispatcher"),
+            ("status", "created_by"),
             ("driver", "address"),
             "client",
             "description",
@@ -75,7 +75,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         self.fields = (
             "company",
             "status",
-            "dispatcher",
+            "created_by",
             "driver",
             "address",
             "client",
@@ -90,7 +90,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         )
         self.readonly_fields = (
             "company",
-            "dispatcher",
+            "created_by",
             "driver",
             "address",
             "date_created",

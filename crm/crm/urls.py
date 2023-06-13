@@ -33,6 +33,7 @@ urlpatterns = [
     #admin
     path('', admin.site.urls),
     # path('', include('admin_argon.urls')),
+    path('hijack/', include('hijack.urls')),
 ]
 
 if settings.DEBUG:

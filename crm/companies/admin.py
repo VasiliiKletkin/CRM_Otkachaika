@@ -21,6 +21,7 @@ class AccountingCompanyInlineAdmin(admin.StackedInline):
 
 
 class SubscriptionCompanyInlineAdmin(admin.StackedInline):
+    extra = 0
     model = SubscriptionCompany
     form = SubscriptionsCompanyForm
 

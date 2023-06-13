@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django_currentuser.middleware import get_current_user
+from django_currentuser.db.models import CurrentUserField
 from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -71,9 +71,9 @@ class Order(CompanyMixin, models.Model):
         blank=True,
         related_name="orders",
     )
-    dispatcher = models.ForeignKey(
+    created_by = CurrentUserField(
         Dispatcher,
-        verbose_name="Диспетчер",
+        verbose_name="Создан",
         on_delete=models.PROTECT,
         related_name="created_orders",
     )
@@ -117,26 +117,13 @@ class Order(CompanyMixin, models.Model):
     def __str__(self):
         return f"Заказ N{self.id}, {self.address} - {self.get_status_display()}"
 
-    def save(self, *args, **kwargs):
-        user = get_current_user()
-        if not self.id:
-            self.dispatcher = user
-
-        if not self.company:
-            if companies := Company.objects.filter(
-                streets=self.address.street, subscriptions__is_active=True
-            ):
-                self.company = random.choice(companies)
-            self.status = self.CONFIRMATION
-        return super().save(*args, **kwargs)
-
     def send_to_driver(self):
         transaction.on_commit(lambda: send_order_to_driver.delay(self.id))
-        
+
     def start(self):
         self.status = Order.INPROGRESS
         self.save()
-        
+
     def complete(self):
         self.status = Order.COMPLETED
         self.save()
@@ -145,7 +132,20 @@ class Order(CompanyMixin, models.Model):
         self.status = Order.CANCELED
         self.save()
 
+
 @receiver(post_save, sender=Order)
 def post_save_order(sender, instance, created, **kwargs):
     if not instance.is_sent:
         instance.send_to_driver()
+
+    # for Subscriprion
+    # if not instance.company:
+    #     instance.company = instance.get_company_with_active_subscription()
+    #     instance.status = instance.CONFIRMATION
+    
+    # def get_company_with_active_subscription(self):
+    #     if companies := Company.objects.filter(
+    #         # streets=self.address.street,
+    #         subscriptions__is_active=True
+    #     ):
+    #         return random.choice(companies)
