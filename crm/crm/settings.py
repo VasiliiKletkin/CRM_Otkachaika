@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'django_filters',
     'phonenumber_field',
     'djmoney',
+    'hijack',
+    'hijack.contrib.admin',
 
     'clients',
     'employees',
@@ -83,7 +85,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    "django_currentuser.middleware.ThreadLocalUserMiddleware",
+    'django_currentuser.middleware.ThreadLocalUserMiddleware',
+    'hijack.middleware.HijackUserMiddleware',
 ]
 
 ROOT_URLCONF = 'crm.urls'
