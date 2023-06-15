@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from users.admin import ProfileInline
 from users.models import Profile
 
-from .forms import CarForm
+from .forms import CarForm, CarInlineForm
 from .mixins import EmployeesAminMixin
 from .models import Car, Dispatcher, Driver, Owner
 
@@ -34,6 +34,7 @@ class ProfileEmployeeInline(ProfileInline):
 
 
 class CarInline(CompanyInlineAdminMixin, admin.StackedInline):
+    form = CarInlineForm
     model = Car
 
 

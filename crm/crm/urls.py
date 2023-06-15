@@ -22,7 +22,11 @@ from django.urls import include, path
 urlpatterns = [    
     path("addresses/", include("addresses.urls")),
     path("employees/", include("employees.urls")),
-    path("users/", include("users.urls")),
+    path("bot/", include("bot.urls")),
+    path("companies/", include("companies.urls")),
+    path("clients/", include("clients.urls")),
+
+
     # public api
     # path("api/", include("rest_framework.urls")),
     # # internal api

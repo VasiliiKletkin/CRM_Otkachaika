@@ -9,8 +9,7 @@ class DriverAutocomplete(autocomplete.Select2QuerySetView):
         qs = Driver.objects.filter(profile__user_type=Profile.DRIVER)
         if not self.request.user.is_superuser:
             qs = qs.filter(profile__company=self.request.user.profile.company)
-        company = self.forwarded.get('company', None)
-        if company:
+        if company := self.forwarded.get('company', None):
             qs = qs.filter(profile__company=company)
         if self.q:
             qs = qs.filter(Q(first_name__icontains=self.q)

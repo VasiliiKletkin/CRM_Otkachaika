@@ -13,10 +13,24 @@ class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "address",
         "is_active",
         "company",
+        "date_created",
     )
     list_filter = (
         "is_active",
         "company",
+    )
+    fields = (
+        "phone_number",
+        "first_name",
+        "last_name",
+        "address",
+        "is_active",
+        "company",
+        "date_created",
+    )
+    readonly_fields = (
+        "company",
+        "date_created",
     )
     search_fields = ("first_name", "last_name", "address", "is_active")
     ordering = ("is_active",)

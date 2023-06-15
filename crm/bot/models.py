@@ -9,8 +9,8 @@ class Telegram(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Telegram profile"
-        verbose_name_plural = "Telegram profiles"
+        verbose_name = "Телеграм профиль"
+        verbose_name_plural = "Телеграм профили"
         indexes = [
             models.Index(name="telegram_user_id_idx", fields=["user_id"]),
             models.Index(name="telegram_username_idx", fields=["username"]),
