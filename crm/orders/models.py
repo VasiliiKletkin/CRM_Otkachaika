@@ -142,7 +142,7 @@ def post_save_order(sender, instance, created, **kwargs):
     # if not instance.company:
     #     instance.company = instance.get_company_with_active_subscription()
     #     instance.status = instance.CONFIRMATION
-    
+
     # def get_company_with_active_subscription(self):
     #     if companies := Company.objects.filter(
     #         # streets=self.address.street,

@@ -19,20 +19,18 @@ from django.contrib import admin
 from django.urls import include, path
 
 
-def trigger_error(request):
-    division_by_zero = 1 / 0
-
-
-urlpatterns = [
-    path("sentry-debug/", trigger_error),
-    
+urlpatterns = [    
     path("addresses/", include("addresses.urls")),
     path("employees/", include("employees.urls")),
-    path("users/", include("users.urls")),
+    path("bot/", include("bot.urls")),
+    path("companies/", include("companies.urls")),
+    path("clients/", include("clients.urls")),
+
+
     # public api
-    path("api/", include("rest_framework.urls")),
-    # internal api
-    path("internal_api/", include("internal_api.urls")),
+    # path("api/", include("rest_framework.urls")),
+    # # internal api
+    # path("internal_api/", include("internal_api.urls")),
     # admin
     path("", admin.site.urls),
     # path('', include('admin_argon.urls')),

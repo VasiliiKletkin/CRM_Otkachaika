@@ -1,6 +1,3 @@
-
-
-
 from bot.callbacks import order_callback
 from bot.config import bot
 from bot.keyboards import get_order_inline_keyboard

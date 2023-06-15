@@ -52,7 +52,7 @@ INTERNAL_IPS = [
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
-    
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -175,11 +175,11 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATIC_ROOT= os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT= os.path.join(BASE_DIR,'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -202,8 +202,6 @@ REST_FRAMEWORK = {
 # LOGOUT_REDIRECT_URL = 'admin:index'
 
 
-
-
 sentry_sdk.init(
     dsn="https://7537490596684c258f6b83e9dd59cc90@o4505362421055488.ingest.sentry.io/4505362422890496",
     integrations=[
@@ -219,9 +217,3 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
-
-
-
-
-
-

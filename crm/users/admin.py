@@ -15,7 +15,7 @@ class ProfileInline(CompanyInlineAdminMixin, admin.StackedInline):
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ("username", "email", "first_name", "last_name", "profile")
+    list_display = ("username", "email", "first_name", "last_name", "profile",)
     inlines = [
         ProfileInline,
     ]
