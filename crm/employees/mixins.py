@@ -1,4 +1,5 @@
 from django_currentuser.middleware import get_current_user
+from django.utils.translation import gettext_lazy as _
 
 
 class EmployeesAminMixin:
@@ -8,6 +9,14 @@ class EmployeesAminMixin:
             "last_name",
         )
     }
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'groups',),
+        }),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
     list_display = (
         "username",
         "first_name",

@@ -6,10 +6,9 @@ def get_order_info(order):
     status_display = order.get_status_display()
     address_display = order.address
     price = order.price
-    description = order.description
     order_display = f"ID:{id}, Статус:{status_display} \n" \
                     f"Цена:{price}р, Оплата: {type_payment_display} \n" \
                     f"Адрес: {address_display} \n"
-    if description:
+    if description := order.description:
         order_display +=f"Описание: {description}"
     return order_display

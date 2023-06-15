@@ -102,7 +102,7 @@ class Order(CompanyMixin, models.Model):
         blank=True,
         default=None,
     )
-    is_sent = models.BooleanField("Отправлен", default=False)
+    is_sent = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
         verbose_name = "Заказ"
