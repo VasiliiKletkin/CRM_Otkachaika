@@ -17,6 +17,8 @@ class Company(models.Model):
 
         indexes = [
             models.Index(name="company_name_idx", fields=["name"]),
+            models.Index(name="company_is_active_idx", fields=["is_active"]),
+
         ]
 
     def __str__(self):

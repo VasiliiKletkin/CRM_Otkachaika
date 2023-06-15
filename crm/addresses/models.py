@@ -7,6 +7,9 @@ class Country(models.Model):
     class Meta:
         verbose_name = "Страну"
         verbose_name_plural = "Страны"
+        indexes = [
+            models.Index(name="country_name_idx", fields=["name"]),
+        ]
 
     def __str__(self):
         return f"{self.name}"
@@ -21,6 +24,10 @@ class Region(models.Model):
     class Meta:
         verbose_name = "Регион"
         verbose_name_plural = "Регионы"
+        indexes = [
+            models.Index(name="region_name_idx", fields=["name"]),
+        ]
+        
 
     def __str__(self):
         return f"{self.name}, {self.country}"
