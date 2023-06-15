@@ -24,9 +24,9 @@ urlpatterns = [
     path("employees/", include("employees.urls")),
     path("users/", include("users.urls")),
     # public api
-    path("api/", include("rest_framework.urls")),
-    # internal api
-    path("internal_api/", include("internal_api.urls")),
+    # path("api/", include("rest_framework.urls")),
+    # # internal api
+    # path("internal_api/", include("internal_api.urls")),
     # admin
     path("", admin.site.urls),
     # path('', include('admin_argon.urls')),
