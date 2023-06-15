@@ -25,7 +25,7 @@ class DriversFilter(SimpleListFilter):
 
 
 class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
-    list_display = ("address", "price", "driver", "status", "date_completed", "company")
+    list_display = ("address", "price", "driver", "status", "date_planned","date_completed", "is_sent", "company")
     list_filter = ("status", DriversFilter)
     search_fields = ("address",)
     ordering = ("date_created", "date_completed")
@@ -42,14 +42,6 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
     def add_view(self, request, extra_content=None):
         self.fields = (
             "company",
-            ("driver", "address"),
-            "client",
-            "description",
-            ("price", "type_payment"),
-            "date_planned",
-        )
-        self.fields = (
-            "company",
             "driver",
             "address",
             "client",
@@ -62,16 +54,6 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         return super().add_view(request, extra_context=extra_content)
 
     def change_view(self, request, object_id, extra_context=None):
-        self.fields = (
-            "company",
-            ("status", "created_by"),
-            ("driver", "address"),
-            "client",
-            "description",
-            ("price", "type_payment"),
-            ("date_planned", "date_started", "date_completed"),
-            "is_sent",
-        )
         self.fields = (
             "company",
             "status",
