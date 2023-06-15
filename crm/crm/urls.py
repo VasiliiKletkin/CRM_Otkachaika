@@ -18,29 +18,32 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
+
 urlpatterns = [
-    path('addresses/', include('addresses.urls')),
-    path('employees/', include('employees.urls')),
-    path('users/', include('users.urls')),
-
-
-    #public api
-    path('api/', include('rest_framework.urls')),
-
-    #internal api
-    path('internal_api/', include('internal_api.urls')),
-
-    #admin
-    path('', admin.site.urls),
+    path("sentry-debug/", trigger_error),
+    
+    path("addresses/", include("addresses.urls")),
+    path("employees/", include("employees.urls")),
+    path("users/", include("users.urls")),
+    # public api
+    path("api/", include("rest_framework.urls")),
+    # internal api
+    path("internal_api/", include("internal_api.urls")),
+    # admin
+    path("", admin.site.urls),
     # path('', include('admin_argon.urls')),
-    path('hijack/', include('hijack.urls')),
+    path("hijack/", include("hijack.urls")),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
+        path("__debug__/", include(debug_toolbar.urls)),
     ] + urlpatterns
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
