@@ -22,9 +22,9 @@ class EmployeesAminMixin:
         "first_name",
         "last_name",
         "is_active",
+        "date_joined"
     )
     list_filter = (
-        "first_name",
         "is_active",
     )
     search_fields = (
