@@ -15,9 +15,9 @@ runbot:
 dcollect:
 	docker-compose exec web python manage.py collectstatic
 dup:
-	docker-compose -f "docker-compose.prod.yml" up -d
+	docker-compose -f "docker-compose.prod.yml" up
 dupbuild:
-	docker-compose -f "docker-compose.prod.yml" up --build
+	docker-compose -f "docker-compose.prod.yml" up --build -d
 dbuild:
 	docker-compose -f "docker-compose.prod.yml" build
 dstop:
