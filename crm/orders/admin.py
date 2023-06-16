@@ -27,7 +27,7 @@ class DriversFilter(SimpleListFilter):
 class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
     list_display = ("address", "price", "driver", "is_sent", "status", "date_planned", "date_completed", "company")
     list_filter = ("status", DriversFilter)
-    search_fields = ("address",)
+    search_fields = ("address", "price")
     ordering = ("date_created", "date_completed")
     form = OrderForm
 

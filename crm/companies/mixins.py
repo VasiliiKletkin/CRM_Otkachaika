@@ -32,6 +32,10 @@ class CompanyAdminMixin:
     def get_fields(self, request, obj=None):
         fields = list(super().get_fields(request, obj))
         return self.remove_fields(request, fields)
+    
+    def get_list_filter(self, request):
+        list_filter = list(super().get_list_filter(request))
+        return self.remove_fields(request, list_filter)
 
 
 class CompanyInlineAdminMixin:
