@@ -11,43 +11,43 @@ services:
     env_file:
       - ./.env
 
-  # rabbitmq:
-  #   image: rabbitmq:3-management-alpine
-  #   container_name: rabbitmq
-  #   restart: always
-  #   volumes:
-  #     - ./rabbitmq:/var/lib/rabbitmq
-  #   env_file:
-  #     - ./.env
-  #   ports:
-  #     - 15672:15672
-  #     - 5672:5672
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    env_file:
+      - ./.env
+    ports:
+      - 15672:15672
+      - 5672:5672
 
-  # celeryworker:
-  #   container_name: celeryworker
-  #   build:
-  #     context: crm/
-  #     dockerfile: Dockerfile
-  #   command: celery -A crm.celery.app worker --pool=prefork -l info
-  #   volumes:
-  #     - ./crm:/home/app/web
-  #   env_file:
-  #     - ./.env
-  #   depends_on:
-  #     - rabbitmq
+  celeryworker:
+    container_name: celeryworker
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    command: celery -A crm.celery.app worker --pool=prefork -l info
+    volumes:
+      - ./crm:/home/app/web
+    env_file:
+      - ./.env
+    depends_on:
+      - rabbitmq
   
-  # celeryscheduler:
-  #   container_name: celeryscheduler
-  #   build:
-  #     context: crm/
-  #     dockerfile: Dockerfile
-  #   command: celery -A crm beat -l info
-  #   volumes:
-  #     - ./crm:/home/app/web
-  #   env_file:
-  #     - ./.env
-  #   depends_on:
-  #     - rabbitmq
+  celeryscheduler:
+    container_name: celeryscheduler
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    command: celery -A crm beat -l info
+    volumes:
+      - ./crm:/home/app/web
+    env_file:
+      - ./.env
+    depends_on:
+      - rabbitmq
 
   web:
     container_name: web
@@ -68,17 +68,17 @@ services:
       # - rabbitmq
   
 
-  # bot:
-  #   container_name: bot
-  #   build:
-  #     context: crm/
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   command: python manage.py bot
-  #   volumes:
-  #     - ./crm:/home/app/web
-  #   env_file:
-  #     - ./.env
+  bot:
+    container_name: bot
+    build:
+      context: crm/
+      dockerfile: Dockerfile
+    restart: always
+    command: python manage.py bot
+    volumes:
+      - ./crm:/home/app/web
+    env_file:
+      - ./.env
 
 
   nginx:
