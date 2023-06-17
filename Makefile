@@ -17,7 +17,7 @@ dcollect:
 dup:
 	docker-compose -f "docker-compose.prod.yml" up
 dupbuild:
-	docker-compose -f "docker-compose.prod.yml" up --build -d
+	docker-compose -f "docker-compose.prod.yml" up --build
 dbuild:
 	docker-compose -f "docker-compose.prod.yml" build
 dstop:
