@@ -62,9 +62,9 @@ class StreetAutocomplete(autocomplete.Select2QuerySetView):
         if cities := self.forwarded.get('cities', None):
             qs = qs.filter(city__in=cities)
 
-        #for new addresses from owner
-        # if not cities and not self.request.user.is_superuser:
-        #     qs = self.request.user.profile.company.work_place.streets.all()
+        # # for new addresses from owner
+        if not cities and not self.request.user.is_superuser:
+            qs = qs.filter(city__in = self.request.user.profile.company.work_place.cities.all())
 
         if self.q:
             if len(self.q.split()) > 1:
@@ -78,11 +78,11 @@ class StreetAutocomplete(autocomplete.Select2QuerySetView):
 class AddressAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Address.objects.all()
-        # if not self.request.user.is_superuser:
-        #     qs = qs.filter(street__in=self.request.user.profile.company.work_place.regions.all())
-        # elif company := self.forwarded.get('company', None):
-        #     company = Company.objects.get(id=company)
-        #     qs = qs.filter(street__in=company.work_place.streets.all())
+        if not self.request.user.is_superuser:
+            qs = qs.filter(street__city__in=self.request.user.profile.company.work_place.cities.all())
+        elif company := self.forwarded.get('company', None):
+            company = Company.objects.get(id=company)
+            qs = qs.filter(street__city__in=company.work_place.cities.all())
         if self.q:
             if len(self.q.split()) > 1:
                 splitted_line = self.q.split()
