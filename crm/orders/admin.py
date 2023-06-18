@@ -51,7 +51,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
             "date_planned",
         )
         self.readonly_fields = ()
-        return super().add_view(request, extra_context=extra_content)
+        return super().add_view(request)
 
     def change_view(self, request, object_id, extra_context=None):
         self.fields = (
