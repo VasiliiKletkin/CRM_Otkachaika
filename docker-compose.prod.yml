@@ -12,7 +12,7 @@ services:
       - ./.env
 
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3.12.0-management
     container_name: rabbitmq
     restart: always
     volumes:
@@ -28,7 +28,7 @@ services:
     build:
       context: crm/
       dockerfile: Dockerfile
-    command: celery -A crm.celery.app worker --pool=prefork -l info
+    command: celery -A crm worker -l info --pool=prefork 
     volumes:
       - ./crm:/home/app/web
     env_file:

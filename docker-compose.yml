@@ -21,13 +21,13 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
-  
+
   celeryworker:
     container_name: celeryworker
     build:
       context: crm/
       dockerfile: Dockerfile
-    command: celery -A crm.celery.app worker --pool=prefork -l info
+    command: celery -A crm worker -l info --pool=prefork 
     volumes:
       - ./crm:/home/app/web
     env_file:
@@ -43,6 +43,17 @@ services:
     command: celery -A crm beat -l info
     volumes:
       - ./crm:/home/app/web
+    env_file:
+      - ./.env
+    depends_on:
+      - rabbitmq
+
+  flower:
+    container_name: flower
+    image: mher/flower:0.9.7
+    command: celery flower
+    ports:
+      - 5555:5555
     env_file:
       - ./.env
     depends_on:

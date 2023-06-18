@@ -130,14 +130,14 @@ DATABASES = {
 }
 
 RABBITMQ = {
-    "PROTOCOL": os.environ.get("PROTOCOL", "amqp"),
+    "PROTOCOL": os.environ.get("RABBITMQ_PROTOCOL", "amqp"),
     "HOST": os.environ.get("RABBITMQ_HOST", "localhost"),
     "PORT": os.environ.get("RABBITMQ_PORT", 5672),
     "USER": os.environ.get("RABBITMQ_DEFAULT_USER", "guest"),
     "PASSWORD": os.environ.get("RABBITMQ_DEFAULT_PASS", "guest"),
 }
 
-CELERY_BROKER_URL = f"{RABBITMQ['PROTOCOL']}://{RABBITMQ['USER']}:{RABBITMQ['PASSWORD']}@{RABBITMQ['HOST']}:{RABBITMQ['PORT']}"
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", f"{RABBITMQ['PROTOCOL']}://{RABBITMQ['USER']}:{RABBITMQ['PASSWORD']}@{RABBITMQ['HOST']}:{RABBITMQ['PORT']}")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
