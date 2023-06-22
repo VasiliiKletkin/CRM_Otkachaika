@@ -70,6 +70,7 @@ class AddressForm(forms.ModelForm):
         street = self.cleaned_data['street']
         if Address.objects.filter(street_id=street, home=home).exists():
             raise forms.ValidationError('Такой адрес уже существует')
+        self.cleaned_data['home'] = self.cleaned_data['home'].upper()
         return super().clean()
 
     class Meta:
