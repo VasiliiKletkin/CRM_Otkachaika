@@ -16,7 +16,12 @@ class Client(CompanyMixin, models.Model):
     last_name = models.CharField("Фамилия", max_length=200, null=True, blank=True)
     phone_number = PhoneNumberField("Телефонный номер")
     address = models.ForeignKey(
-        Address, on_delete=models.PROTECT, verbose_name="Адрес", related_name="clients"
+        Address,
+        on_delete=models.PROTECT,
+        verbose_name="Адрес",
+        related_name="clients",
+        null=True,
+        blank=True,
     )
     is_active = models.BooleanField("Активный", default=True)
 
