@@ -31,7 +31,7 @@ class ClientInline(CompanyInlineAdminMixin, admin.StackedInline):
 
 
 class AddressAdmin(admin.ModelAdmin):
-    search_fields = ("street", "home")
+    search_fields = ("street__name", "home")
     inlines = [
         ClientInline,
     ]
