@@ -102,6 +102,14 @@ class Order(CompanyMixin, models.Model):
         blank=True,
         default=None,
     )
+    date_canceled = MonitorField(
+        "Дата отмены выполнения",
+        monitor="status",
+        when=[CANCELED],
+        null=True,
+        blank=True,
+        default=None,
+    )
     is_sent = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
