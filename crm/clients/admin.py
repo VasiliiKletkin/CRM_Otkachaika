@@ -4,11 +4,18 @@ from django.contrib import admin
 from .forms import ClientForm
 from .models import Client, ClientStatistics
 
+
 class ClientStatisticsInlineAdmin(admin.StackedInline):
     model = ClientStatistics
     extra = 1
 
+
 class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
+    form = ClientForm
+    inlines = [
+        ClientStatisticsInlineAdmin,
+    ]
+
     list_display = (
         "phone_number",
         "first_name",
@@ -31,14 +38,15 @@ class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "company",
         "date_created",
     )
-    readonly_fields = (
-        "company",
-        "date_created",
+    readonly_fields = ("date_created",)
+    search_fields = (
+        "phone_number",
+        "first_name",
+        "last_name",
+        "address__home",
+        "address__street__name",
     )
-    search_fields = ("phone_number", "first_name", "last_name", "address__home", "address__street__name",)
-    ordering = ("is_active",)
-    form = ClientForm
-    inlines = [ClientStatisticsInlineAdmin,]
+    ordering = ("date_created",)
 
 
 admin.site.register(Client, ClientAdmin)

@@ -6,8 +6,6 @@ from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -137,17 +135,6 @@ class Order(CompanyMixin, models.Model):
         self.status = Order.CANCELED
         self.save()
 
-
-@receiver(post_save, sender=Order)
-def create_order(sender, instance, created, **kwargs):
-    if created:
-        instance.send_to_driver()
-        instance.client.update_client_statistics()
-
-
-# @receiver(post_save, sender=Order)
-# def save_order(sender, instance, **kwargs):
-#     pass
 
 # for Subscriprion
 # if not instance.company:

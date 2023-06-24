@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from addresses.models import Address
 from companies.mixins import CompanyMixin
 from companies.models import Company
@@ -76,6 +78,9 @@ class ClientStatistics(models.Model):
     average_date_orders = models.IntegerField(
         "Среднее колл-во дней для одного заказа", null=True, blank=True
     )
+    date_planned_next_order = models.DateTimeField(
+        "Планируемая дата следующего заказа", null=True, blank=True
+    )
 
     class Meta:
         verbose_name = "Данные o клиенте"
@@ -92,4 +97,5 @@ class ClientStatistics(models.Model):
         if self.count_completed_orders > 1:
             all_date = self.last_order.date_completed - self.first_order.date_completed
             self.average_date_orders = all_date.days / (self.count_completed_orders - 1)
+            self.date_planned_next_order = self.last_order.date_completed + timedelta(days=self.average_date_orders)
         self.save()
