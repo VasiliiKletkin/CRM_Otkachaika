@@ -1,3 +1,4 @@
+
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
@@ -91,8 +92,12 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
             "date_completed",
             "is_sent",
         )
-
         return super().change_view(request, object_id)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.created_by = request.user
+        return super().save_model(request, obj, form, change)
 
 
 admin.site.register(Order, OrderAdmin)

@@ -8,7 +8,6 @@ from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django_currentuser.db.models import CurrentUserField
 from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -67,13 +66,11 @@ class Order(CompanyMixin, models.Model):
         Client,
         verbose_name="Клиент",
         on_delete=models.PROTECT,
-        null=True,
-        blank=True,
         related_name="orders",
     )
-    created_by = CurrentUserField(
+    created_by = models.ForeignKey(
         Dispatcher,
-        verbose_name="Создан",
+        verbose_name="Диспетчер",
         on_delete=models.PROTECT,
         related_name="created_orders",
     )
@@ -142,18 +139,24 @@ class Order(CompanyMixin, models.Model):
 
 
 @receiver(post_save, sender=Order)
-def post_save_order(sender, instance, created, **kwargs):
-    if not instance.is_sent:
+def create_order(sender, instance, created, **kwargs):
+    if created:
         instance.send_to_driver()
+        instance.client.update_client_statistics()
 
-    # for Subscriprion
-    # if not instance.company:
-    #     instance.company = instance.get_company_with_active_subscription()
-    #     instance.status = instance.CONFIRMATION
 
-    # def get_company_with_active_subscription(self):
-    #     if companies := Company.objects.filter(
-    #         # streets=self.address.street,
-    #         subscriptions__is_active=True
-    #     ):
-    #         return random.choice(companies)
+# @receiver(post_save, sender=Order)
+# def save_order(sender, instance, **kwargs):
+#     pass
+
+# for Subscriprion
+# if not instance.company:
+#     instance.company = instance.get_company_with_active_subscription()
+#     instance.status = instance.CONFIRMATION
+
+# def get_company_with_active_subscription(self):
+#     if companies := Company.objects.filter(
+#         # streets=self.address.street,
+#         subscriptions__is_active=True
+#     ):
+#         return random.choice(companies)

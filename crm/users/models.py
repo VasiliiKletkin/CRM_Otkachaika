@@ -24,10 +24,10 @@ class Profile(CompanyMixin, models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
     user_type = models.CharField("Тип пользователя", choices=USER_TYPES, max_length=20)
     phone_number = PhoneNumberField("Телефонный номер")
-    telegram = models.OneToOneField(
+    telegram = models.ForeignKey(
         Telegram,
         on_delete=models.PROTECT,
-        help_text='Введите username без "@"',
+        help_text="Введите username или имя и фамилию указанную в телеграме",
         null=True,
         blank=True,
     )

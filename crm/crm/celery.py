@@ -9,12 +9,12 @@ app = Celery('crm')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
-# # Celery Beat Settings
+# Celery Beat Settings
 
-# app.conf.beat_schedule = {
+app.conf.beat_schedule = {
 
-#     "auto_send_oreders": {
-#         "task": "",
-#         "schedule": crontab(minute="15"),
-#     },
-# }
+    "check_active_clients": {
+        "task": "check_active_clients",
+        "schedule": crontab(minute=0, hour=0),
+    },
+}

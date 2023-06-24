@@ -75,68 +75,68 @@ class AccountingCompany(CompanyMixin, models.Model):
         return f"{self.id}"
 
 
-class ServiceCompany(models.Model):
-    MONTH = "ONE_MONTH"
-    THREE_MONTHS = "THREE_MONTHS"
-    SIX_MONTHS = "SIX_MONTHS"
-    TWELVE_MONTHS = "TWELVE_MONTHS"
+# class ServiceCompany(models.Model):
+#     MONTH = "ONE_MONTH"
+#     THREE_MONTHS = "THREE_MONTHS"
+#     SIX_MONTHS = "SIX_MONTHS"
+#     TWELVE_MONTHS = "TWELVE_MONTHS"
 
-    PERIOD = Choices(
-        (MONTH, "1 Месяц"),
-        (THREE_MONTHS, "3 Месяца"),
-        (SIX_MONTHS, "6 Месяцев"),
-        (TWELVE_MONTHS, "12 Месяцев"),
-    )
+#     PERIOD = Choices(
+#         (MONTH, "1 Месяц"),
+#         (THREE_MONTHS, "3 Месяца"),
+#         (SIX_MONTHS, "6 Месяцев"),
+#         (TWELVE_MONTHS, "12 Месяцев"),
+#     )
 
-    title = models.CharField("Название", max_length=50)
-    description = models.TextField("Описание", null=True, blank=True)
-    period = models.CharField("Период", max_length=50, choices=PERIOD, default=MONTH)
-    price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
+#     title = models.CharField("Название", max_length=50)
+#     description = models.TextField("Описание", null=True, blank=True)
+#     period = models.CharField("Период", max_length=50, choices=PERIOD, default=MONTH)
+#     price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
 
-    class Meta:
-        verbose_name = "Услугу"
-        verbose_name_plural = "Услуги"
+#     class Meta:
+#         verbose_name = "Услугу"
+#         verbose_name_plural = "Услуги"
 
-    def __str__(self):
-        return f"{self.title} {self.get_period_display()}"
+#     def __str__(self):
+#         return f"{self.title} {self.get_period_display()}"
 
 
-class SubscriptionCompany(CompanyMixin, models.Model):
-    company = models.ForeignKey(
-        Company,
-        verbose_name="Компании",
-        on_delete=models.PROTECT,
-        related_name="subscriptions",
-    )
-    service = models.ForeignKey(
-        ServiceCompany,
-        verbose_name="Услуга",
-        on_delete=models.PROTECT,
-        related_name="subscriptions",
-    )
-    is_active = models.BooleanField("Активный", default=True)
-    subscribed_on = models.DateTimeField("Дата начала подписки", auto_now_add=True)
-    expiring_on = models.DateTimeField("Дата истечения подписки")
+# class SubscriptionCompany(CompanyMixin, models.Model):
+#     company = models.ForeignKey(
+#         Company,
+#         verbose_name="Компании",
+#         on_delete=models.PROTECT,
+#         related_name="subscriptions",
+#     )
+#     service = models.ForeignKey(
+#         ServiceCompany,
+#         verbose_name="Услуга",
+#         on_delete=models.PROTECT,
+#         related_name="subscriptions",
+#     )
+#     is_active = models.BooleanField("Активный", default=True)
+#     date_subscribed_on = models.DateTimeField("Дата начала подписки", auto_now_add=True)
+#     date_subscribed_off = models.DateTimeField("Дата истечения подписки")
 
-    class Meta:
-        verbose_name = "Подписка компании"
-        verbose_name_plural = "Подписки компаний"
+#     class Meta:
+#         verbose_name = "Подписка компании"
+#         verbose_name_plural = "Подписки компаний"
 
-    indexes = [
-        models.Index(name="subscription_company_is_active_idx", fields=["is_active"]),
-    ]
+#     indexes = [
+#         models.Index(name="subscription_company_is_active_idx", fields=["is_active"]),
+#     ]
 
-    def __str__(self):
-        return f"{self.id}"
+#     def __str__(self):
+#         return f"{self.id}"
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            if self.service.period == ServiceCompany.MONTH:
-                self.expiring_on = timezone.now() + relativedelta(days=30)
-            elif self.service.period == ServiceCompany.THREE_MONTHS:
-                self.expiring_on = timezone.now() + relativedelta(month=3)
-            elif self.service.period == ServiceCompany.SIX_MONTHS:
-                self.expiring_on = timezone.now() + relativedelta(month=6)
-            elif self.service.period == ServiceCompany.TWELVE_MONTHS:
-                self.expiring_on = timezone.now() + relativedelta(month=12)
-        return super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         if not self.id:
+#             if self.service.period == ServiceCompany.MONTH:
+#                 self.date_subscribed_off = timezone.now() + relativedelta(days=30)
+#             elif self.service.period == ServiceCompany.THREE_MONTHS:
+#                 self.date_subscribed_off = timezone.now() + relativedelta(month=3)
+#             elif self.service.period == ServiceCompany.SIX_MONTHS:
+#                 self.date_subscribed_off = timezone.now() + relativedelta(month=6)
+#             elif self.service.period == ServiceCompany.TWELVE_MONTHS:
+#                 self.date_subscribed_off = timezone.now() + relativedelta(month=12)
+#         return super().save(*args, **kwargs)
