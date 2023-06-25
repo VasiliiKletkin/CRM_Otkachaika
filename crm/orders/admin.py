@@ -34,7 +34,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "client__last_name",
         "client__phone_number",
     )
-    ordering = ("date_created", "date_completed")
+    ordering = ("-date_created",)
     form = OrderForm
 
     actions = ("uppercase",)
