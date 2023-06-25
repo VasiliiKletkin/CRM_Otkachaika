@@ -1,4 +1,3 @@
-
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
@@ -35,7 +34,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "client__last_name",
         "client__phone_number",
     )
-    ordering = ("date_created", "date_completed")
+    ordering = ("-date_created",)
     form = OrderForm
 
     actions = ("uppercase",)
@@ -45,6 +44,15 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         for obj in queryset:
             obj.send_to_driver()
         messages.success(request, "Выбранные заказы были отправлены")
+
+    list_display = (
+        "address",
+        "price",
+        "driver",
+        "client",
+        "status",
+        "company",
+    )
 
     def add_view(self, request, extra_content=None):
         self.fields = (

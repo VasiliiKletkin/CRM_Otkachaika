@@ -45,7 +45,7 @@ class Client(CompanyMixin, models.Model):
     
     def update_client_data(self):
         self.client_statistics.update_statistics()
-        self.client_statistics.update_analytics()
+        self.client_analytics.update_analytics()
 
     def send_client(self):
         pass
@@ -90,11 +90,11 @@ class ClientStatistics(models.Model):
     )
 
     class Meta:
-        verbose_name = "Статистика o клиенте"
-        verbose_name_plural = "Статистика o клиенте"
+        verbose_name = "Статистика клиента"
+        verbose_name_plural = "Статистика клиентов"
 
     def __str__(self):
-        return f"Инфо {self.client}"
+        return f"{self.client}"
 
     def update_statistics(self):
         completed_orders = self.client.orders.filter(status=Order.COMPLETED)
@@ -119,11 +119,11 @@ class ClientAnalytics(models.Model):
     )
 
     class Meta:
-        verbose_name = "Аналитика o клиенте"
-        verbose_name_plural = "Аналитика o клиенте"
+        verbose_name = "Аналитика клиента"
+        verbose_name_plural = "Аналитика клиентов"
 
     def __str__(self):
-        return f"Инфо {self.client}"
+        return f"{self.client}"
 
     def update_analytics(self):
         client_statistics = self.client.client_statistics
