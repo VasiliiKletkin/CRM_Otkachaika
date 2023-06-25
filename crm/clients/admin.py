@@ -70,8 +70,8 @@ class ClientBillingAdmin(ClientAdmin):
         "last_name",
         "address",
         "is_active",
-        "get_date_planned_next_order",
         "button_call",
+        "get_date_planned_next_order",
         "company",
     )
     list_editable = ("is_active",)
