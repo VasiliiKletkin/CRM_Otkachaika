@@ -40,8 +40,22 @@ class Client(CompanyMixin, models.Model):
             client_display += f" {self.last_name}"
         return client_display
 
-    def update_client_statistics(self):
+    def get_url_phone_number(self):
+        return f"tel:{self.phone_number}"
+    
+    def update_client_data(self):
         self.client_statistics.update_statistics()
+        self.client_statistics.update_analytics()
+
+    def send_client(self):
+        pass
+
+
+class ClientBilling(Client):
+    class Meta:
+        proxy = True
+        verbose_name = "Биллинг Клиента"
+        verbose_name_plural = "Биллинг Клиентов"
 
 
 from orders.models import Order
@@ -75,16 +89,9 @@ class ClientStatistics(models.Model):
         "Колл-во выполненных заказов", null=True, blank=True
     )
 
-    average_date_orders = models.IntegerField(
-        "Среднее колл-во дней для одного заказа", null=True, blank=True
-    )
-    date_planned_next_order = models.DateTimeField(
-        "Планируемая дата следующего заказа", null=True, blank=True
-    )
-
     class Meta:
-        verbose_name = "Данные o клиенте"
-        verbose_name_plural = "Данные o клиенте"
+        verbose_name = "Статистика o клиенте"
+        verbose_name_plural = "Статистика o клиенте"
 
     def __str__(self):
         return f"Инфо {self.client}"
@@ -94,8 +101,34 @@ class ClientStatistics(models.Model):
         self.last_order = completed_orders.last()
         self.first_order = completed_orders.first()
         self.count_completed_orders = completed_orders.count()
-        if self.count_completed_orders > 1:
-            all_date = self.last_order.date_completed - self.first_order.date_completed
-            self.average_date_orders = all_date.days / (self.count_completed_orders - 1)
-            self.date_planned_next_order = self.last_order.date_completed + timedelta(days=self.average_date_orders)
         self.save()
+
+
+class ClientAnalytics(models.Model):
+    client = models.OneToOneField(
+        Client,
+        verbose_name="Клиент",
+        related_name="client_analytics",
+        on_delete=models.PROTECT,
+    )
+    average_date_orders = models.IntegerField(
+        "Среднее колл-во дней для одного заказа", null=True, blank=True
+    )
+    date_planned_next_order = models.DateTimeField(
+        "Планируемая дата следующего заказа", null=True, blank=True
+    )
+
+    class Meta:
+        verbose_name = "Аналитика o клиенте"
+        verbose_name_plural = "Аналитика o клиенте"
+
+    def __str__(self):
+        return f"Инфо {self.client}"
+
+    def update_analytics(self):
+        client_statistics = self.client.client_statistics
+        if client_statistics.count_completed_orders > 1:
+            all_date = client_statistics.date_completed - client_statistics.first_order.date_completed
+            self.average_date_orders = all_date.days / (client_statistics.count_completed_orders - 1)
+            self.date_planned_next_order = client_statistics.last_order.date_completed + timedelta(days=self.average_date_orders)
+            self.save()

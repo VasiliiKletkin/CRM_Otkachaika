@@ -7,7 +7,7 @@ from .models import Order
 def create_order(sender, instance, created, **kwargs):
     if created:
         instance.send_to_driver()
-        instance.client.update_client_statistics()
+        instance.client.update_client_data()
 
 
 @receiver(post_save, sender=Order)

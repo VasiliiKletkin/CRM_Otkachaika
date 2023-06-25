@@ -75,6 +75,7 @@ class AccountingCompany(CompanyMixin, models.Model):
         return f"{self.id}"
 
 
+
 # class ServiceCompany(models.Model):
 #     MONTH = "ONE_MONTH"
 #     THREE_MONTHS = "THREE_MONTHS"

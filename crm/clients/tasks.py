@@ -8,8 +8,8 @@ from django.db.models import F
 def check_active_clients():
     dead_datetime = datetime.now() - timedelta(weeks=24)
     Client.objects.filter(
-        active=True, client_statistics__last_order__date_completed__lt=dead_datetime
-    ).update(active=False)
+        is_active=True, client_statistics__last_order__date_completed__lt=dead_datetime
+    ).update(is_active=False)
 
 
 # @app.task
