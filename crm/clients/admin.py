@@ -1,3 +1,6 @@
+from typing import Any
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
@@ -25,10 +28,17 @@ class ClientAnalyticsInlineAdmin(admin.StackedInline):
 
 class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
     form = ClientForm
-    inlines = [
-        ClientStatisticsInlineAdmin,
-        ClientAnalyticsInlineAdmin,
-    ]
+
+    def add_view(self, request, extra_content=None):
+        self.inlines = []
+        return super().add_view(request)
+
+    def change_view(self, request, object_id, extra_context=None):
+        self.inlines = [
+            ClientStatisticsInlineAdmin,
+            ClientAnalyticsInlineAdmin,
+        ]
+        return super().change_view(request, object_id)
 
     list_display = (
         "phone_number",
@@ -84,7 +94,9 @@ class ClientBillingAdmin(ClientAdmin):
         return obj.client_analytics.date_planned_next_order
 
     get_date_planned_next_order.short_description = "Планируемая дата следующего заказа"
-    get_date_planned_next_order.admin_order_field = "client_analytics__date_planned_next_order"
+    get_date_planned_next_order.admin_order_field = (
+        "client_analytics__date_planned_next_order"
+    )
 
     def button_call(self, obj):
         result_html = format_html(
