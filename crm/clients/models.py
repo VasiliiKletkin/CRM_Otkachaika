@@ -68,7 +68,7 @@ class ClientStatistics(models.Model):
         related_name="client_statistics",
         on_delete=models.PROTECT,
     )
-    first_order = models.ForeignKey(
+    first_completed_order = models.ForeignKey(
         Order,
         on_delete=models.PROTECT,
         verbose_name="Первый выполненный заказ",
@@ -76,7 +76,7 @@ class ClientStatistics(models.Model):
         null=True,
         blank=True,
     )
-    last_order = models.ForeignKey(
+    last_completed_order = models.ForeignKey(
         Order,
         on_delete=models.PROTECT,
         verbose_name="Последний выполненный заказ",
@@ -98,8 +98,8 @@ class ClientStatistics(models.Model):
 
     def update_statistics(self):
         completed_orders = self.client.orders.filter(status=Order.COMPLETED)
-        self.last_order = completed_orders.last()
-        self.first_order = completed_orders.first()
+        self.last_completed_order = completed_orders.last()
+        self.first_completed_order = completed_orders.first()
         self.count_completed_orders = completed_orders.count()
         self.save()
 
@@ -111,7 +111,7 @@ class ClientAnalytics(models.Model):
         related_name="client_analytics",
         on_delete=models.PROTECT,
     )
-    average_date_orders = models.IntegerField(
+    average_quantity_days_for_order = models.IntegerField(
         "Среднее колл-во дней для одного заказа", null=True, blank=True
     )
     date_planned_next_order = models.DateTimeField(
@@ -128,7 +128,16 @@ class ClientAnalytics(models.Model):
     def update_analytics(self):
         client_statistics = self.client.client_statistics
         if client_statistics.count_completed_orders > 1:
-            all_date = client_statistics.date_completed - client_statistics.first_order.date_completed
-            self.average_date_orders = all_date.days / (client_statistics.count_completed_orders - 1)
-            self.date_planned_next_order = client_statistics.last_order.date_completed + timedelta(days=self.average_date_orders)
+            
+            last_completed_order = client_statistics.last_completed_order
+            first_completed_order = client_statistics.first_completed_order
+                        
+            # completed_orders = self.client.orders.filter(status=Order.COMPLETED)
+            # last_completed_order = completed_orders.last()
+            # first_completed_order = completed_orders.first() 
+            
+            
+            all_date = last_completed_order.date_completed - first_completed_order.first_order.date_completed
+            self.average_quantity_days_for_order = all_date.days // (client_statistics.count_completed_orders - 1)
+            self.date_planned_next_order = last_completed_order.date_completed + timedelta(days=self.average_date_orders)
             self.save()

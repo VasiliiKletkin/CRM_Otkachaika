@@ -12,4 +12,4 @@ def create_order(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Order)
 def save_order(sender, instance, **kwargs):
-    pass
+    instance.client.update_client_data()

@@ -13,4 +13,4 @@ def create_client(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Client)
 def save_client(sender, instance, **kwargs):
-    instance.client_statistics.update_statistics()
+    pass

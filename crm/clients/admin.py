@@ -11,8 +11,8 @@ class ClientStatisticsInlineAdmin(admin.StackedInline):
     model = ClientStatistics
     extra = 1
     readonly_fields = (
-        "first_order",
-        "last_order",
+        "first_completed_order",
+        "last_completed_order",
         "count_completed_orders",
     )
 
@@ -20,7 +20,7 @@ class ClientStatisticsInlineAdmin(admin.StackedInline):
 class ClientAnalyticsInlineAdmin(admin.StackedInline):
     model = ClientAnalytics
     extra = 1
-    readonly_fields = ("average_date_orders", "date_planned_next_order")
+    readonly_fields = ("average_quantity_days_for_order", "date_planned_next_order")
 
 
 class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
