@@ -51,6 +51,7 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "driver",
         "client",
         "status",
+        "is_sent",
         "company",
     )
 
