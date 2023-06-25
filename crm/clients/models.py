@@ -45,7 +45,7 @@ class Client(CompanyMixin, models.Model):
     
     def update_client_data(self):
         self.client_statistics.update_statistics()
-        self.client_statistics.update_analytics()
+        self.client_analytics.update_analytics()
 
     def send_client(self):
         pass
