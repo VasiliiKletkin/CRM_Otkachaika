@@ -131,13 +131,14 @@ class ClientAnalytics(models.Model):
             
             last_completed_order = client_statistics.last_completed_order
             first_completed_order = client_statistics.first_completed_order
-                        
-            # completed_orders = self.client.orders.filter(status=Order.COMPLETED)
+
+            #old version
+            # completed_orders = self.client.orders.filter(status=Order.COMPLETED) 
             # last_completed_order = completed_orders.last()
             # first_completed_order = completed_orders.first() 
             
             
-            all_date = last_completed_order.date_completed - first_completed_order.first_order.date_completed
+            all_date = last_completed_order.date_completed - first_completed_order.date_completed
             self.average_quantity_days_for_order = all_date.days // (client_statistics.count_completed_orders - 1)
-            self.date_planned_next_order = last_completed_order.date_completed + timedelta(days=self.average_date_orders)
+            self.date_planned_next_order = last_completed_order.date_completed + timedelta(days=self.average_quantity_days_for_order)
             self.save()
