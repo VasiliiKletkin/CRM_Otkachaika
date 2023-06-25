@@ -1,3 +1,4 @@
+
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
@@ -25,9 +26,15 @@ class DriversFilter(SimpleListFilter):
 
 
 class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
-    list_display = ("address", "price", "driver", "is_sent", "status", "date_planned", "date_completed", "company")
     list_filter = ("status", DriversFilter)
-    search_fields = ("address", "price")
+    search_fields = (
+        "address__street__name",
+        "address__home",
+        "price",
+        "client__first_name",
+        "client__last_name",
+        "client__phone_number",
+    )
     ordering = ("date_created", "date_completed")
     form = OrderForm
 
@@ -85,8 +92,12 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
             "date_completed",
             "is_sent",
         )
+        return super().change_view(request, object_id)
 
-        return super().change_view(request, object_id, extra_context)
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.created_by = request.user
+        return super().save_model(request, obj, form, change)
 
 
 admin.site.register(Order, OrderAdmin)

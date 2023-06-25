@@ -41,7 +41,9 @@ class AddressAdmin(admin.ModelAdmin):
         user = get_current_user()
         queryset = super().get_queryset(request)
         if not user.is_superuser:
-            return queryset.filter(street__city__in=user.profile.company.work_place.cities.all())
+            return queryset.filter(
+                street__city__in=user.profile.company.work_place.cities.all()
+            )
         return queryset
 
 

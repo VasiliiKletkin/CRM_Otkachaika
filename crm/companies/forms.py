@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django import forms
 
-from .models import (AccountingCompany, Company, SubscriptionCompany,
+from .models import (AccountingCompany, Company,
                      WorkPlaceCompany)
 
 
@@ -29,11 +29,11 @@ class AccountingCompanyInlineForm(forms.ModelForm):
         fields = ('__all__')
 
 
-class SubscriptionsCompanyForm(forms.ModelForm):
-    class Meta:
-        model = SubscriptionCompany
-        fields = ('__all__')
-        widgets = {
-            'company': autocomplete.ModelSelect2(url='company-autocomplete'),
-            'service': autocomplete.ModelSelect2(url='servicecompany-autocomplete'),
-        }
+# class SubscriptionsCompanyForm(forms.ModelForm):
+#     class Meta:
+#         model = SubscriptionCompany
+#         fields = ('__all__')
+#         widgets = {
+#             'company': autocomplete.ModelSelect2(url='company-autocomplete'),
+#             'service': autocomplete.ModelSelect2(url='servicecompany-autocomplete'),
+#         }
