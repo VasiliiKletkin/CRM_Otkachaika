@@ -66,11 +66,11 @@ class ClientStatistics(models.Model):
         Client,
         verbose_name="Клиент",
         related_name="client_statistics",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
     )
     first_completed_order = models.ForeignKey(
         Order,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         verbose_name="Первый выполненный заказ",
         related_name="first_client_statistics",
         null=True,
@@ -78,7 +78,7 @@ class ClientStatistics(models.Model):
     )
     last_completed_order = models.ForeignKey(
         Order,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         verbose_name="Последний выполненный заказ",
         related_name="last_client_statistics",
         null=True,
@@ -109,7 +109,7 @@ class ClientAnalytics(models.Model):
         Client,
         verbose_name="Клиент",
         related_name="client_analytics",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
     )
     average_quantity_days_for_order = models.IntegerField(
         "Среднее колл-во дней для одного заказа", null=True, blank=True

@@ -58,6 +58,7 @@ class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "last_name",
         "address__home",
         "address__street__name",
+        "address__street__city__name",
     )
     ordering = ("date_created",)
 
