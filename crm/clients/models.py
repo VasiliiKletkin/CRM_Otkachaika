@@ -94,7 +94,7 @@ class ClientStatistics(models.Model):
         verbose_name_plural = "Статистика o клиенте"
 
     def __str__(self):
-        return f"Инфо {self.client}"
+        return f"{self.client}"
 
     def update_statistics(self):
         completed_orders = self.client.orders.filter(status=Order.COMPLETED)
@@ -123,7 +123,7 @@ class ClientAnalytics(models.Model):
         verbose_name_plural = "Аналитика o клиенте"
 
     def __str__(self):
-        return f"Инфо {self.client}"
+        return f"{self.client}"
 
     def update_analytics(self):
         client_statistics = self.client.client_statistics
