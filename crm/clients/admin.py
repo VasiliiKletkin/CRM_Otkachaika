@@ -85,17 +85,17 @@ class ClientBillingAdmin(ClientAdmin):
         "company",
     )
     list_editable = ("is_active",)
-    list_prefetch_related = ("client_analytics",)
+    list_prefetch_related = ("analytics",)
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(is_active=True)
 
     def get_date_planned_next_order(self, obj):
-        return obj.client_analytics.date_planned_next_order
+        return obj.analytics.date_planned_next_order
 
     get_date_planned_next_order.short_description = "Планируемая дата следующего заказа"
     get_date_planned_next_order.admin_order_field = (
-        "client_analytics__date_planned_next_order"
+        "analytics__date_planned_next_order"
     )
 
     def button_call(self, obj):

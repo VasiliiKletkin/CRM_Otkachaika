@@ -1,18 +1,18 @@
 from companies.forms import CompanyForm
 from django.contrib import admin
 
-from .forms import AccountingCompanyInlineForm, WorkPlaceCompanyInlineForm
-from .models import AccountingCompany, Company, WorkPlaceCompany
+from .forms import CompanyAccountingInlineForm, CompanyWorkPlaceInlineForm
+from .models import Company, CompanyAccounting, CompanyWorkPlace
 
 
-class WorkPlaceCompanyInlineAdmin(admin.StackedInline):
-    model = WorkPlaceCompany
-    form = WorkPlaceCompanyInlineForm
+class CompanyWorkPlaceInlineAdmin(admin.StackedInline):
+    model = CompanyWorkPlace
+    form = CompanyWorkPlaceInlineForm
 
 
-class AccountingCompanyInlineAdmin(admin.StackedInline):
-    model = AccountingCompany
-    form = AccountingCompanyInlineForm
+class CompanyAccountingInlineAdmin(admin.StackedInline):
+    model = CompanyAccounting
+    form = CompanyAccountingInlineForm
 
 
 # class SubscriptionCompanyInlineAdmin(admin.StackedInline):
@@ -29,11 +29,18 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     ordering = ("is_active",)
     form = CompanyForm
-    inlines = [
-        WorkPlaceCompanyInlineAdmin,
-        AccountingCompanyInlineAdmin,
-        # SubscriptionCompanyInlineAdmin,
-    ]
+
+    def add_view(self, request, extra_content=None):
+        self.inlines = []
+        return super().add_view(request)
+
+    def change_view(self, request, object_id, extra_context=None):
+        self.inlines = [
+            CompanyWorkPlaceInlineAdmin,
+            CompanyAccountingInlineAdmin,
+            # SubscriptionCompanyInlineAdmin,
+        ]
+        return super().change_view(request, object_id)
 
 
 class ServiceCompanyAdmin(admin.ModelAdmin):

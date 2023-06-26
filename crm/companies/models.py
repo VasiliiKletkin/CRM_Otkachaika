@@ -18,48 +18,53 @@ class Company(models.Model):
         indexes = [
             models.Index(name="company_name_idx", fields=["name"]),
             models.Index(name="company_is_active_idx", fields=["is_active"]),
-
         ]
 
     def __str__(self):
         return f"{self.name}"
 
 
-class WorkPlaceCompany(CompanyMixin, models.Model):
+class CompanyWorkPlace(CompanyMixin, models.Model):
     company = models.OneToOneField(
-        Company, related_name="work_place", on_delete=models.CASCADE
+        Company,
+        related_name="work_place",
+        on_delete=models.CASCADE,
+        blank=True,
     )
     countries = models.ManyToManyField(
         Country,
         verbose_name="Страны из которых принимаются заказы",
-        related_name="companies",
+        related_name="work_places",
+        blank=True,
     )
     regions = models.ManyToManyField(
         Region,
         verbose_name="Регионы из которых принимаются заказы",
-        related_name="companies",
+        related_name="work_places",
+        blank=True,
     )
     cities = models.ManyToManyField(
         City,
         verbose_name="Города или Населенные пункты из которых принимаются заказы",
-        related_name="companies",
+        related_name="work_places",
+        blank=True,
     )
     streets = models.ManyToManyField(
         Street,
         verbose_name="Улицы из которых принимаются заказы",
-        related_name="companies",
+        related_name="work_places",
+        blank=True,
     )
-    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
 
     class Meta:
-        verbose_name = "Прием заказов"
-        verbose_name_plural = "Прием заказов"
+        verbose_name = "Рабочее пространство для заказов"
+        verbose_name_plural = "Рабочее пространство для заказов"
 
     def __str__(self):
         return f"{self.id}"
 
 
-class AccountingCompany(CompanyMixin, models.Model):
+class CompanyAccounting(CompanyMixin, models.Model):
     company = models.OneToOneField(
         Company, related_name="accounting", on_delete=models.CASCADE
     )
@@ -76,7 +81,7 @@ class AccountingCompany(CompanyMixin, models.Model):
 
 
 
-# class ServiceCompany(models.Model):
+# class CompanyService(models.Model):
 #     MONTH = "ONE_MONTH"
 #     THREE_MONTHS = "THREE_MONTHS"
 #     SIX_MONTHS = "SIX_MONTHS"
@@ -102,7 +107,7 @@ class AccountingCompany(CompanyMixin, models.Model):
 #         return f"{self.title} {self.get_period_display()}"
 
 
-# class SubscriptionCompany(CompanyMixin, models.Model):
+# class CompanySubscription(CompanyMixin, models.Model):
 #     company = models.ForeignKey(
 #         Company,
 #         verbose_name="Компании",
