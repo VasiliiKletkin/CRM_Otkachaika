@@ -1,15 +1,13 @@
 from addresses.models import City, Country, Region, Street
 from companies.mixins import CompanyMixin
-from dateutil.relativedelta import relativedelta
 from django.db import models
-from django.utils import timezone
 from djmoney.models.fields import MoneyField
-from model_utils import Choices
 
 
 class Company(models.Model):
     name = models.CharField("Название компании", max_length=255)
     is_active = models.BooleanField("Активный", default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Компания"
@@ -29,7 +27,6 @@ class CompanyWorkPlace(CompanyMixin, models.Model):
         Company,
         related_name="work_place",
         on_delete=models.CASCADE,
-        blank=True,
     )
     countries = models.ManyToManyField(
         Country,
@@ -66,10 +63,16 @@ class CompanyWorkPlace(CompanyMixin, models.Model):
 
 class CompanyAccounting(CompanyMixin, models.Model):
     company = models.OneToOneField(
-        Company, related_name="accounting", on_delete=models.CASCADE
+        Company,
+        related_name="accounting",
+        on_delete=models.CASCADE,
     )
     balance = MoneyField(
-        "Баланс", max_digits=10, decimal_places=2, default_currency="RUB", default=0
+        "Баланс",
+        max_digits=10,
+        decimal_places=2,
+        default_currency="RUB",
+        default=0,
     )
 
     class Meta:
@@ -78,7 +81,6 @@ class CompanyAccounting(CompanyMixin, models.Model):
 
     def __str__(self):
         return f"{self.id}"
-
 
 
 # class CompanyService(models.Model):
