@@ -1,17 +1,14 @@
-from django_currentuser.middleware import get_current_user
-
-
 class CompanyMixin:
     def save(self, *args, **kwargs):
-        if user:= get_current_user():
-            if not user.is_superuser and not self.id:
-                self.company = user.profile.company
+        user = self.request.user
+        if not user.is_superuser and not self.id:
+            self.company = user.profile.company
         return super().save(*args, **kwargs)
 
 
 class CompanyAdminMixin:
     def remove_fields(self, request, fields, fields_to_remove=("company",)):
-        user = get_current_user()
+        user = request.user
         if not user.is_superuser:
             for field in fields_to_remove:
                 if field in fields:
@@ -19,7 +16,7 @@ class CompanyAdminMixin:
         return fields
 
     def get_queryset(self, request):
-        user = get_current_user()
+        user = request.user
         queryset = super().get_queryset(request)
         if not user.is_superuser:
             return queryset.filter(company=user.profile.company)
@@ -40,7 +37,7 @@ class CompanyAdminMixin:
 
 class CompanyInlineAdminMixin:
     def remove_fields(self, request, fields, fields_to_remove=("company",)):
-        user = get_current_user()
+        user = request.user
         if not user.is_superuser:
             for field in fields_to_remove:
                 if field in fields:

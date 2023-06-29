@@ -67,7 +67,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
 
     'debug_toolbar',
-    'rest_framework',
     'django_filters',
     'phonenumber_field',
     'djmoney',
@@ -93,7 +92,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django_currentuser.middleware.ThreadLocalUserMiddleware',
     'hijack.middleware.HijackUserMiddleware',
 ]
 

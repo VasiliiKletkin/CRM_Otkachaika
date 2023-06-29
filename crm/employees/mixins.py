@@ -1,4 +1,3 @@
-from django_currentuser.middleware import get_current_user
 from django.utils.translation import gettext_lazy as _
 
 
@@ -55,7 +54,7 @@ class EmployeesAminMixin:
     )
 
     def get_queryset(self, request):
-        user = get_current_user()
+        user = request.user
         queryset = super().get_queryset(request).filter(profile__user_type=self.user_type)
         if not user.is_superuser:
             return queryset.filter(profile__company=user.profile.company)
