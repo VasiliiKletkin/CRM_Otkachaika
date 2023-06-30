@@ -23,7 +23,10 @@ class ClientStatisticsInlineAdmin(admin.StackedInline):
 class ClientAnalyticsInlineAdmin(admin.StackedInline):
     model = ClientAnalytics
     extra = 1
-    readonly_fields = ("average_quantity_days_for_order", "date_planned_next_order")
+    readonly_fields = (
+        "average_quantity_days_for_order",
+        "date_planned_next_order",
+    )
 
 
 class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
@@ -94,9 +97,7 @@ class ClientBillingAdmin(ClientAdmin):
         return obj.analytics.date_planned_next_order
 
     get_date_planned_next_order.short_description = "Планируемая дата следующего заказа"
-    get_date_planned_next_order.admin_order_field = (
-        "analytics__date_planned_next_order"
-    )
+    get_date_planned_next_order.admin_order_field = "analytics__date_planned_next_order"
 
     def button_call(self, obj):
         result_html = format_html(

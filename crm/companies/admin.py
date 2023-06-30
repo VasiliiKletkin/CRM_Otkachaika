@@ -6,11 +6,13 @@ from .models import Company, CompanyAccounting, CompanyWorkPlace
 
 
 class CompanyWorkPlaceInlineAdmin(admin.StackedInline):
+    can_delete = False
     model = CompanyWorkPlace
     form = CompanyWorkPlaceInlineForm
 
 
 class CompanyAccountingInlineAdmin(admin.StackedInline):
+    can_delete = False
     model = CompanyAccounting
     form = CompanyAccountingInlineForm
 

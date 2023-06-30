@@ -1,13 +1,12 @@
 from datetime import timedelta
 
 from addresses.models import Address
-from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-class Client(CompanyMixin, models.Model):
+class Client(models.Model):
     company = models.ForeignKey(
         Company,
         on_delete=models.PROTECT,

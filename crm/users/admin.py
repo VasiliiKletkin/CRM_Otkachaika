@@ -9,15 +9,21 @@ from .models import Profile
 User = get_user_model()
 
 
-class ProfileInline(CompanyInlineAdminMixin, admin.StackedInline):
+class ProfileInlineAdmin(CompanyInlineAdminMixin, admin.StackedInline):
     model = Profile
     form = ProfileInlineForm
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ("username", "email", "first_name", "last_name", "profile",)
+    list_display = (
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "profile",
+    )
     inlines = [
-        ProfileInline,
+        ProfileInlineAdmin,
     ]
 
 

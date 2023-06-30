@@ -1,5 +1,4 @@
 from bot.models import Telegram
-from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.contrib.auth.models import User
 from django.db import models
@@ -7,7 +6,7 @@ from model_utils import Choices
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-class Profile(CompanyMixin, models.Model):
+class Profile(models.Model):
     OWNER = "OWNER"
     DRIVER = "DRIVER"
     DISPATCHER = "DISPATCHER"

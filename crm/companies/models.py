@@ -1,5 +1,4 @@
 from addresses.models import City, Country, Region, Street
-from companies.mixins import CompanyMixin
 from django.db import models
 from djmoney.models.fields import MoneyField
 
@@ -22,7 +21,7 @@ class Company(models.Model):
         return f"{self.name}"
 
 
-class CompanyWorkPlace(CompanyMixin, models.Model):
+class CompanyWorkPlace(models.Model):
     company = models.OneToOneField(
         Company,
         related_name="work_place",
@@ -61,7 +60,7 @@ class CompanyWorkPlace(CompanyMixin, models.Model):
         return f"{self.id}"
 
 
-class CompanyAccounting(CompanyMixin, models.Model):
+class CompanyAccounting(models.Model):
     company = models.OneToOneField(
         Company,
         related_name="accounting",
@@ -109,7 +108,7 @@ class CompanyAccounting(CompanyMixin, models.Model):
 #         return f"{self.title} {self.get_period_display()}"
 
 
-# class CompanySubscription(CompanyMixin, models.Model):
+# class CompanySubscription(models.Model):
 #     company = models.ForeignKey(
 #         Company,
 #         verbose_name="Компании",

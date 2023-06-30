@@ -1,5 +1,4 @@
 from clients.models import Address, Client
-from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.db import models
 from django.db.models import Count, Sum
@@ -7,7 +6,7 @@ from employees.models import Driver
 from orders.models import Order
 
 
-class Report(CompanyMixin, models.Model):
+class Report(models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
     date_start = models.DateField("Дата начала отчета")
     date_end = models.DateField("Дата конца отчета")

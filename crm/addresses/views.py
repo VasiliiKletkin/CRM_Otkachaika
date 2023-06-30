@@ -100,3 +100,25 @@ class AddressAutocomplete(autocomplete.Select2QuerySetView):
                     Q(home__icontains=self.q) | Q(street__name__icontains=self.q)
                 )
         return qs
+
+# class AddressAutocomplete(autocomplete.Select2QuerySetView):
+#     def get_queryset(self):
+
+#         if not self.request.user.is_superuser:
+#             qs = qs.filter(street__city__in=self.request.user.profile.company.work_place.cities.all())
+#         elif company := self.forwarded.get("company", None):
+#             company = Company.objects.get(id=company)
+#             qs = qs.filter(street__city__in=company.work_place.cities.all())
+
+#         if self.q:
+#             if len(self.q.split()) > 1:
+#                 splitted_line = self.q.split()
+#                 qs = qs.filter(
+#                     Q(home__icontains=splitted_line[0]) & Q(street__name__icontains=splitted_line[1])
+#                     | Q(street__name__icontains=self.q)
+#                 )
+#             else:
+#                 qs = qs.filter(
+#                     Q(home__icontains=self.q) | Q(street__name__icontains=self.q)
+#                 )
+#         return qs

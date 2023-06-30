@@ -2,7 +2,6 @@ import random
 
 from addresses.models import Address
 from clients.models import Client
-from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
@@ -15,7 +14,7 @@ from .tasks import send_order_to_driver
 User = get_user_model()
 
 
-class Order(CompanyMixin, models.Model):
+class Order(models.Model):
     CONFIRMATION = "CONFIRMATION"
     CONFIRMED = "CONFIRMED"
     INPROGRESS = "INPROGRESS"

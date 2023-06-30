@@ -1,11 +1,3 @@
-class CompanyMixin:
-    def save(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_superuser and not self.id:
-            self.company = user.profile.company
-        return super().save(*args, **kwargs)
-
-
 class CompanyAdminMixin:
     def remove_fields(self, request, fields, fields_to_remove=("company",)):
         user = request.user
@@ -14,7 +6,13 @@ class CompanyAdminMixin:
                 if field in fields:
                     fields.remove(field)
         return fields
-
+    
+    def save_model(self, request, obj, form, change):
+        user = self.request.user
+        if not user.is_superuser and not self.id:
+            self.company = user.profile.company
+        return super().save_model(request, obj, form, change)
+    
     def get_queryset(self, request):
         user = request.user
         queryset = super().get_queryset(request)
