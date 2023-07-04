@@ -37,12 +37,8 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
     )
     ordering = ("-date_created",)
     form = OrderForm
-    
-    def save_form(self, request: Any, form: Any, change: Any) -> Any:
-        print(form)
-        return super().save_form(request, form, change)
     actions = ("uppercase",)
-
+    
     @admin.action(description="Отправить водителю")
     def uppercase(modeladmin, request, queryset):
         for obj in queryset:

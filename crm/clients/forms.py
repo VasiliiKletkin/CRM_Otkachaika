@@ -1,3 +1,4 @@
+from addresses.forms import AddressModelChoiceFromListField
 from dal import autocomplete
 from django import forms
 
@@ -5,12 +6,12 @@ from .models import Client
 
 
 class ClientForm(forms.ModelForm):
+    address = AddressModelChoiceFromListField(create=True)
     class Meta:
         model = Client
         fields = ('__all__')
         widgets = {
             'company': autocomplete.ModelSelect2(url='company-autocomplete'),
-            'address': autocomplete.ModelSelect2(url='address-autocomplete', forward=['company'], attrs={'data-minimum-input-length': 3}),
         }
 
 class ClientInlineForm(forms.ModelForm):

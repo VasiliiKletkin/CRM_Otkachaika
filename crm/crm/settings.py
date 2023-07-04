@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'admin_argon.apps.AdminArgonConfig',
     'django.contrib.admin',
 
     'debug_toolbar',
@@ -220,3 +219,8 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
+
+TELEGRAM_API_TOKEN = os.environ.get("TELEGRAM_API_TOKEN")
+
+DADATA_API_TOKEN = os.environ.get("DADATA_API_TOKEN")
+DADATA_SECRET_KEY = os.environ.get("DADATA_SECRET_KEY")

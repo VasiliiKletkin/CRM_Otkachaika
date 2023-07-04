@@ -1,3 +1,4 @@
+from typing import Any
 from companies.mixins import CompanyAdminMixin, CompanyInlineAdminMixin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin

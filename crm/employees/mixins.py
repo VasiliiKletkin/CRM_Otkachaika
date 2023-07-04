@@ -9,23 +9,22 @@ class EmployeesAminMixin:
         )
     }
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'groups',),
-        }),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (None, {"fields": ("username", "password")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
+        (
+            _("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "groups",
+                ),
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
-    list_display = (
-        "username",
-        "first_name",
-        "last_name",
-        "is_active",
-        "date_joined"
-    )
-    list_filter = (
-        "is_active",
-    )
+    list_display = ("username", "first_name", "last_name", "is_active", "date_joined")
+    list_filter = ("is_active",)
     search_fields = (
         "first_name",
         "last_name",
@@ -55,7 +54,9 @@ class EmployeesAminMixin:
 
     def get_queryset(self, request):
         user = request.user
-        queryset = super().get_queryset(request).filter(profile__user_type=self.user_type)
+        queryset = (
+            super().get_queryset(request).filter(profile__user_type=self.user_type)
+        )
         if not user.is_superuser:
             return queryset.filter(profile__company=user.profile.company)
         return queryset
@@ -71,5 +72,11 @@ class EmployeesAminMixin:
             user_type = hasattr(instance, "user_type")
             if user_type:
                 instance.user_type = self.user_type
+
+            company = hasattr(instance, "company")
+            if company:
+                user = request.user
+                if not user.is_superuser:
+                    instance.company = user.profile.company
             instance.save()
         return formset.save_m2m()

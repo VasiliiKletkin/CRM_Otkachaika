@@ -8,7 +8,7 @@ class CompanyAdminMixin:
         return fields
     
     def save_model(self, request, obj, form, change):
-        user = self.request.user
+        user = request.user
         if not user.is_superuser and not self.id:
             self.company = user.profile.company
         return super().save_model(request, obj, form, change)

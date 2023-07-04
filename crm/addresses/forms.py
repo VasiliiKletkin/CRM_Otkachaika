@@ -1,3 +1,4 @@
+from addresses.utils import get_or_create_address, get_address
 from dal import autocomplete
 from django import forms
 
@@ -79,3 +80,19 @@ class AddressForm(forms.ModelForm):
         widgets = {
             'street': autocomplete.ModelSelect2(url='street-autocomplete', attrs={'data-minimum-input-length': 3}),
         }
+
+
+class AddressModelChoiceFromListField(forms.ModelChoiceField):
+
+    def __init__(self, create=False, *args, **kwargs):
+        self.create = create
+        kwargs['widget'] = autocomplete.ListSelect2(url='dadata-address-autocomplete')
+        kwargs['queryset'] = Address.objects.all()
+        super().__init__(*args, **kwargs)
+
+    def clean(self, value):
+        try:
+            value = get_or_create_address(value) if self.create else get_address(value)
+            return super().clean(value)
+        except Exception:
+            raise forms.ValidationError("Невозможно выбрать данный адрес")

@@ -2,7 +2,8 @@ from django.db import models
 
 
 class Country(models.Model):
-    name = models.CharField("Название", max_length=255)
+    uid = models.CharField("Уникальный номер региона", max_length=255, unique=True)
+    name = models.CharField("Название", max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = "Страну"
@@ -16,10 +17,9 @@ class Country(models.Model):
 
 
 class Region(models.Model):
-    country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, verbose_name="Страна", related_name="regions"
-    )
-    name = models.CharField("Название", max_length=255)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT, verbose_name="Страна", related_name="regions")
+    uid = models.CharField("Уникальный номер региона", max_length=255, unique=True)
+    name = models.CharField("Название", max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = "Регион"
@@ -28,16 +28,14 @@ class Region(models.Model):
             models.Index(name="region_name_idx", fields=["name"]),
         ]
         
-
     def __str__(self):
-        return f"{self.name}, {self.country}"
+        return f"{self.name}"
 
 
 class City(models.Model):
-    region = models.ForeignKey(
-        Region, on_delete=models.PROTECT, verbose_name="Регион", related_name="cities"
-    )
-    name = models.CharField("Название", max_length=255)
+    region = models.ForeignKey(Region, on_delete=models.PROTECT, verbose_name="Регион", related_name="cities")
+    uid = models.CharField("Уникальный номер города", max_length=255, unique=True)
+    name = models.CharField("Название", max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = "Город"
@@ -47,14 +45,13 @@ class City(models.Model):
         ]
 
     def __str__(self):
-        return f"г.{self.name}, {self.region}"
+        return f"{self.region}, {self.name}," if self.region.name else f"{self.name},"
 
 
 class Street(models.Model):
-    city = models.ForeignKey(
-        City, on_delete=models.PROTECT, verbose_name="Город", related_name="streets"
-    )
-    name = models.CharField("Название", max_length=255)
+    city = models.ForeignKey(City, on_delete=models.PROTECT, verbose_name="Город", related_name="streets")
+    uid = models.CharField("Уникальный номер улицы", max_length=255, unique=True)
+    name = models.CharField("Название", max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = "Улицу"
@@ -64,22 +61,20 @@ class Street(models.Model):
         ]
 
     def __str__(self):
-        return f"ул. {self.name}, {self.city.name}, {self.city.region.name}"
+        return f"{self.name}, {self.city.name}, {self.city}"
 
 
 class Address(models.Model):
-    street = models.ForeignKey(
-        Street, on_delete=models.PROTECT, verbose_name="Улица", related_name="addresses"
-    )
-    home = models.CharField("Дом", max_length=255)
-    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
+    street = models.ForeignKey(Street, on_delete=models.PROTECT, verbose_name="Улица", related_name="addresses", null=True, blank=True)
+    title = models.CharField("Полное название адреса", max_length=255, null=True, blank=True)
+    uid = models.CharField("Уникальный номер адреса", max_length=255, unique=True)
 
     class Meta:
         verbose_name = "Адрес"
         verbose_name_plural = "Адреса"
         indexes = [
-            models.Index(name="address_home_idx", fields=["home"]),
+            models.Index(name="address_uid_idx", fields=["uid"]),
         ]
 
     def __str__(self):
-        return f"{self.home}, ул. {self.street.name}, {self.street.city.name}"
+        return f"{self.title}"

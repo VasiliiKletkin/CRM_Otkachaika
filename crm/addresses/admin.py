@@ -36,16 +36,6 @@ class AddressAdmin(admin.ModelAdmin):
     ]
     form = AddressForm
 
-    def get_queryset(self, request):
-        user = request.user
-        queryset = super().get_queryset(request)
-        if not user.is_superuser:
-            return queryset.filter(
-                street__city__in=user.profile.company.work_place.cities.all()
-            )
-        return queryset
-
-
 admin.site.register(Street, StreetAdmin)
 admin.site.register(Country, CountyAdmin)
 admin.site.register(Region, RegionAdmin)
