@@ -21,8 +21,6 @@ class Client(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Адрес",
         related_name="clients",
-        null=True,
-        blank=True,
     )
     is_active = models.BooleanField("Активный", default=True)
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
