@@ -39,13 +39,10 @@ class Client(models.Model):
 
     def get_url_phone_number(self):
         return f"tel:{self.phone_number}"
-    
+
     def update_data(self):
         self.statistics.update_statistics()
         self.analytics.update_analytics()
-
-    def send_client(self):
-        pass
 
 
 class ClientBilling(Client):
@@ -125,17 +122,23 @@ class ClientAnalytics(models.Model):
     def update_analytics(self):
         statistics = self.client.statistics
         if statistics.count_completed_orders > 1:
-            
             last_completed_order = statistics.last_completed_order
             first_completed_order = statistics.first_completed_order
 
-            #old version
-            # completed_orders = self.client.orders.filter(status=Order.COMPLETED) 
+            # old version
+            # completed_orders = self.client.orders.filter(status=Order.COMPLETED)
             # last_completed_order = completed_orders.last()
-            # first_completed_order = completed_orders.first() 
-            
-            
-            all_date = last_completed_order.date_completed - first_completed_order.date_completed
-            self.average_quantity_days_for_order = all_date.days // (statistics.count_completed_orders - 1)
-            self.date_planned_next_order = last_completed_order.date_completed + timedelta(days=self.average_quantity_days_for_order)
+            # first_completed_order = completed_orders.first()
+
+            all_date = (
+                last_completed_order.date_completed
+                - first_completed_order.date_completed
+            )
+            self.average_quantity_days_for_order = all_date.days // (
+                statistics.count_completed_orders - 1
+            )
+            self.date_planned_next_order = (
+                last_completed_order.date_completed
+                + timedelta(days=self.average_quantity_days_for_order)
+            )
             self.save()
