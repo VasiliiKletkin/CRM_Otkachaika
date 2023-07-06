@@ -101,7 +101,9 @@ class ClientStatistics(models.Model):
     )
 
     count_completed_orders = models.IntegerField(
-        "Колл-во выполненных заказов", null=True, blank=True
+        "Колл-во выполненных заказов",
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -127,10 +129,14 @@ class ClientAnalytics(models.Model):
         on_delete=models.CASCADE,
     )
     average_quantity_days_for_order = models.IntegerField(
-        "Среднее колл-во дней для одного заказа", null=True, blank=True
+        "Среднее колл-во дней для одного заказа",
+        null=True,
+        blank=True,
     )
     date_planned_next_order = models.DateTimeField(
-        "Планируемая дата следующего заказа", null=True, blank=True
+        "Планируемая дата следующего заказа",
+        null=True,
+        blank=True,
     )
 
     class Meta:
