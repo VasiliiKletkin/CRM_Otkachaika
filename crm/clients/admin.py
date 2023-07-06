@@ -82,7 +82,6 @@ class ClientBillingAdmin(ClientAdmin):
         "first_name",
         "last_name",
         "address",
-        "is_active",
         "button_call",
         "get_date_planned_next_order",
         "company",
