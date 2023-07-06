@@ -57,7 +57,10 @@ class Order(models.Model):
         related_name="orders",
     )
     address = models.ForeignKey(
-        Address, verbose_name="Адрес", on_delete=models.PROTECT, related_name="orders"
+        Address,
+        verbose_name="Адрес",
+        on_delete=models.PROTECT,
+        related_name="orders",
     )
     client = models.ForeignKey(
         Client,
@@ -76,13 +79,25 @@ class Order(models.Model):
         blank=True,
         null=True,
     )
-    price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
-    type_payment = models.CharField(
-        "Тип оплаты", max_length=20, choices=TYPES_PAYMENT, default=ONLINE_TRANSFER
+    price = models.DecimalField(
+        "Цена",
+        max_digits=10,
+        decimal_places=2,
     )
-    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
+    type_payment = models.CharField(
+        "Тип оплаты",
+        max_length=20,
+        choices=TYPES_PAYMENT,
+        default=ONLINE_TRANSFER,
+    )
+    date_created = models.DateTimeField(
+        "Дата создания",
+        auto_now_add=True,
+    )
     date_planned = models.DateTimeField(
-        "Планируемая дата выполнения", null=True, blank=True
+        "Планируемая дата выполнения",
+        null=True,
+        blank=True,
     )
     date_started = MonitorField(
         "Дата начала выполнения",
@@ -108,7 +123,10 @@ class Order(models.Model):
         blank=True,
         default=None,
     )
-    is_sent = models.BooleanField("Отправлен водителю", default=False)
+    is_sent = models.BooleanField(
+        "Отправлен водителю",
+        default=False,
+    )
 
     class Meta:
         verbose_name = "Заказ"

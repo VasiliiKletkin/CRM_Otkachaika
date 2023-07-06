@@ -13,21 +13,42 @@ class Client(models.Model):
         verbose_name="Компания",
         related_name="clients",
     )
-    first_name = models.CharField("Имя", max_length=200, null=True, blank=True)
-    last_name = models.CharField("Фамилия", max_length=200, null=True, blank=True)
-    phone_number = PhoneNumberField("Телефонный номер")
+    first_name = models.CharField(
+        "Имя",
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    last_name = models.CharField(
+        "Фамилия",
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    phone_number = PhoneNumberField(
+        "Телефонный номер",
+    )
     address = models.ForeignKey(
         Address,
         on_delete=models.PROTECT,
         verbose_name="Адрес",
         related_name="clients",
     )
-    is_active = models.BooleanField("Активный", default=True)
-    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
+    is_active = models.BooleanField(
+        "Активный",
+        default=True,
+    )
+    date_created = models.DateTimeField(
+        "Дата создания",
+        auto_now_add=True,
+    )
 
     class Meta:
         verbose_name = "Клиент"
         verbose_name_plural = "Клиенты"
+        indexes = [
+            models.Index(name="client_is_active_idx", fields=["is_active"]),
+        ]
 
     def __str__(self):
         client_display = f"{self.phone_number}"
