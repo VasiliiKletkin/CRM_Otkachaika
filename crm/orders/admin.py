@@ -46,10 +46,10 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         messages.success(request, "Выбранные заказы были отправлены")
 
     list_display = (
+        "__str__",
         "address",
         "price",
         "driver",
-        "is_sent",
         "status",
         "company",
     )

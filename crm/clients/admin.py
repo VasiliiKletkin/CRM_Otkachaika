@@ -87,7 +87,7 @@ class ClientBillingAdmin(ClientAdmin):
         "get_date_planned_next_order",
         "company",
     )
-    list_editable = ("is_active",)
+
     list_prefetch_related = ("analytics",)
 
     def get_queryset(self, request):
@@ -106,6 +106,14 @@ class ClientBillingAdmin(ClientAdmin):
         return mark_safe(result_html)
 
     button_call.short_description = "Звонок"
+    
+    # This will help you to disbale add functionality
+    def has_add_permission(self, request):
+        return False
+
+    # This will help you to disable delete functionaliyt
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 admin.site.register(Client, ClientAdmin)

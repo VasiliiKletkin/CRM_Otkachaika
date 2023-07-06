@@ -57,6 +57,7 @@ if DEBUG:
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
+    'dal_queryset_sequence',
 
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,6 +77,7 @@ INSTALLED_APPS = [
     'employees',
     'orders',
     'companies',
+    'services',
     'users',
     'reports',
     'addresses',

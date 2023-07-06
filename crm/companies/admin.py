@@ -1,8 +1,7 @@
 from companies.forms import CompanyForm
 from django.contrib import admin
-
-from .forms import CompanyAccountingInlineForm, CompanyWorkPlaceInlineForm
-from .models import Company, CompanyAccounting, CompanyWorkPlace
+from .forms import CompanyAccountingInlineForm, CompanyWorkPlaceInlineForm, CompanySubscriptionInlineForm
+from .models import Company, CompanyAccounting, CompanyWorkPlace, CompanySubscription
 
 
 class CompanyWorkPlaceInlineAdmin(admin.StackedInline):
@@ -17,13 +16,21 @@ class CompanyAccountingInlineAdmin(admin.StackedInline):
     form = CompanyAccountingInlineForm
 
 
-# class SubscriptionCompanyInlineAdmin(admin.StackedInline):
-#     extra = 0
-#     model = SubscriptionCompany
-#     form = SubscriptionsCompanyForm
+class CompanySubscriptionInlineAdmin(admin.StackedInline):
+    can_delete = False
+    model = CompanySubscription
+    form = CompanySubscriptionInlineForm
+    extra = 0
+
+    fields = ('service', 'company',  'date_subscribed_on', 'date_subscribed_off',)
+    readonly_fields = ('date_subscribed_on', 'date_subscribed_off',)
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(is_active=True)
 
 
 class CompanyAdmin(admin.ModelAdmin):
+
     list_display = (
         "name",
         "is_active",
@@ -40,7 +47,7 @@ class CompanyAdmin(admin.ModelAdmin):
         self.inlines = [
             CompanyWorkPlaceInlineAdmin,
             CompanyAccountingInlineAdmin,
-            # SubscriptionCompanyInlineAdmin,
+            CompanySubscriptionInlineAdmin,
         ]
         return super().change_view(request, object_id)
 
@@ -54,4 +61,3 @@ class ServiceCompanyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Company, CompanyAdmin)
-# admin.site.register(ServiceCompany, ServiceCompanyAdmin)

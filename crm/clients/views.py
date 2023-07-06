@@ -13,7 +13,7 @@ class ClientAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(company=company)
 
         if address := self.forwarded.get("address", None):
-            qs = qs.filter(address=address)
+            qs = qs.filter(address__title=address)
 
         if self.q:
             qs = qs.filter(

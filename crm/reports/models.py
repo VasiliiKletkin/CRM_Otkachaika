@@ -50,7 +50,6 @@ class Report(models.Model):
         )
 
     def calculate(self):
-        # self.profit = self.orders.aggregate(Sum('price'))
         self.count_orders = self.orders.count()
         self.count_new_addresses = Address.objects.filter(
             clients__company=self.company,

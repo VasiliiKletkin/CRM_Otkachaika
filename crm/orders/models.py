@@ -9,7 +9,7 @@ from employees.models import Dispatcher, Driver
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
-from .tasks import send_order_to_driver
+from bot.tasks import send_order_to_driver
 
 User = get_user_model()
 
@@ -117,7 +117,7 @@ class Order(models.Model):
         ]
 
     def __str__(self):
-        return f"Заказ N{self.id}, {self.address} - {self.get_status_display()}"
+        return f"Заказ N{self.id}"
 
     def send_to_driver(self):
         transaction.on_commit(lambda: send_order_to_driver.delay(self.id))
