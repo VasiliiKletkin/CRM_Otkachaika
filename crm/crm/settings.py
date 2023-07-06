@@ -57,17 +57,16 @@ if DEBUG:
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
+    'dal_queryset_sequence',
 
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'admin_argon.apps.AdminArgonConfig',
     'django.contrib.admin',
 
     'debug_toolbar',
-    'rest_framework',
     'django_filters',
     'phonenumber_field',
     'djmoney',
@@ -78,6 +77,7 @@ INSTALLED_APPS = [
     'employees',
     'orders',
     'companies',
+    'services',
     'users',
     'reports',
     'addresses',
@@ -93,7 +93,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django_currentuser.middleware.ThreadLocalUserMiddleware',
     'hijack.middleware.HijackUserMiddleware',
 ]
 
@@ -222,3 +221,8 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
+
+TELEGRAM_API_TOKEN = os.environ.get("TELEGRAM_API_TOKEN")
+
+DADATA_API_TOKEN = os.environ.get("DADATA_API_TOKEN")
+DADATA_SECRET_KEY = os.environ.get("DADATA_SECRET_KEY")

@@ -7,8 +7,8 @@ from .models import Profile
 class ProfileInlineForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('__all__')
+        fields = "__all__"
         widgets = {
-            'company': autocomplete.ModelSelect2(url='company-autocomplete'),
-            'telegram': autocomplete.ModelSelect2(url='telegram-autocomplete'),
+            "company": autocomplete.ModelSelect2(url="company-autocomplete"),
+            "telegram": autocomplete.ModelSelect2(url="telegram-autocomplete"),
         }

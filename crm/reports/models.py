@@ -1,5 +1,4 @@
 from clients.models import Address, Client
-from companies.mixins import CompanyMixin
 from companies.models import Company
 from django.db import models
 from django.db.models import Count, Sum
@@ -7,21 +6,15 @@ from employees.models import Driver
 from orders.models import Order
 
 
-class Report(CompanyMixin, models.Model):
+class Report(models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT)
     date_start = models.DateField("Дата начала отчета")
     date_end = models.DateField("Дата конца отчета")
     date_created = models.DateTimeField("Дата создания", auto_now_add=True)
-    profit = models.DecimalField(
-        "Прибыль", max_digits=10, decimal_places=2, blank=True, null=True
-    )
+    profit = models.DecimalField("Прибыль", max_digits=10, decimal_places=2, blank=True, null=True)
     count_orders = models.IntegerField("Количество заказов", blank=True, null=True)
-    count_new_addresses = models.IntegerField(
-        "Количество новых адресов", blank=True, null=True
-    )
-    count_new_clients = models.IntegerField(
-        "Количество новых клиентов", blank=True, null=True
-    )
+    count_new_addresses = models.IntegerField("Количество новых адресов", blank=True, null=True)
+    count_new_clients = models.IntegerField("Количество новых клиентов", blank=True, null=True)
 
     class Meta:
         verbose_name = "Отчет"
@@ -51,7 +44,6 @@ class Report(CompanyMixin, models.Model):
         )
 
     def calculate(self):
-        # self.profit = self.orders.aggregate(Sum('price'))
         self.count_orders = self.orders.count()
         self.count_new_addresses = Address.objects.filter(
             clients__company=self.company,

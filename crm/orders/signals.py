@@ -4,11 +4,11 @@ from .models import Order
 
 
 @receiver(post_save, sender=Order)
-def create_order(sender, instance, created, **kwargs):
+def post_create_order(sender, instance, created, **kwargs):
     if created:
         instance.send_to_driver()
 
 
 @receiver(post_save, sender=Order)
-def save_order(sender, instance, **kwargs):
-    instance.client.update_client_data()
+def post_save_order(sender, instance, **kwargs):
+    instance.client.update_data()

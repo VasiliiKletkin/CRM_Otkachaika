@@ -1,7 +1,8 @@
+from typing import Any
 from companies.mixins import CompanyAdminMixin, CompanyInlineAdminMixin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.admin import ProfileInline
+from users.admin import ProfileInlineAdmin
 from users.models import Profile
 
 from .forms import CarForm, CarInlineForm
@@ -23,7 +24,7 @@ class CarAdmin(CompanyAdminMixin, admin.ModelAdmin):
     form = CarForm
 
 
-class ProfileEmployeeInline(ProfileInline):
+class ProfileEmployeeInlineAdmin(ProfileInlineAdmin):
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
         fields_to_remove = ("user_type",)
@@ -33,7 +34,7 @@ class ProfileEmployeeInline(ProfileInline):
         return fields
 
 
-class CarInline(CompanyInlineAdminMixin, admin.StackedInline):
+class CarInlineAdmin(CompanyInlineAdminMixin, admin.StackedInline):
     form = CarInlineForm
     model = Car
 
@@ -41,22 +42,21 @@ class CarInline(CompanyInlineAdminMixin, admin.StackedInline):
 class DriverAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DRIVER
     inlines = [
-        ProfileEmployeeInline,
-        CarInline,
+        ProfileEmployeeInlineAdmin,
     ]
 
 
 class DispatcherAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.DISPATCHER
     inlines = [
-        ProfileEmployeeInline,
+        ProfileEmployeeInlineAdmin,
     ]
 
 
 class OwnerAdmin(EmployeesAminMixin, UserAdmin):
     user_type = Profile.OWNER
     inlines = [
-        ProfileEmployeeInline,
+        ProfileEmployeeInlineAdmin,
     ]
 
 

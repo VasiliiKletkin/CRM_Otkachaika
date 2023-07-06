@@ -25,6 +25,7 @@ urlpatterns = [
     path("bot/", include("bot.urls")),
     path("companies/", include("companies.urls")),
     path("clients/", include("clients.urls")),
+    path("services/", include("services.urls")),
 
 
     # public api

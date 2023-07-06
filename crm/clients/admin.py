@@ -1,6 +1,3 @@
-from typing import Any
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
@@ -23,7 +20,10 @@ class ClientStatisticsInlineAdmin(admin.StackedInline):
 class ClientAnalyticsInlineAdmin(admin.StackedInline):
     model = ClientAnalytics
     extra = 1
-    readonly_fields = ("average_quantity_days_for_order", "date_planned_next_order")
+    readonly_fields = (
+        "average_quantity_days_for_order",
+        "date_planned_next_order",
+    )
 
 
 class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
@@ -61,7 +61,9 @@ class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "company",
         "date_created",
     )
-    readonly_fields = ("date_created",)
+    readonly_fields = (
+        "date_created",
+    )
     search_fields = (
         "phone_number",
         "first_name",
@@ -79,24 +81,21 @@ class ClientBillingAdmin(ClientAdmin):
         "first_name",
         "last_name",
         "address",
-        "is_active",
         "button_call",
         "get_date_planned_next_order",
         "company",
     )
-    list_editable = ("is_active",)
-    list_prefetch_related = ("client_analytics",)
+
+    list_prefetch_related = ("analytics",)
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(is_active=True)
 
     def get_date_planned_next_order(self, obj):
-        return obj.client_analytics.date_planned_next_order
+        return obj.analytics.date_planned_next_order
 
     get_date_planned_next_order.short_description = "Планируемая дата следующего заказа"
-    get_date_planned_next_order.admin_order_field = (
-        "client_analytics__date_planned_next_order"
-    )
+    get_date_planned_next_order.admin_order_field = "analytics__date_planned_next_order"
 
     def button_call(self, obj):
         result_html = format_html(
@@ -105,6 +104,12 @@ class ClientBillingAdmin(ClientAdmin):
         return mark_safe(result_html)
 
     button_call.short_description = "Звонок"
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 admin.site.register(Client, ClientAdmin)

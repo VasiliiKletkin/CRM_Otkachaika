@@ -13,7 +13,6 @@ class Telegram(models.Model):
         verbose_name_plural = "Телеграм профили"
         indexes = [
             models.Index(name="telegram_user_id_idx", fields=["user_id"]),
-            models.Index(name="telegram_username_idx", fields=["username"]),
         ]
 
     def __str__(self):

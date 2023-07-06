@@ -1,3 +1,4 @@
+from typing import Any
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin, messages
 from django.contrib.admin import SimpleListFilter
@@ -36,9 +37,8 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
     )
     ordering = ("-date_created",)
     form = OrderForm
-
     actions = ("uppercase",)
-
+    
     @admin.action(description="Отправить водителю")
     def uppercase(modeladmin, request, queryset):
         for obj in queryset:
@@ -46,12 +46,11 @@ class OrderAdmin(CompanyAdminMixin, admin.ModelAdmin):
         messages.success(request, "Выбранные заказы были отправлены")
 
     list_display = (
+        "__str__",
         "address",
         "price",
         "driver",
-        "client",
         "status",
-        "is_sent",
         "company",
     )
 

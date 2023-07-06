@@ -1,8 +1,10 @@
 from dal import autocomplete
 from django import forms
+from services.forms import ServiceSelect2GenericForeignKeyModelField
+from services.models import CompanyServiceAggregation, CompanyServiceCRM
 
-from .models import (AccountingCompany, Company,
-                     WorkPlaceCompany)
+from .models import (Company, CompanyAccounting, CompanySubscription,
+                     CompanyWorkPlace)
 
 
 class CompanyForm(forms.ModelForm):
@@ -11,9 +13,9 @@ class CompanyForm(forms.ModelForm):
         fields = ('__all__')
 
 
-class WorkPlaceCompanyInlineForm(forms.ModelForm):
+class CompanyWorkPlaceInlineForm(forms.ModelForm):
     class Meta:
-        model = WorkPlaceCompany
+        model = CompanyWorkPlace
         fields = ('__all__')
         widgets = {
             'countries': autocomplete.ModelSelect2Multiple(url='country-autocomplete'),
@@ -23,17 +25,19 @@ class WorkPlaceCompanyInlineForm(forms.ModelForm):
         }
 
 
-class AccountingCompanyInlineForm(forms.ModelForm):
+class CompanyAccountingInlineForm(forms.ModelForm):
     class Meta:
-        model = AccountingCompany
+        model = CompanyAccounting
         fields = ('__all__')
 
 
-# class SubscriptionsCompanyForm(forms.ModelForm):
-#     class Meta:
-#         model = SubscriptionCompany
-#         fields = ('__all__')
-#         widgets = {
-#             'company': autocomplete.ModelSelect2(url='company-autocomplete'),
-#             'service': autocomplete.ModelSelect2(url='servicecompany-autocomplete'),
-#         }
+class CompanySubscriptionInlineForm(autocomplete.FutureModelForm):
+    service = ServiceSelect2GenericForeignKeyModelField()
+
+    class Meta:
+        model = CompanySubscription
+        fields = ('__all__')
+
+        widgets = {
+            'company': autocomplete.ModelSelect2(url='company-autocomplete'),
+        }
