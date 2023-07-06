@@ -1,6 +1,3 @@
-from typing import Any
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse
 from companies.mixins import CompanyAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
@@ -64,7 +61,9 @@ class ClientAdmin(CompanyAdminMixin, admin.ModelAdmin):
         "company",
         "date_created",
     )
-    readonly_fields = ("date_created",)
+    readonly_fields = (
+        "date_created",
+    )
     search_fields = (
         "phone_number",
         "first_name",
@@ -105,12 +104,10 @@ class ClientBillingAdmin(ClientAdmin):
         return mark_safe(result_html)
 
     button_call.short_description = "Звонок"
-    
-    # This will help you to disbale add functionality
+
     def has_add_permission(self, request):
         return False
 
-    # This will help you to disable delete functionaliyt
     def has_delete_permission(self, request, obj=None):
         return False
 

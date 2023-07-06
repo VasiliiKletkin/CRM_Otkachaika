@@ -71,7 +71,11 @@ class Order(models.Model):
         on_delete=models.PROTECT,
         related_name="created_orders",
     )
-    description = models.TextField("Описание", blank=True, null=True)
+    description = models.TextField(
+        "Описание",
+        blank=True,
+        null=True,
+    )
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
     type_payment = models.CharField(
         "Тип оплаты", max_length=20, choices=TYPES_PAYMENT, default=ONLINE_TRANSFER
