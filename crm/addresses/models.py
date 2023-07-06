@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Address(models.Model):
     title = models.CharField("Полное название адреса", max_length=500)
     uid = models.CharField("Уникальный номер адреса", max_length=100, unique=True)

@@ -38,18 +38,8 @@ class CompanyWorkPlace(models.Model):
 
 
 class CompanyAccounting(models.Model):
-    company = models.OneToOneField(
-        Company,
-        related_name="accounting",
-        on_delete=models.CASCADE,
-    )
-    balance = MoneyField(
-        "Баланс",
-        max_digits=10,
-        decimal_places=2,
-        default_currency="RUB",
-        default=0,
-    )
+    company = models.OneToOneField(Company, related_name="accounting", on_delete=models.CASCADE)
+    balance = MoneyField("Баланс", max_digits=10, decimal_places=2, default_currency="RUB", default=0)
 
     class Meta:
         verbose_name = "Аккаунтинг"
@@ -60,12 +50,7 @@ class CompanyAccounting(models.Model):
 
 
 class CompanySubscription(models.Model):
-    company = models.ForeignKey(
-        Company,
-        verbose_name="Компании",
-        on_delete=models.PROTECT,
-        related_name="subscriptions",
-    )
+    company = models.ForeignKey(Company, verbose_name="Компании", on_delete=models.PROTECT, related_name="subscriptions")
     is_active = models.BooleanField("Активный", default=True,)
     date_subscribed_on = models.DateTimeField("Дата начала подписки", auto_now_add=True)
     date_subscribed_off = models.DateTimeField("Дата истечения подписки")
@@ -78,10 +63,7 @@ class CompanySubscription(models.Model):
         verbose_name_plural = "Подписки компаний"
 
     indexes = [
-        models.Index(
-            name="company_subscription_date_subscribed_off_idx",
-            fields=["date_subscribed_off"],
-        ),
+        models.Index(name="company_subscription_date_subscribed_off_idx", fields=["date_subscribed_off"]),
         models.Index(name="company_subscription_is_active_idx", fields=["is_active"]),
     ]
 

@@ -7,41 +7,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Client(models.Model):
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.PROTECT,
-        verbose_name="Компания",
-        related_name="clients",
-    )
-    first_name = models.CharField(
-        "Имя",
-        max_length=200,
-        null=True,
-        blank=True,
-    )
-    last_name = models.CharField(
-        "Фамилия",
-        max_length=200,
-        null=True,
-        blank=True,
-    )
-    phone_number = PhoneNumberField(
-        "Телефонный номер",
-    )
-    address = models.ForeignKey(
-        Address,
-        on_delete=models.PROTECT,
-        verbose_name="Адрес",
-        related_name="clients",
-    )
-    is_active = models.BooleanField(
-        "Активный",
-        default=True,
-    )
-    date_created = models.DateTimeField(
-        "Дата создания",
-        auto_now_add=True,
-    )
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, verbose_name="Компания", related_name="clients")
+    first_name = models.CharField("Имя", max_length=200, null=True, blank=True)
+    last_name = models.CharField("Фамилия", max_length=200, null=True, blank=True)
+    phone_number = PhoneNumberField("Телефонный номер")
+    address = models.ForeignKey(Address, on_delete=models.PROTECT, verbose_name="Адрес", related_name="clients")
+    is_active = models.BooleanField("Активный", default=True)
+    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
 
     class Meta:
         verbose_name = "Клиент"
@@ -77,34 +49,10 @@ from orders.models import Order
 
 
 class ClientStatistics(models.Model):
-    client = models.OneToOneField(
-        Client,
-        verbose_name="Клиент",
-        related_name="statistics",
-        on_delete=models.CASCADE,
-    )
-    first_completed_order = models.ForeignKey(
-        Order,
-        on_delete=models.SET_NULL,
-        verbose_name="Первый выполненный заказ",
-        related_name="first_statistics",
-        null=True,
-        blank=True,
-    )
-    last_completed_order = models.ForeignKey(
-        Order,
-        on_delete=models.SET_NULL,
-        verbose_name="Последний выполненный заказ",
-        related_name="last_statistics",
-        null=True,
-        blank=True,
-    )
-
-    count_completed_orders = models.IntegerField(
-        "Колл-во выполненных заказов",
-        null=True,
-        blank=True,
-    )
+    client = models.OneToOneField(Client, verbose_name="Клиент", related_name="statistics", on_delete=models.CASCADE)
+    first_completed_order = models.ForeignKey(Order, on_delete=models.SET_NULL, verbose_name="Первый выполненный заказ", related_name="first_statistics", null=True, blank=True)
+    last_completed_order = models.ForeignKey(Order, on_delete=models.SET_NULL, verbose_name="Последний выполненный заказ", related_name="last_statistics", null=True, blank=True)
+    count_completed_orders = models.IntegerField("Колл-во выполненных заказов", null=True, blank=True)
 
     class Meta:
         verbose_name = "Статистика клиента"
@@ -122,22 +70,9 @@ class ClientStatistics(models.Model):
 
 
 class ClientAnalytics(models.Model):
-    client = models.OneToOneField(
-        Client,
-        verbose_name="Клиент",
-        related_name="analytics",
-        on_delete=models.CASCADE,
-    )
-    average_quantity_days_for_order = models.IntegerField(
-        "Среднее колл-во дней для одного заказа",
-        null=True,
-        blank=True,
-    )
-    date_planned_next_order = models.DateTimeField(
-        "Планируемая дата следующего заказа",
-        null=True,
-        blank=True,
-    )
+    client = models.OneToOneField(Client, verbose_name="Клиент", related_name="analytics", on_delete=models.CASCADE)
+    average_quantity_days_for_order = models.IntegerField("Среднее колл-во дней для одного заказа", null=True, blank=True)
+    date_planned_next_order = models.DateTimeField("Планируемая дата следующего заказа", null=True, blank=True)
 
     class Meta:
         verbose_name = "Аналитика клиента"

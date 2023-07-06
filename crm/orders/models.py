@@ -38,95 +38,22 @@ class Order(models.Model):
         (CREDIT_CARD, "Картой"),
         (ONLINE_TRANSFER, "Онлайн перевод"),
     )
-
-    company = models.ForeignKey(
-        Company,
-        verbose_name="Компания",
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-        related_name="orders",
-    )
+    
     status = StatusField("Статус", default=CONFIRMED)
-    driver = models.ForeignKey(
-        Driver,
-        verbose_name="Водитель",
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True,
-        related_name="orders",
-    )
-    address = models.ForeignKey(
-        Address,
-        verbose_name="Адрес",
-        on_delete=models.PROTECT,
-        related_name="orders",
-    )
-    client = models.ForeignKey(
-        Client,
-        verbose_name="Клиент",
-        on_delete=models.PROTECT,
-        related_name="orders",
-    )
-    created_by = models.ForeignKey(
-        Dispatcher,
-        verbose_name="Диспетчер",
-        on_delete=models.PROTECT,
-        related_name="created_orders",
-    )
-    description = models.TextField(
-        "Описание",
-        blank=True,
-        null=True,
-    )
-    price = models.DecimalField(
-        "Цена",
-        max_digits=10,
-        decimal_places=2,
-    )
-    type_payment = models.CharField(
-        "Тип оплаты",
-        max_length=20,
-        choices=TYPES_PAYMENT,
-        default=ONLINE_TRANSFER,
-    )
-    date_created = models.DateTimeField(
-        "Дата создания",
-        auto_now_add=True,
-    )
-    date_planned = models.DateTimeField(
-        "Планируемая дата выполнения",
-        null=True,
-        blank=True,
-    )
-    date_started = MonitorField(
-        "Дата начала выполнения",
-        monitor="status",
-        when=[INPROGRESS],
-        null=True,
-        blank=True,
-        default=None,
-    )
-    date_completed = MonitorField(
-        "Дата конца выполнения",
-        monitor="status",
-        when=[COMPLETED],
-        null=True,
-        blank=True,
-        default=None,
-    )
-    date_canceled = MonitorField(
-        "Дата отмены выполнения",
-        monitor="status",
-        when=[CANCELED],
-        null=True,
-        blank=True,
-        default=None,
-    )
-    is_sent = models.BooleanField(
-        "Отправлен водителю",
-        default=False,
-    )
+    company = models.ForeignKey(Company, verbose_name="Компания", on_delete=models.PROTECT, null=True, blank=True, related_name="orders")
+    driver = models.ForeignKey(Driver, verbose_name="Водитель", on_delete=models.PROTECT, null=True, blank=True, related_name="orders")
+    address = models.ForeignKey(Address, verbose_name="Адрес", on_delete=models.PROTECT, related_name="orders")
+    client = models.ForeignKey(Client, verbose_name="Клиент", on_delete=models.PROTECT, related_name="orders")
+    created_by = models.ForeignKey(Dispatcher, verbose_name="Диспетчер", on_delete=models.PROTECT, related_name="created_orders",)
+    description = models.TextField("Описание", blank=True, null=True)
+    price = models.DecimalField("Цена", max_digits=10, decimal_places=2)
+    type_payment = models.CharField("Тип оплаты", max_length=20, choices=TYPES_PAYMENT, default=ONLINE_TRANSFER)
+    date_created = models.DateTimeField("Дата создания", auto_now_add=True)
+    date_planned = models.DateTimeField("Планируемая дата выполнения", null=True, blank=True)
+    date_started = MonitorField("Дата начала выполнения", monitor="status", when=[INPROGRESS], null=True, blank=True, default=None)
+    date_completed = MonitorField("Дата конца выполнения", monitor="status", when=[COMPLETED], null=True, blank=True, default=None)
+    date_canceled = MonitorField("Дата отмены выполнения", monitor="status", when=[CANCELED], null=True, blank=True, default=None)
+    is_sent = models.BooleanField("Отправлен водителю", default=False)
 
     class Meta:
         verbose_name = "Заказ"
@@ -155,16 +82,3 @@ class Order(models.Model):
     def cancel(self):
         self.status = Order.CANCELED
         self.save()
-
-
-# for Subscriprion
-# if not instance.company:
-#     instance.company = instance.get_company_with_active_subscription()
-#     instance.status = instance.CONFIRMATION
-
-# def get_company_with_active_subscription(self):
-#     if companies := Company.objects.filter(
-#         # streets=self.address.street,
-#         subscriptions__is_active=True
-#     ):
-#         return random.choice(companies)

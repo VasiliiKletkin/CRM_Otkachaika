@@ -17,19 +17,11 @@ class Profile(models.Model):
         (DISPATCHER, "Диспетчер"),
     )
 
-    company = models.ForeignKey(
-        Company, verbose_name="Компания", on_delete=models.PROTECT
-    )
+    company = models.ForeignKey(Company, verbose_name="Компания", on_delete=models.PROTECT)
     user = models.OneToOneField(User, on_delete=models.PROTECT)
     user_type = models.CharField("Тип пользователя", choices=USER_TYPES, max_length=20)
     phone_number = PhoneNumberField("Телефонный номер")
-    telegram = models.ForeignKey(
-        Telegram,
-        on_delete=models.PROTECT,
-        help_text="Введите username или имя и фамилию указанную в телеграме",
-        null=True,
-        blank=True,
-    )
+    telegram = models.ForeignKey(Telegram, on_delete=models.PROTECT, help_text="Введите username или имя и фамилию указанную в телеграме", null=True, blank=True)
 
     class Meta:
         verbose_name = "Профиль"
