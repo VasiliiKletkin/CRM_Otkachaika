@@ -1,20 +1,26 @@
 from typing import Any, Dict
-from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.admin.options import InlineModelAdmin
-from django.http.request import HttpRequest
+
 from companies.mixins import CompanyAdminMixin, CompanyInlineAdminMixin
 from django.contrib import admin
+from django.contrib.admin.options import InlineModelAdmin
 from django.contrib.auth.admin import UserAdmin
+from django.forms import BaseInlineFormSet
+from django.http.request import HttpRequest
+from phonenumber_field.modelfields import PhoneNumberField
 from users.admin import ProfileInlineAdmin
 from users.models import Profile
-from django.forms import BaseInlineFormSet
+
 from .forms import CarForm, CarInlineForm
-from .mixins import EmployeesAminMixin
+from .mixins import EmployeeAminMixin
 from .models import Car, Dispatcher, Driver, Owner
 
 
 class CarAdmin(CompanyAdminMixin, admin.ModelAdmin):
-    list_display = ("name", "number", "company")
+    list_display = (
+        "name",
+        "number",
+        "company",
+    )
     list_filter = ("name",)
     search_fields = (
         "name",
@@ -27,7 +33,7 @@ class CarAdmin(CompanyAdminMixin, admin.ModelAdmin):
     form = CarForm
 
 
-class ProfileEmployeeInlineAdmin(ProfileInlineAdmin):    
+class ProfileEmployeeInlineAdmin(ProfileInlineAdmin):
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
         fields_to_remove = ("user_type",)
@@ -42,24 +48,22 @@ class CarInlineAdmin(CompanyInlineAdminMixin, admin.StackedInline):
     model = Car
 
 
-class DriverAdmin(EmployeesAminMixin, UserAdmin):
+class EmployeeAdminMixin(EmployeeAminMixin, UserAdmin):
+    inlines = [
+        ProfileEmployeeInlineAdmin,
+    ]
+
+
+class DriverAdmin(EmployeeAdminMixin):
     user_type = Profile.DRIVER
-    inlines = [
-        ProfileEmployeeInlineAdmin,
-    ]
 
-class DispatcherAdmin(EmployeesAminMixin, UserAdmin):
+
+class DispatcherAdmin(EmployeeAdminMixin):
     user_type = Profile.DISPATCHER
-    inlines = [
-        ProfileEmployeeInlineAdmin,
-    ]
 
 
-class OwnerAdmin(EmployeesAminMixin, UserAdmin):
+class OwnerAdmin(EmployeeAdminMixin):
     user_type = Profile.OWNER
-    inlines = [
-        ProfileEmployeeInlineAdmin,
-    ]
 
 
 admin.site.register(Car, CarAdmin)

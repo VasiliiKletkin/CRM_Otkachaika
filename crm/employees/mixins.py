@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 
-class EmployeesAminMixin:
+class EmployeeAminMixin:
     prepopulated_fields = {
         "username": (
             "first_name",
@@ -64,19 +64,8 @@ class EmployeesAminMixin:
             obj.is_staff = True
         return super().save_model(request, obj, form, change)
 
-
-    # def save_formset(self, request, form, formset, change):
-    #     for inline_form in formset.forms:
-    #         if not inline_form.cleaned_data.get("user_type"):
-    #             inline_form.cleaned_data["user_type"] = self.user_type
-    #         # if not inline_form.cleaned_data.get("company"):
-    #         inline_form.cleaned_data["phone_number"] = "+79196946337"
-    #         inline_form.cleaned_data["company"] = request.user.profile.company
-            
-    #         print(inline_form.cleaned_data)
-            
-    #     instances = formset.save(commit=False)
-    #     for instance in instances:
-            
-    #         instance.save()
-    #     formset.save_m2m()            
+    def save_formset(self, request, form, formset, change):
+        for inline_form in formset.forms:
+                inline_form.instance.user_type = self.user_type
+                inline_form.instance.company = request.user.profile.company
+        return super().save_formset(request, form, formset, change)
