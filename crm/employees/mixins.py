@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 
-class EmployeesAminMixin:
+class EmployeeAminMixin:
     prepopulated_fields = {
         "username": (
             "first_name",
@@ -53,10 +53,8 @@ class EmployeesAminMixin:
     )
 
     def get_queryset(self, request):
+        queryset = super().get_queryset(request).filter(profile__user_type=self.user_type)
         user = request.user
-        queryset = (
-            super().get_queryset(request).filter(profile__user_type=self.user_type)
-        )
         if not user.is_superuser:
             return queryset.filter(profile__company=user.profile.company)
         return queryset
@@ -67,16 +65,9 @@ class EmployeesAminMixin:
         return super().save_model(request, obj, form, change)
 
     def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for instance in instances:
-            user_type = hasattr(instance, "user_type")
-            if user_type:
-                instance.user_type = self.user_type
-
-            company = hasattr(instance, "company")
-            if company:
-                user = request.user
-                if not user.is_superuser:
-                    instance.company = user.profile.company
-            instance.save()
-        return formset.save_m2m()
+        for inline_form in formset.forms:
+                if not inline_form.instance.user_type:
+                    inline_form.instance.user_type = self.user_type
+                if not inline_form.instance.company_id:
+                    inline_form.instance.company = request.user.profile.company
+        return super().save_formset(request, form, formset, change)
