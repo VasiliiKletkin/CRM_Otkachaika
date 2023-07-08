@@ -9,8 +9,8 @@ class CompanyAdminMixin:
     
     def save_model(self, request, obj, form, change):
         user = request.user
-        if not user.is_superuser and not self.id:
-            self.company = user.profile.company
+        if not user.is_superuser and not obj.company_id:
+            obj.company = user.profile.company
         return super().save_model(request, obj, form, change)
     
     def get_queryset(self, request):
