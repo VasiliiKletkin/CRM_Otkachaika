@@ -66,6 +66,8 @@ class EmployeeAminMixin:
 
     def save_formset(self, request, form, formset, change):
         for inline_form in formset.forms:
-                inline_form.instance.user_type = self.user_type
-                inline_form.instance.company = request.user.profile.company
+                if not inline_form.instance.user_type:
+                    inline_form.instance.user_type = self.user_type
+                if not inline_form.instance.company_id:
+                    inline_form.instance.company = request.user.profile.company
         return super().save_formset(request, form, formset, change)
