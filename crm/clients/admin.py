@@ -85,7 +85,7 @@ class ClientBillingAdmin(ClientAdmin):
         "get_date_planned_next_order",
         "company",
     )
-
+    list_filter = ("company",)
     list_prefetch_related = ("analytics",)
 
     def get_queryset(self, request):
