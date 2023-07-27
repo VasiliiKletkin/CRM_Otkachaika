@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 import sentry_sdk
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -48,8 +49,24 @@ INTERNAL_IPS = [
 if DEBUG:
     import socket  # only if you haven't already imported this
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+    INTERNAL_IPS = [
+        ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+else:
+    sentry_sdk.init(
+        dsn="https://7537490596684c258f6b83e9dd59cc90@o4505362421055488.ingest.sentry.io/4505362422890496",
+        integrations=[
+            DjangoIntegration(),
+        ],
 
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
 # Application definition
 
 INSTALLED_APPS = [
@@ -80,6 +97,7 @@ INSTALLED_APPS = [
     'reports',
     'addresses',
     'bot',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -139,7 +157,8 @@ RABBITMQ = {
     "PASSWORD": os.environ.get("RABBITMQ_DEFAULT_PASS", "guest"),
 }
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", f"{RABBITMQ['PROTOCOL']}://{RABBITMQ['USER']}:{RABBITMQ['PASSWORD']}@{RABBITMQ['HOST']}:{RABBITMQ['PORT']}")
+CELERY_BROKER_URL = os.environ.get(
+    "CELERY_BROKER_URL", f"{RABBITMQ['PROTOCOL']}://{RABBITMQ['USER']}:{RABBITMQ['PASSWORD']}@{RABBITMQ['HOST']}:{RABBITMQ['PORT']}")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -176,7 +195,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Static files directory for override default
+]
 STATIC_URL = 'static/'
+# Static files directory for collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
@@ -196,31 +219,16 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100
 }
 
-
 # Login
 # LOGIN_URL = '/auth/login/'
-# LOGIN_REDIRECT_URL = '/../admin/'
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGOUT_REDIRECT_URL = reverse_lazy('home')
 
-# LOGOUT_REDIRECT_URL = 'admin:index'
 
-
-sentry_sdk.init(
-    dsn="https://7537490596684c258f6b83e9dd59cc90@o4505362421055488.ingest.sentry.io/4505362422890496",
-    integrations=[
-        DjangoIntegration(),
-    ],
-
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
-
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
-
+# Telegram bot
 TELEGRAM_API_TOKEN = os.environ.get("TELEGRAM_API_TOKEN")
 
+
+# Dadata autocomplete
 DADATA_API_TOKEN = os.environ.get("DADATA_API_TOKEN")
 DADATA_SECRET_KEY = os.environ.get("DADATA_SECRET_KEY")

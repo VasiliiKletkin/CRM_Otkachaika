@@ -15,7 +15,7 @@ app.conf.beat_schedule = {
 
     "check_active_clients": {
         "task": "check_active_clients",
-        "schedule": crontab(minute=0, hour=0),
+        "schedule": crontab(day_of_week=6, minute=0, hour=0),
     },
 
     "check_company_subscriptions":{
