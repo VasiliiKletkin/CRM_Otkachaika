@@ -39,7 +39,7 @@
       </div>
       <div class="site-mobile-menu-body"></div>
     </div>
-   
+    
 
     <div class="top-bar">
       <div class="container">
@@ -83,23 +83,24 @@
                 <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
                 <li><a href="#home-section" class="nav-link">Главная</a></li>
                 <li><a href="#services-section" class="nav-link">Услуги</a></li>
-              
+                <li><a href="#about-section" class="nav-link">О нас</a></li>
+                <li><a href="#pricing-section" class="nav-link">Цены</a></li>
+                <li><a href="#faq-section" class="nav-link">Вопросы</a></li>
+                <li><a href="#contact-section" class="nav-link">Контакты</a></li>
 
-                <li class="has-children">
+                {% comment %} <li class="has-children">
                   <a href="#about-section" class="nav-link">О нас</a>
                   <ul class="dropdown arrow-top">
                     <li><a href="#team-section" class="nav-link">Компания</a></li>
                     <li><a href="#pricing-section" class="nav-link">Цены</a></li>
-                    <li><a href="#faq-section" class="nav-link">Вопросы</a></li>
                     <li class="has-children">
                   </ul>
-                </li>
+                </li> {% endcomment %}
 
-                <li><a href="#press-section" class="nav-link">Фото</a></li>
+                {% comment %} <li><a href="#press-section" class="nav-link">Фото</a></li> {% endcomment %}
                 
-                <li><a href="#testimonials-section" class="nav-link">Отзывы</a></li>
-                <li><a href="#blog-section" class="nav-link">Блог</a></li>
-                <li><a href="#contact-section" class="nav-link">Контакты</a></li>
+                {% comment %} <li><a href="#testimonials-section" class="nav-link">Отзывы</a></li> {% endcomment %}
+                {% comment %} <li><a href="#blog-section" class="nav-link">Блог</a></li> {% endcomment %}
               </ul>
               </nav>
           
@@ -314,7 +315,7 @@
       </div>
     </div>
 
-    <div class="site-section" id="team-section">
+    {% comment %} <div class="site-section" id="team-section">
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
@@ -416,7 +417,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
 
 
     <section class="site-section bg-light" id="pricing-section">
@@ -424,29 +425,29 @@
         <div class="row mb-5 justify-content-center text-center">
           <div class="col-md-7">
             <div class="block-heading-1" data-aos="fade-up" data-aos-delay="">
-              <h2>Pricing</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque quae temporibus tenetur vitae iusto suscipit alias, laudantium, porro unde tempora.</p>
+              <h2>Цены</h2>
+              {% comment %} <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque quae temporibus tenetur vitae iusto suscipit alias, laudantium, porro unde tempora.</p> {% endcomment %}
             </div>
           </div>
         </div>
         <div class="row mb-5">
           <div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
             <div class="pricing">
-              <h3 class="text-center text-black">Basic</h3>
+              <h3 class="text-center text-black">Free</h3>
               <div class="price text-center mb-4 ">
-                <span><span>$47</span> / year</span>
+                <span><span>0 Руб</span> / месяц</span>
               </div>
               <ul class="list-unstyled ul-check success mb-5">
-                
-                <li>Officia quaerat eaque neque</li>
-                <li>Possimus aut consequuntur incidunt</li>
-                <li class="remove">Lorem ipsum dolor sit amet</li>
-                <li class="remove">Consectetur adipisicing elit</li>
-                <li class="remove">Dolorum esse odio quas architecto sint</li>
+                <li>Мождо добавить 1го водителя</li>
+                <li>Управление заказами</li>
+                <li>Телеграм бот с заказами</li>
+                {% comment %} <li class="remove">Dolorum esse odio quas architecto sint</li> {% endcomment %}
+                {% comment %} <li class="remove">Dolorum esse odio quas architecto sint</li> {% endcomment %}
+
               </ul>
-              <p class="text-center">
+              {% comment %} <p class="text-center">
                 <a href="#" class="btn btn-secondary btn-md">Buy Now</a>
-              </p>
+              </p> {% endcomment %}
             </div>
           </div>
 
@@ -454,19 +455,18 @@
             <div class="pricing">
               <h3 class="text-center text-black">Premium</h3>
               <div class="price text-center mb-4 ">
-                <span><span>$200</span> / year</span>
+                <span><span>500 Руб</span> / месяц</span>
               </div>
               <ul class="list-unstyled ul-check success mb-5">
-                
-                <li>Officia quaerat eaque neque</li>
-                <li>Possimus aut consequuntur incidunt</li>
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Consectetur adipisicing elit</li>
-                <li class="remove">Dolorum esse odio quas architecto sint</li>
+                <li>Мождо добавить до 5ти водителей</li>
+                <li>Управление заказами</li>
+                <li>Телеграм бот с заказами</li>
+                <li>Ежемесячные отчеты</li>
+                {% comment %} <li class="remove">Dolorum esse odio quas architecto sint</li> {% endcomment %}
               </ul>
-              <p class="text-center">
+              {% comment %} <p class="text-center">
                 <a href="#" class="btn btn-primary btn-md text-white">Buy Now</a>
-              </p>
+              </p> {% endcomment %}
             </div>
           </div>
 
@@ -474,26 +474,24 @@
             <div class="pricing">
               <h3 class="text-center text-black">Professional</h3>
               <div class="price text-center mb-4 ">
-                <span><span>$750</span> / year</span>
+                <span><span>1000 Руб</span> / месяц</span>
               </div>
               <ul class="list-unstyled ul-check success mb-5">
-                
-                <li>Officia quaerat eaque neque</li>
-                <li>Possimus aut consequuntur incidunt</li>
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Consectetur adipisicing elit</li>
-                <li>Dolorum esse odio quas architecto sint</li>
+                <li>Мождо добавить неограниченное кол-во водителей</li>
+                <li>Управление заказами</li>
+                <li>Телеграм бот с заказами</li>
+                <li>Ежемесячные отчеты</li>
               </ul>
-              <p class="text-center">
+              {% comment %} <p class="text-center">
                 <a href="#" class="btn btn-secondary btn-md">Buy Now</a>
-              </p>
+              </p> {% endcomment %}
             </div>
           </div>
         </div>
         
         <div class="row site-section" id="faq-section">
           <div class="col-12 text-center" data-aos="fade">
-            <h2 class="section-title text-primary">Frequently Ask Questions</h2>
+            <h2 class="section-title text-primary">Часто задаваемые вопросы</h2>
           </div>
         </div>
         <div class="row">
@@ -544,7 +542,8 @@
         </div>
       </div>
     </section>
-
+    
+{% comment %} 
     
     <div class="site-section" id="press-section">
       <div class="container">
@@ -578,9 +577,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
 
-    <div class="site-section bg-light block-13" id="testimonials-section" data-aos="fade">
+    {% comment %} <div class="site-section bg-light block-13" id="testimonials-section" data-aos="fade">
       <div class="container">
         
         <div class="text-center mb-5">
@@ -657,8 +656,8 @@
         </div>
 
       </div>
-    </div>
-
+    </div> {% endcomment %}
+{% comment %} 
     <div class="site-section" id="blog-section">
       <div class="container">
         <div class="row">
@@ -691,7 +690,7 @@
 
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
 
 
     <div class="site-section bg-light" id="contact-section">
@@ -699,8 +698,7 @@
         <div class="row">
           <div class="col-12 text-center mb-5" data-aos="fade-up" data-aos-delay="">
             <div class="block-heading-1">
-              <span>Get In Touch</span>
-              <h2>Contact Us</h2>
+              <h2>Контакты</h2>
             </div>
           </div>
         </div>
@@ -735,9 +733,10 @@
             </form>
           </div>
           <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
-            <h2 class="text-black">Need to know more on details. Get In Touch</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores, distinctio! Harum quibusdam nisi, illum nulla aspernatur aut quidem aperiam, quae non tempora recusandae voluptatibus fugit impedit.</p>
-            <p><a href="#" class="btn btn-primary text-white">Get Started</a></p>
+            <h2 class="text-black">Так же можно связаться с нами через</h2>
+            <p><a href="#" class="text-black"><span class="mr-2 text-black icon-telegram"></span><span class="d-none d-md-inline-block">Telegram</span></a></p>
+            {% comment %} <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores, distinctio! Harum quibusdam nisi, illum nulla aspernatur aut quidem aperiam, quae non tempora recusandae voluptatibus fugit impedit.</p> {% endcomment %}
+            {% comment %} <p><a href="#" class="btn btn-primary text-white">Get Started</a></p> {% endcomment %}
           </div>
         </div>
       </div>
@@ -746,11 +745,11 @@
 
     <footer class="site-footer">
       <div class="container">
-        <div class="row">
+        {% comment %} <div class="row">
           <div class="col-md-6">
             <div class="row">
               <div class="col-md-8">
-                <h2 class="footer-heading mb-4">About Us</h2>
+                <h2 class="footer-heading mb-4">О нас</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque facere laudantium magnam voluptatum autem. Amet aliquid nesciunt veritatis aliquam.</p>
               </div>
               <div class="col-md-4 ml-auto">
@@ -787,8 +786,8 @@
                 <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
                 <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
             </form>
-          </div>
-        </div>
+          </div> 
+        </div> {% endcomment %}
         <div class="row pt-5 mt-5 text-center">
           <div class="col-md-12">
             <div class="border-top pt-5">
